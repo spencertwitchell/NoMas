@@ -32,22 +32,32 @@ struct QuizHeader: View {
             
             // Back button + Question counter
             HStack {
-                // Back button
-                Button(action: { quizState.goBack() }) {
+                // Back button - HIDDEN on first question, shown otherwise
+                if quizState.canGoBack {
+                    Button(action: { quizState.goBack() }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 16, weight: .semibold))
+                            Text("Back")
+                                .font(.system(size: 16, weight: .medium))
+                        }
+                        .foregroundColor(.white.opacity(0.9))
+                    }
+                } else {
+                    // Invisible spacer to maintain layout
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 16, weight: .semibold))
                         Text("Back")
                             .font(.system(size: 16, weight: .medium))
                     }
-                    .foregroundColor(.white.opacity(quizState.canGoBack ? 0.9 : 0.3))
+                    .foregroundColor(.clear)
                 }
-                .disabled(!quizState.canGoBack)
                 
                 Spacer()
                 
-                // Question counter
-                Text("\(quizState.currentStep.questionNumber) of \(QuizStep.totalQuestions)")
+                // Question counter - changed to "Question #X" format
+                Text("Question #\(quizState.currentStep.questionNumber)")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -67,15 +77,14 @@ struct QuizQuestionTitle: View {
     var body: some View {
         VStack(spacing: 12) {
             Text(title)
-                .font(.custom("Fraunces", size: 26))
-                .fontWeight(.semibold)
+                .font(.titleMedium)
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
             
             if let subtitle = subtitle, !subtitle.isEmpty {
                 Text(subtitle)
-                    .font(.system(size: 15))
+                    .font(.body)
                     .foregroundColor(.white.opacity(0.7))
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)

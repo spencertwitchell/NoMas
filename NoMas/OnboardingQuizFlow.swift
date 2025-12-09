@@ -4,6 +4,7 @@ import SwiftUI
 
 struct OnboardingQuizFlow: View {
     @StateObject private var quizState = QuizState()
+    @StateObject private var userData = UserData.shared  // Observe userData to update Continue button
     
     var body: some View {
         ZStack {
@@ -34,13 +35,45 @@ struct OnboardingQuizFlow: View {
                     
                     QuizContinueButton(
                         title: "Continue",
-                        isEnabled: quizState.canContinue,
+                        isEnabled: canContinue,  // Use local computed property that reads from userData
                         action: { quizState.advance() }
                     )
                     .padding(.horizontal, 24)
                     .padding(.bottom, 24)
                 }
             }
+        }
+    }
+    
+    // MARK: - Validation (reads directly from observed userData)
+    
+    /// Check if current step has a valid answer
+    /// This is computed here so it updates when userData changes
+    private var canContinue: Bool {
+        switch quizState.currentStep {
+        case .gender:
+            return userData.gender != nil
+        case .lastRelapseDate:
+            return true // Date picker always has a value
+        case .viewingFrequency:
+            return userData.viewingFrequency != nil
+        case .escalationToExtreme:
+            return userData.escalationToExtreme != nil
+        case .ageFirstExposure:
+            return userData.ageFirstExposure != nil
+        case .arousalDifficulty:
+            return userData.arousalDifficulty != nil
+        case .copingEmotional:
+            return userData.copingEmotional != nil
+        case .stressResponse:
+            return userData.stressResponse != nil
+        case .boredomResponse:
+            return userData.boredomResponse != nil
+        case .spentMoney:
+            return userData.spentMoney != nil
+        case .personalInfo:
+            // Age is required, display name is optional
+            return userData.age != nil
         }
     }
     

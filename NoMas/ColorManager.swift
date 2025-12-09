@@ -36,6 +36,7 @@ extension Color {
     
     /// Border color
     static let borderColor = Color.white.opacity(0.1)
+    
 }
 
 // MARK: - Hex Color Initializer

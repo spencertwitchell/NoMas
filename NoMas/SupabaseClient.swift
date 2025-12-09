@@ -3,12 +3,19 @@ import Supabase
 
 // MARK: - Supabase Client Singleton
 
+/// Note: The warning about "Initial session emitted after attempting to refresh" is informational.
+/// It's about upcoming behavior changes in the next major version of the Supabase Swift SDK.
+/// The current implementation works correctly - the warning can be safely ignored until migration.
+/// See: https://github.com/supabase/supabase-swift/pull/822
+
 let supabase = SupabaseClient(
     supabaseURL: URL(string: AppConfig.supabaseURL)!,
     supabaseKey: AppConfig.supabaseAnonKey,
     options: SupabaseClientOptions(
         db: .init(encoder: .postgresEncoder, decoder: .postgresDecoder),
-        auth: .init(redirectToURL: URL(string: AppConfig.authRedirectURL)),
+        auth: .init(
+            redirectToURL: URL(string: AppConfig.authRedirectURL)
+        ),
         global: .init(headers: [:])
     )
 )
@@ -31,7 +38,9 @@ enum AppConfig {
 extension JSONEncoder {
     static var postgresEncoder: JSONEncoder {
         let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
+        // NOTE: Do NOT use .convertToSnakeCase here!
+        // The Supabase models have explicit CodingKeys that handle snake_case conversion.
+        // Using both causes a conflict.
         encoder.dateEncodingStrategy = .iso8601
         return encoder
     }
@@ -40,7 +49,9 @@ extension JSONEncoder {
 extension JSONDecoder {
     static var postgresDecoder: JSONDecoder {
         let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        // NOTE: Do NOT use .convertFromSnakeCase here!
+        // The Supabase models have explicit CodingKeys that handle snake_case conversion.
+        // Using both causes a conflict where Swift looks for the wrong keys.
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let dateString = try container.decode(String.self)
@@ -192,6 +203,8 @@ class DatabaseService {
             .value
         
         if let existingUser = existingUsers.first {
+            // Ensure related records exist (in case previous creation was interrupted)
+            await ensureRelatedRecordsExist(userId: existingUser.id)
             return existingUser
         }
         
@@ -217,6 +230,50 @@ class DatabaseService {
             .execute()
         
         return newUser
+    }
+    
+    /// Ensure quiz_data and progress records exist for a user
+    /// (handles case where user was created but related records weren't)
+    private func ensureRelatedRecordsExist(userId: UUID) async {
+        // Check and create quiz data if missing
+        do {
+            let existingQuizData: [SupabaseQuizData] = try await supabase
+                .from("user_quiz_data")
+                .select()
+                .eq("user_id", value: userId.uuidString)
+                .execute()
+                .value
+            
+            if existingQuizData.isEmpty {
+                try await supabase
+                    .from("user_quiz_data")
+                    .insert(QuizDataInsert(userId: userId.uuidString))
+                    .execute()
+                print("✅ Created missing quiz_data record")
+            }
+        } catch {
+            print("⚠️ Failed to ensure quiz_data exists: \(error)")
+        }
+        
+        // Check and create progress if missing
+        do {
+            let existingProgress: [SupabaseUserProgress] = try await supabase
+                .from("user_progress")
+                .select()
+                .eq("user_id", value: userId.uuidString)
+                .execute()
+                .value
+            
+            if existingProgress.isEmpty {
+                try await supabase
+                    .from("user_progress")
+                    .insert(ProgressInsert(userId: userId.uuidString))
+                    .execute()
+                print("✅ Created missing progress record")
+            }
+        } catch {
+            print("⚠️ Failed to ensure progress exists: \(error)")
+        }
     }
     
     /// Update user profile
