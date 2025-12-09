@@ -1,0 +1,477 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
+		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
+		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
+		297AD0FF2EE7683400CCE3BC /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FE2EE7683400CCE3BC /* Realtime */; };
+		297AD1012EE7683400CCE3BC /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD1002EE7683400CCE3BC /* Storage */; };
+		297AD1032EE7683400CCE3BC /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD1022EE7683400CCE3BC /* Supabase */; };
+		297AD10E2EE76D7500CCE3BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1072EE76D7500CCE3BC /* ContentView.swift */; };
+		297AD10F2EE76D7500CCE3BC /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1082EE76D7500CCE3BC /* DeviceManager.swift */; };
+		297AD1102EE76D7500CCE3BC /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD10A2EE76D7500CCE3BC /* Models.swift */; };
+		297AD1112EE76D7500CCE3BC /* NoMasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD10B2EE76D7500CCE3BC /* NoMasApp.swift */; };
+		297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD10C2EE76D7500CCE3BC /* SupabaseClient.swift */; };
+		297AD1132EE76D7500CCE3BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 297AD1062EE76D7500CCE3BC /* Assets.xcassets */; };
+		297AD1162EE76D8000CCE3BC /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1152EE76D8000CCE3BC /* UserData.swift */; };
+		297AD1182EE76E3600CCE3BC /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1172EE76E3600CCE3BC /* AuthManager.swift */; };
+		297AD11A2EE76EA700CCE3BC /* OnboardingPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1192EE76EA700CCE3BC /* OnboardingPhase.swift */; };
+		297AD11C2EE76F0F00CCE3BC /* QuizStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD11B2EE76F0F00CCE3BC /* QuizStep.swift */; };
+		297AD11E2EE780C300CCE3BC /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD11D2EE780C300CCE3BC /* ColorManager.swift */; };
+		297AD1202EE780F100CCE3BC /* QuizSharedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD11F2EE780F100CCE3BC /* QuizSharedComponents.swift */; };
+		297AD1222EE781C300CCE3BC /* OnboardingQuizFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1212EE781C300CCE3BC /* OnboardingQuizFlow.swift */; };
+		297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1232EE7864E00CCE3BC /* FontManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		297AD1072EE76D7500CCE3BC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
+		297AD1092EE76D7500CCE3BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		297AD10A2EE76D7500CCE3BC /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		297AD10B2EE76D7500CCE3BC /* NoMasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMasApp.swift; sourceTree = "<group>"; };
+		297AD10C2EE76D7500CCE3BC /* SupabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClient.swift; sourceTree = "<group>"; };
+		297AD1152EE76D8000CCE3BC /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		297AD1172EE76E3600CCE3BC /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		297AD1192EE76EA700CCE3BC /* OnboardingPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPhase.swift; sourceTree = "<group>"; };
+		297AD11B2EE76F0F00CCE3BC /* QuizStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStep.swift; sourceTree = "<group>"; };
+		297AD11D2EE780C300CCE3BC /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
+		297AD11F2EE780F100CCE3BC /* QuizSharedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSharedComponents.swift; sourceTree = "<group>"; };
+		297AD1212EE781C300CCE3BC /* OnboardingQuizFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuizFlow.swift; sourceTree = "<group>"; };
+		297AD1232EE7864E00CCE3BC /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		297AD0D32EE7646800CCE3BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */,
+				297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */,
+				297AD1032EE7683400CCE3BC /* Supabase in Frameworks */,
+				297AD0F92EE7683400CCE3BC /* Auth in Frameworks */,
+				297AD1012EE7683400CCE3BC /* Storage in Frameworks */,
+				297AD0FF2EE7683400CCE3BC /* Realtime in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		297AD0CD2EE7646800CCE3BC = {
+			isa = PBXGroup;
+			children = (
+				297AD10D2EE76D7500CCE3BC /* NoMas */,
+				297AD0F72EE7683400CCE3BC /* Frameworks */,
+				297AD0D72EE7646800CCE3BC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		297AD0D72EE7646800CCE3BC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				297AD0D62EE7646800CCE3BC /* NoMas.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		297AD0F72EE7683400CCE3BC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		297AD10D2EE76D7500CCE3BC /* NoMas */ = {
+			isa = PBXGroup;
+			children = (
+				297AD1062EE76D7500CCE3BC /* Assets.xcassets */,
+				297AD1072EE76D7500CCE3BC /* ContentView.swift */,
+				297AD10B2EE76D7500CCE3BC /* NoMasApp.swift */,
+				297AD1092EE76D7500CCE3BC /* Info.plist */,
+				297AD10A2EE76D7500CCE3BC /* Models.swift */,
+				297AD10C2EE76D7500CCE3BC /* SupabaseClient.swift */,
+				297AD1082EE76D7500CCE3BC /* DeviceManager.swift */,
+				297AD1152EE76D8000CCE3BC /* UserData.swift */,
+				297AD1172EE76E3600CCE3BC /* AuthManager.swift */,
+				297AD1192EE76EA700CCE3BC /* OnboardingPhase.swift */,
+				297AD11B2EE76F0F00CCE3BC /* QuizStep.swift */,
+				297AD11F2EE780F100CCE3BC /* QuizSharedComponents.swift */,
+				297AD1212EE781C300CCE3BC /* OnboardingQuizFlow.swift */,
+				297AD11D2EE780C300CCE3BC /* ColorManager.swift */,
+				297AD1232EE7864E00CCE3BC /* FontManager.swift */,
+			);
+			path = NoMas;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		297AD0D52EE7646800CCE3BC /* NoMas */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 297AD0E12EE7646900CCE3BC /* Build configuration list for PBXNativeTarget "NoMas" */;
+			buildPhases = (
+				297AD0D22EE7646800CCE3BC /* Sources */,
+				297AD0D32EE7646800CCE3BC /* Frameworks */,
+				297AD0D42EE7646800CCE3BC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NoMas;
+			packageProductDependencies = (
+				297AD0F82EE7683400CCE3BC /* Auth */,
+				297AD0FA2EE7683400CCE3BC /* Functions */,
+				297AD0FC2EE7683400CCE3BC /* PostgREST */,
+				297AD0FE2EE7683400CCE3BC /* Realtime */,
+				297AD1002EE7683400CCE3BC /* Storage */,
+				297AD1022EE7683400CCE3BC /* Supabase */,
+			);
+			productName = NoMas;
+			productReference = 297AD0D62EE7646800CCE3BC /* NoMas.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		297AD0CE2EE7646800CCE3BC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					297AD0D52EE7646800CCE3BC = {
+						CreatedOnToolsVersion = 26.0;
+					};
+				};
+			};
+			buildConfigurationList = 297AD0D12EE7646800CCE3BC /* Build configuration list for PBXProject "NoMas" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 297AD0CD2EE7646800CCE3BC;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 297AD0D72EE7646800CCE3BC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				297AD0D52EE7646800CCE3BC /* NoMas */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		297AD0D42EE7646800CCE3BC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				297AD1132EE76D7500CCE3BC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		297AD0D22EE7646800CCE3BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				297AD1162EE76D8000CCE3BC /* UserData.swift in Sources */,
+				297AD11E2EE780C300CCE3BC /* ColorManager.swift in Sources */,
+				297AD1202EE780F100CCE3BC /* QuizSharedComponents.swift in Sources */,
+				297AD1182EE76E3600CCE3BC /* AuthManager.swift in Sources */,
+				297AD10E2EE76D7500CCE3BC /* ContentView.swift in Sources */,
+				297AD10F2EE76D7500CCE3BC /* DeviceManager.swift in Sources */,
+				297AD11C2EE76F0F00CCE3BC /* QuizStep.swift in Sources */,
+				297AD11A2EE76EA700CCE3BC /* OnboardingPhase.swift in Sources */,
+				297AD1102EE76D7500CCE3BC /* Models.swift in Sources */,
+				297AD1112EE76D7500CCE3BC /* NoMasApp.swift in Sources */,
+				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
+				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
+				297AD1222EE781C300CCE3BC /* OnboardingQuizFlow.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		297AD0DF2EE7646900CCE3BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = LH49RTLDCY;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		297AD0E02EE7646900CCE3BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = LH49RTLDCY;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		297AD0E22EE7646900CCE3BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LH49RTLDCY;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoMas/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twitchapps.NoMas;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		297AD0E32EE7646900CCE3BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LH49RTLDCY;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoMas/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twitchapps.NoMas;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		297AD0D12EE7646800CCE3BC /* Build configuration list for PBXProject "NoMas" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				297AD0DF2EE7646900CCE3BC /* Debug */,
+				297AD0E02EE7646900CCE3BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		297AD0E12EE7646900CCE3BC /* Build configuration list for PBXNativeTarget "NoMas" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				297AD0E22EE7646900CCE3BC /* Debug */,
+				297AD0E32EE7646900CCE3BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		297AD0F82EE7683400CCE3BC /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		297AD0FA2EE7683400CCE3BC /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		297AD0FC2EE7683400CCE3BC /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		297AD0FE2EE7683400CCE3BC /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		297AD1002EE7683400CCE3BC /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		297AD1022EE7683400CCE3BC /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 297AD0CE2EE7646800CCE3BC /* Project object */;
+}
