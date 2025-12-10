@@ -5,7 +5,6 @@
 //  Created by Spencer Twitchell on 12/8/25.
 //
 
-
 import Foundation
 import SwiftUI
 import Supabase
@@ -118,7 +117,7 @@ class AuthManager: ObservableObject {
     
     // MARK: - Sign In Methods
     
-    /// Sign in with Apple
+    /// Sign in with Apple (native)
     func signInWithApple(credential: ASAuthorizationAppleIDCredential) async throws {
         isLoading = true
         authError = nil
@@ -148,24 +147,22 @@ class AuthManager: ObservableObject {
         }
     }
     
-    /// Sign in with Google (using ID token from Google Sign-In SDK)
-    func signInWithGoogle(idToken: String, accessToken: String) async throws {
+    /// Sign in with Google (via Supabase OAuth - opens Safari)
+    /// No GoogleSignIn SDK needed!
+    func signInWithGoogle() async throws {
         isLoading = true
         authError = nil
         
         defer { isLoading = false }
         
         do {
-            let session = try await supabase.auth.signInWithIdToken(
-                credentials: .init(
-                    provider: .google,
-                    idToken: idToken,
-                    accessToken: accessToken
-                )
+            try await supabase.auth.signInWithOAuth(
+                provider: .google,
+                redirectTo: URL(string: AppConfig.authRedirectURL)
             )
-            
-            await handleSessionChange(session)
-            print("✅ Signed in with Google")
+            print("🌐 Opened Google sign in...")
+            // Note: The actual sign-in completion is handled by the auth state listener
+            // when the app receives the callback URL
         } catch {
             authError = error.localizedDescription
             print("❌ Google sign in failed: \(error)")
@@ -242,6 +239,20 @@ class AuthManager: ObservableObject {
         }
     }
     
+    // MARK: - Handle OAuth Callback
+    
+    /// Call this when the app receives a deep link callback
+    func handleOAuthCallback(url: URL) async {
+        do {
+            let session = try await supabase.auth.session(from: url)
+            await handleSessionChange(session)
+            print("✅ OAuth callback handled successfully")
+        } catch {
+            print("❌ Failed to handle OAuth callback: \(error)")
+            authError = error.localizedDescription
+        }
+    }
+    
     // MARK: - Sign Out
     
     func signOut() async {
@@ -274,9 +285,6 @@ class AuthManager: ObservableObject {
     
     /// Check subscription status (call after Superwall purchase)
     func checkSubscriptionStatus() async {
-        // This would typically integrate with RevenueCat or Superwall
-        // For now, we'll check the database
-        
         guard let userId = UserData.shared.supabaseUserId else { return }
         
         do {
@@ -335,9 +343,6 @@ class AuthManager: ObservableObject {
         authError = nil
         
         defer { isLoading = false }
-        
-        // Note: This requires a Supabase Edge Function or admin API
-        // For now, we'll just sign out and clear local data
         
         // Clear local data
         UserData.shared.resetAllData()
@@ -445,6 +450,42 @@ struct SignInWithAppleButton: View {
                 let credential = try await coordinator.signIn()
                 try await AuthManager.shared.signInWithApple(credential: credential)
                 onSuccess()
+            } catch {
+                onError(error)
+            }
+        }
+    }
+}
+
+// MARK: - Sign In With Google Button (SwiftUI)
+
+struct SignInWithGoogleButton: View {
+    let onSuccess: () -> Void
+    let onError: (Error) -> Void
+    
+    var body: some View {
+        Button(action: performSignIn) {
+            HStack(spacing: 12) {
+                // Google "G" logo - you can replace with actual Google logo image
+                Image(systemName: "g.circle.fill")
+                    .font(.system(size: 20, weight: .semibold))
+                Text("Continue with Google")
+                    .font(.system(size: 17, weight: .semibold))
+            }
+            .foregroundColor(.black)
+            .frame(maxWidth: .infinity)
+            .frame(height: 56)
+            .background(Color.white)
+            .cornerRadius(16)
+        }
+    }
+    
+    private func performSignIn() {
+        Task {
+            do {
+                try await AuthManager.shared.signInWithGoogle()
+                // Note: onSuccess will be called when the OAuth callback completes
+                // The auth state listener handles this automatically
             } catch {
                 onError(error)
             }

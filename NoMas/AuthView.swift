@@ -2,14 +2,6 @@
 //  AuthView.swift
 //  NoMas
 //
-//  Created by Spencer Twitchell on 12/9/25.
-//
-
-
-//
-//  AuthView.swift
-//  NoMas
-//
 //  Created by Spencer Twitchell on 12/8/25.
 //
 
@@ -72,9 +64,16 @@ struct AuthView: View {
                         style: .google,
                         isLoading: authManager.isLoading,
                         action: {
-                            // TODO: Implement Google Sign In with GoogleSignIn SDK
-                            // For now, show placeholder
-                            print("Google Sign In tapped - requires GoogleSignIn SDK integration")
+                            Task {
+                                do {
+                                    try await AuthManager.shared.signInWithGoogle()
+                                    // Note: This opens Safari. The actual auth completion
+                                    // happens when the app receives the callback URL.
+                                    // The .onChange below will detect when auth succeeds.
+                                } catch {
+                                    print("❌ Google Sign In error: \(error)")
+                                }
+                            }
                         }
                     )
                     
@@ -155,6 +154,12 @@ struct AuthView: View {
                     showingEmailSignUp = true
                 }
             )
+        }
+        // Listen for auth state changes (for OAuth callbacks like Google)
+        .onChange(of: authManager.isAuthenticated) { _, isAuthenticated in
+            if isAuthenticated {
+                onboardingState.advance()
+            }
         }
     }
 }

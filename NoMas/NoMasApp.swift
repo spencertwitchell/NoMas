@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
-// import SuperwallKit  // Uncomment when Superwall is integrated
+import UserNotifications
+// TODO: Uncomment when Superwall is added
+// import SuperwallKit
 
 @main
 struct NoMasApp: App {
     
     // MARK: - App Delegate (for push notifications, deep links, etc.)
-    // @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     // MARK: - Init
     
@@ -27,8 +29,11 @@ struct NoMasApp: App {
         WindowGroup {
             RootView()
                 .onAppear {
-                    // Set window background color to prevent white flash during transitions
                     setWindowBackgroundColor()
+                }
+                .onOpenURL { url in
+                    // Handle OAuth callbacks (Google, Apple, Magic Link, etc.)
+                    handleDeepLink(url)
                 }
         }
     }
@@ -36,8 +41,6 @@ struct NoMasApp: App {
     // MARK: - Configuration
     
     private func configureAppearance() {
-        // Configure navigation bar appearance globally
-        // This prevents white flash during view transitions
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         appearance.backgroundColor = .clear
@@ -46,7 +49,6 @@ struct NoMasApp: App {
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         
-        // Configure tab bar appearance (for future use)
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
         tabBarAppearance.backgroundColor = UIColor(Color.backgroundGradientEnd)
@@ -56,7 +58,6 @@ struct NoMasApp: App {
     }
     
     private func setWindowBackgroundColor() {
-        // Set all windows' background color to dark to prevent white flash
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             for window in windowScene.windows {
                 window.backgroundColor = UIColor(Color.backgroundGradientEnd)
@@ -65,9 +66,67 @@ struct NoMasApp: App {
     }
     
     private func configureSuperwall() {
-        // TODO: Configure Superwall when ready
-        // Superwall.configure(apiKey: AppConfig.superwallAPIKey)
-        // Superwall.shared.delegate = SuperwallDelegateHandler()
+        SuperwallManager.shared.configure()
+    }
+    
+    // MARK: - Deep Links
+    
+    private func handleDeepLink(_ url: URL) {
+        print("🔗 Received deep link: \(url)")
+        
+        // Handle Supabase auth callbacks (Google OAuth, Magic Links, etc.)
+        if url.scheme == "nomas" {
+            Task {
+                await AuthManager.shared.handleOAuthCallback(url: url)
+            }
+        }
+    }
+}
+
+// MARK: - App Delegate
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        return true
+    }
+    
+    // Handle URL schemes (for OAuth)
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        print("🔗 AppDelegate received URL: \(url)")
+        
+        // Handle Supabase OAuth callback
+        if url.scheme == "nomas" {
+            Task {
+                await AuthManager.shared.handleOAuthCallback(url: url)
+            }
+            return true
+        }
+        
+        return false
+    }
+    
+    // Push notifications
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        print("📱 Push token: \(token)")
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
+        print("❌ Failed to register for push notifications: \(error)")
     }
 }
 
