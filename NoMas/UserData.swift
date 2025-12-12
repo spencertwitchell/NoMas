@@ -60,8 +60,21 @@ class UserData: ObservableObject {
         didSet { saveUserToSupabase() }
     }
     
-    @Published var profilePictureURL: String? = nil
-    @Published var isProfilePublic: Bool = true
+    @Published var bio: String? = nil {
+        didSet { saveUserToSupabase() }
+    }
+    
+    @Published var instagramHandle: String? = nil {
+        didSet { saveUserToSupabase() }
+    }
+    
+    @Published var profilePictureURL: String? = nil {
+        didSet { saveUserToSupabase() }
+    }
+    
+    @Published var isProfilePublic: Bool = true {
+        didSet { saveUserToSupabase() }
+    }
     
     // MARK: - Quiz Answers
     
@@ -262,6 +275,8 @@ class UserData: ObservableObject {
         displayName = user.displayName ?? ""
         age = user.age
         gender = user.gender.flatMap { Gender(rawValue: $0) }
+        bio = user.bio
+        instagramHandle = user.instagramHandle
         profilePictureURL = user.profilePictureUrl
         isProfilePublic = user.isProfilePublic ?? true
         
@@ -306,11 +321,15 @@ class UserData: ObservableObject {
                     userId: userId,
                     displayName: displayName.isEmpty ? nil : displayName,
                     age: age,
-                    gender: gender
+                    gender: gender,
+                    bio: bio,
+                    instagramHandle: instagramHandle,
+                    profilePictureUrl: profilePictureURL,
+                    isProfilePublic: isProfilePublic
                 )
-                print("âœ… User data saved to Supabase")
+                print("✅ User data saved to Supabase")
             } catch {
-                print("âŒ Failed to save user: \(error)")
+                print("❌ Failed to save user: \(error)")
             }
         }
         
@@ -384,6 +403,10 @@ class UserData: ObservableObject {
         defaults.set(displayName, forKey: "displayName")
         defaults.set(age, forKey: "age")
         defaults.set(gender?.rawValue, forKey: "gender")
+        defaults.set(bio, forKey: "bio")
+        defaults.set(instagramHandle, forKey: "instagramHandle")
+        defaults.set(profilePictureURL, forKey: "profilePictureURL")
+        defaults.set(isProfilePublic, forKey: "isProfilePublic")
         defaults.set(lastRelapseDate, forKey: "lastRelapseDate")
         defaults.set(viewingFrequency?.rawValue, forKey: "viewingFrequency")
         defaults.set(escalationToExtreme, forKey: "escalationToExtreme")
@@ -407,6 +430,10 @@ class UserData: ObservableObject {
         displayName = defaults.string(forKey: "displayName") ?? ""
         age = defaults.object(forKey: "age") as? Int
         gender = defaults.string(forKey: "gender").flatMap { Gender(rawValue: $0) }
+        bio = defaults.string(forKey: "bio")
+        instagramHandle = defaults.string(forKey: "instagramHandle")
+        profilePictureURL = defaults.string(forKey: "profilePictureURL")
+        isProfilePublic = defaults.object(forKey: "isProfilePublic") as? Bool ?? true
         lastRelapseDate = defaults.object(forKey: "lastRelapseDate") as? Date ?? Date()
         viewingFrequency = defaults.string(forKey: "viewingFrequency").flatMap { ViewingFrequency(rawValue: $0) }
         escalationToExtreme = defaults.object(forKey: "escalationToExtreme") as? Bool
@@ -426,7 +453,7 @@ class UserData: ObservableObject {
     // MARK: - Reset (for testing)
     
     #if DEBUG
-    /// Resets all local data (UserDefaults only)
+    /// Resets all local data (UserDefaults only) - DEBUG ONLY
     func resetAllData() {
         hasCompletedOnboarding = false
         skippedEarlyAuth = false
@@ -434,6 +461,10 @@ class UserData: ObservableObject {
         displayName = ""
         age = nil
         gender = nil
+        bio = nil
+        instagramHandle = nil
+        profilePictureURL = nil
+        isProfilePublic = true
         lastRelapseDate = Date()
         viewingFrequency = nil
         escalationToExtreme = nil
@@ -458,9 +489,13 @@ class UserData: ObservableObject {
         
         print("🗑️ UserDefaults cleared")
     }
+    #endif
+    
+    // MARK: - Full App Reset (Developer Tool)
     
     /// Wipes ALL app data - simulates fresh install
     /// Clears: UserDefaults, Keychain, Supabase session
+    /// Available in all builds (hidden behind 7-tap activation in Settings)
     func nukeEverything() async {
         print("☢️ NUKING EVERYTHING...")
         
@@ -486,6 +521,10 @@ class UserData: ObservableObject {
         displayName = ""
         age = nil
         gender = nil
+        bio = nil
+        instagramHandle = nil
+        profilePictureURL = nil
+        isProfilePublic = true
         lastRelapseDate = Date()
         viewingFrequency = nil
         escalationToExtreme = nil
@@ -528,5 +567,4 @@ class UserData: ObservableObject {
             }
         }
     }
-    #endif
 }

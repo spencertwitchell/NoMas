@@ -50,6 +50,10 @@
 		297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD17B2EE8AF5200CCE3BC /* RootView.swift */; };
 		297AD17F2EE8F6CA00CCE3BC /* SuperwallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD17E2EE8F6CA00CCE3BC /* SuperwallManager.swift */; };
 		297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1942EEB8E8B00CCE3BC /* OptionalAuthView.swift */; };
+		297AD1972EEB96A800CCE3BC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1962EEB96A800CCE3BC /* MainView.swift */; };
+		297AD19A2EEBB7D700CCE3BC /* ProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1992EEBB7D700CCE3BC /* ProfilePictureView.swift */; };
+		297AD19C2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD19B2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift */; };
+		297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +95,10 @@
 		297AD17D2EE8F46200CCE3BC /* NoMas.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NoMas.entitlements; sourceTree = "<group>"; };
 		297AD17E2EE8F6CA00CCE3BC /* SuperwallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperwallManager.swift; sourceTree = "<group>"; };
 		297AD1942EEB8E8B00CCE3BC /* OptionalAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalAuthView.swift; sourceTree = "<group>"; };
+		297AD1962EEB96A800CCE3BC /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		297AD1992EEBB7D700CCE3BC /* ProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureView.swift; sourceTree = "<group>"; };
+		297AD19B2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureUploader.swift; sourceTree = "<group>"; };
+		297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +154,8 @@
 				297AD1792EE8AF3000CCE3BC /* SplashView.swift */,
 				297AD17B2EE8AF5200CCE3BC /* RootView.swift */,
 				297AD17E2EE8F6CA00CCE3BC /* SuperwallManager.swift */,
+				297AD1962EEB96A800CCE3BC /* MainView.swift */,
+				297AD1982EEBB7C800CCE3BC /* Settings Profile */,
 				297AD1092EE76D7500CCE3BC /* Info.plist */,
 				297AD10A2EE76D7500CCE3BC /* Models.swift */,
 				297AD10C2EE76D7500CCE3BC /* SupabaseClient.swift */,
@@ -178,6 +188,16 @@
 				297AD1772EE8ADB700CCE3BC /* OnboardingCompleteView.swift */,
 			);
 			path = NoMas;
+			sourceTree = "<group>";
+		};
+		297AD1982EEBB7C800CCE3BC /* Settings Profile */ = {
+			isa = PBXGroup;
+			children = (
+				297AD1992EEBB7D700CCE3BC /* ProfilePictureView.swift */,
+				297AD19B2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift */,
+				297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */,
+			);
+			path = "Settings Profile";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,13 +290,16 @@
 				297AD1542EE7B14300CCE3BC /* OnboardingWelcomeView.swift in Sources */,
 				297AD1522EE7B02D00CCE3BC /* OnboardingFlowView.swift in Sources */,
 				297AD1582EE7B15A00CCE3BC /* QuizResultsView.swift in Sources */,
+				297AD19C2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift in Sources */,
 				297AD1702EE8AD4100CCE3BC /* CommitmentView.swift in Sources */,
+				297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */,
 				297AD1162EE76D8000CCE3BC /* UserData.swift in Sources */,
 				297AD11E2EE780C300CCE3BC /* ColorManager.swift in Sources */,
 				297AD1202EE780F100CCE3BC /* QuizSharedComponents.swift in Sources */,
 				297AD1622EE7B35100CCE3BC /* NegativeEffectsView.swift in Sources */,
 				297AD1182EE76E3600CCE3BC /* AuthManager.swift in Sources */,
 				297AD16C2EE7B53000CCE3BC /* TestimonialsView.swift in Sources */,
+				297AD1972EEB96A800CCE3BC /* MainView.swift in Sources */,
 				297AD17F2EE8F6CA00CCE3BC /* SuperwallManager.swift in Sources */,
 				297AD16E2EE8AD3300CCE3BC /* ReviewsView.swift in Sources */,
 				297AD1682EE7B51100CCE3BC /* ScienceView.swift in Sources */,
@@ -294,6 +317,7 @@
 				297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */,
 				297AD1502EE7B02000CCE3BC /* LoopingVideoBackground.swift in Sources */,
 				297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */,
+				297AD19A2EEBB7D700CCE3BC /* ProfilePictureView.swift in Sources */,
 				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
 				297AD1642EE7B36100CCE3BC /* TransitionView.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,

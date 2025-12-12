@@ -43,7 +43,7 @@ struct RootView: View {
             // Determine what to show
             if skipOnboarding {
                 // Development mode - skip straight to main app
-                MainAppPlaceholder()
+                MainView()
                     .onAppear { setupTestData() }
             } else if !splashComplete {
                 // Step 1: Always show splash first
@@ -92,7 +92,7 @@ struct RootView: View {
             ReturningUserAuthView()
         } else {
             // HAPPY PATH: Completed onboarding, has subscription, is authenticated
-            MainAppPlaceholder()
+            MainView()
         }
     }
     

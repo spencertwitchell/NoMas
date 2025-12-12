@@ -106,12 +106,20 @@ struct UserUpdate: Encodable {
     var age: Int?
     var gender: String?
     var authId: String?
+    var bio: String?
+    var instagramHandle: String?
+    var profilePictureUrl: String?
+    var isProfilePublic: Bool?
     
     enum CodingKeys: String, CodingKey {
         case displayName = "display_name"
         case age
         case gender
         case authId = "auth_id"
+        case bio
+        case instagramHandle = "instagram_handle"
+        case profilePictureUrl = "profile_picture_url"
+        case isProfilePublic = "is_profile_public"
     }
 }
 
@@ -249,10 +257,10 @@ class DatabaseService {
                     .from("user_quiz_data")
                     .insert(QuizDataInsert(userId: userId.uuidString))
                     .execute()
-                print("✅ Created missing quiz_data record")
+                print("âœ… Created missing quiz_data record")
             }
         } catch {
-            print("⚠️ Failed to ensure quiz_data exists: \(error)")
+            print("âš ï¸ Failed to ensure quiz_data exists: \(error)")
         }
         
         // Check and create progress if missing
@@ -269,20 +277,35 @@ class DatabaseService {
                     .from("user_progress")
                     .insert(ProgressInsert(userId: userId.uuidString))
                     .execute()
-                print("✅ Created missing progress record")
+                print("âœ… Created missing progress record")
             }
         } catch {
-            print("⚠️ Failed to ensure progress exists: \(error)")
+            print("âš ï¸ Failed to ensure progress exists: \(error)")
         }
     }
     
     /// Update user profile
-    func updateUser(userId: UUID, displayName: String?, age: Int?, gender: Gender?) async throws {
+    func updateUser(userId: UUID, displayName: String?, age: Int?, gender: Gender?, bio: String? = nil, instagramHandle: String? = nil, profilePictureUrl: String? = nil, isProfilePublic: Bool? = nil) async throws {
         let update = UserUpdate(
             displayName: displayName,
             age: age,
-            gender: gender?.rawValue
+            gender: gender?.rawValue,
+            bio: bio,
+            instagramHandle: instagramHandle,
+            profilePictureUrl: profilePictureUrl,
+            isProfilePublic: isProfilePublic
         )
+        
+        try await supabase
+            .from("users")
+            .update(update)
+            .eq("id", value: userId.uuidString)
+            .execute()
+    }
+    
+    /// Update user profile picture URL only
+    func updateProfilePicture(userId: UUID, url: String) async throws {
+        let update = UserUpdate(profilePictureUrl: url)
         
         try await supabase
             .from("users")

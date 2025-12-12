@@ -216,7 +216,7 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
     var description: String {
         switch self {
         case .red:
-            return "Every journey begins with a single step. You've made the decision to change — that takes courage."
+            return "Every journey begins with a single step. You've made the decision to change â€” that takes courage."
         case .orange:
             return "One week of commitment. Your brain is already starting to rewire itself. The hardest part is behind you."
         case .yellow:
@@ -226,9 +226,9 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
         case .blue:
             return "Two months of freedom. The urges are weakening as new neural pathways strengthen."
         case .purple:
-            return "90 days — a complete reset cycle. You've fundamentally changed your relationship with temptation."
+            return "90 days â€” a complete reset cycle. You've fundamentally changed your relationship with temptation."
         case .pink:
-            return "Six months of growth. You're not just abstaining — you're thriving. This is who you are now."
+            return "Six months of growth. You're not just abstaining â€” you're thriving. This is who you are now."
         case .white:
             return "One year. You've achieved what many thought impossible. Your freedom is complete and self-sustaining."
         }
@@ -289,6 +289,8 @@ struct SupabaseUser: Codable {
     let displayName: String?
     let age: Int?
     let gender: String?
+    let bio: String?
+    let instagramHandle: String?
     let profilePictureUrl: String?
     let isProfilePublic: Bool?
     let createdAt: Date?
@@ -301,6 +303,8 @@ struct SupabaseUser: Codable {
         case displayName = "display_name"
         case age
         case gender
+        case bio
+        case instagramHandle = "instagram_handle"
         case profilePictureUrl = "profile_picture_url"
         case isProfilePublic = "is_profile_public"
         case createdAt = "created_at"
