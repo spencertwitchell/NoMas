@@ -43,6 +43,9 @@ struct OnboardingFlowView: View {
         case .welcome:
             OnboardingWelcomeView()
             
+        case .optionalAuth:
+            OptionalAuthView()
+            
         case .quiz:
             OnboardingQuizFlow()
             
@@ -81,9 +84,6 @@ struct OnboardingFlowView: View {
             
         case .paywall:
             PaywallView()
-            
-        case .auth:
-            AuthView()
             
         case .complete:
             OnboardingCompleteView()

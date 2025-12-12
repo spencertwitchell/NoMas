@@ -21,11 +21,11 @@ import Combine
 // MARK: - Superwall Manager
 
 /// Manages Superwall paywall integration
-/// 
+///
 /// Setup steps:
 /// 1. Add SuperwallKit via SPM: https://github.com/superwall-me/Superwall-iOS
 /// 2. Create account at superwall.com
-/// 3. Get your API key from Settings → Keys
+/// 3. Get your API key from Settings â†’ Keys
 /// 4. Update AppConfig.superwallAPIKey
 /// 5. Create paywalls in the Superwall dashboard
 /// 6. Configure placements (triggers) in the dashboard
@@ -54,10 +54,10 @@ class SuperwallManager: ObservableObject {
         updateUserAttributes()
         
         isConfigured = true
-        print("✅ Superwall configured")
+        print("âœ… Superwall configured")
         */
         
-        print("⚠️ Superwall SDK not yet integrated")
+        print("âš ï¸ Superwall SDK not yet integrated")
     }
     
     // MARK: - User Attributes
@@ -116,6 +116,7 @@ class SuperwallManager: ObservableObject {
         Superwall.shared.register(placement: placement) { result in
             switch result {
             case .purchased, .restored:
+                self.hasActiveSubscription = true
                 completion?(true)
             case .declined, .timeout:
                 completion?(false)
@@ -123,8 +124,20 @@ class SuperwallManager: ObservableObject {
         }
         */
         
-        // Temporary: just call completion with false
-        completion?(false)
+        // Temporary: Simulate paywall behavior for development
+        // Shows a delay then returns true (simulating purchase)
+        print("📱 Simulating paywall for placement: \(placement)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            // For development, simulate a successful purchase
+            self.hasActiveSubscription = true
+            completion?(true)
+        }
+    }
+    
+    /// Trigger the onboarding paywall (after completing onboarding content)
+    /// This is a HARD paywall - user must subscribe to continue
+    func triggerOnboardingPaywall(completion: ((Bool) -> Void)? = nil) {
+        triggerPaywall(placement: "onboarding_complete", completion: completion)
     }
     
     /// Common placement triggers
@@ -168,7 +181,7 @@ extension SuperwallManager: SuperwallDelegate {
     
     // Called when a user completes a purchase
     func didCompletePurchase(for product: StoreProduct) {
-        print("✅ Purchase completed: \(product.productIdentifier)")
+        print("âœ… Purchase completed: \(product.productIdentifier)")
         
         Task {
             hasActiveSubscription = true
@@ -178,7 +191,7 @@ extension SuperwallManager: SuperwallDelegate {
     
     // Called when a user restores purchases
     func didRestorePurchases() {
-        print("✅ Purchases restored")
+        print("âœ… Purchases restored")
         
         Task {
             await checkSubscriptionStatus()
@@ -187,17 +200,17 @@ extension SuperwallManager: SuperwallDelegate {
     
     // Called when a purchase fails
     func didFailToPurchase(for product: StoreProduct, with error: Error) {
-        print("❌ Purchase failed: \(error.localizedDescription)")
+        print("âŒ Purchase failed: \(error.localizedDescription)")
     }
     
     // Called when paywall is presented
     func willPresentPaywall(withInfo paywallInfo: PaywallInfo) {
-        print("📱 Presenting paywall: \(paywallInfo.identifier)")
+        print("ðŸ“± Presenting paywall: \(paywallInfo.identifier)")
     }
     
     // Called when paywall is dismissed
     func willDismissPaywall(withInfo paywallInfo: PaywallInfo) {
-        print("📱 Dismissing paywall: \(paywallInfo.identifier)")
+        print("ðŸ“± Dismissing paywall: \(paywallInfo.identifier)")
     }
     
     // Called to check subscription status

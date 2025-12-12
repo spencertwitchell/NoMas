@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import Security
 
 // MARK: - UserData (Central State Manager)
 
@@ -30,6 +31,19 @@ class UserData: ObservableObject {
     
     @Published var hasCompletedOnboarding: Bool = false {
         didSet { saveProgressToSupabase() }
+    }
+    
+    /// Tracks if user skipped the optional early auth (so we can force it after paywall)
+    @Published var skippedEarlyAuth: Bool = false {
+        didSet { saveToUserDefaults() }
+    }
+    
+    /// Tracks if user has an active subscription (verified with StoreKit)
+    @Published var hasActiveSubscription: Bool = false {
+        didSet {
+            subscriptionStatus = hasActiveSubscription
+            saveProgressToSupabase()
+        }
     }
     
     // MARK: - User Profile
@@ -233,9 +247,9 @@ class UserData: ObservableObject {
                 populateFromSupabase(user: allData.user, quiz: allData.quiz, progress: allData.progress)
             }
             
-            print("✅ UserData initialized from Supabase")
+            print("âœ… UserData initialized from Supabase")
         } catch {
-            print("❌ Failed to initialize from Supabase: \(error)")
+            print("âŒ Failed to initialize from Supabase: \(error)")
             loadError = error.localizedDescription
         }
         
@@ -294,9 +308,9 @@ class UserData: ObservableObject {
                     age: age,
                     gender: gender
                 )
-                print("✅ User data saved to Supabase")
+                print("âœ… User data saved to Supabase")
             } catch {
-                print("❌ Failed to save user: \(error)")
+                print("âŒ Failed to save user: \(error)")
             }
         }
         
@@ -324,9 +338,9 @@ class UserData: ObservableObject {
             
             do {
                 try await database.saveQuizData(userId: userId, quizData: input)
-                print("✅ Quiz data saved to Supabase")
+                print("âœ… Quiz data saved to Supabase")
             } catch {
-                print("❌ Failed to save quiz: \(error)")
+                print("âŒ Failed to save quiz: \(error)")
             }
         }
         
@@ -350,9 +364,9 @@ class UserData: ObservableObject {
             
             do {
                 try await database.updateProgress(userId: userId, progress: input)
-                print("✅ Progress saved to Supabase")
+                print("âœ… Progress saved to Supabase")
             } catch {
-                print("❌ Failed to save progress: \(error)")
+                print("âŒ Failed to save progress: \(error)")
             }
         }
         
@@ -365,6 +379,8 @@ class UserData: ObservableObject {
     
     private func saveToUserDefaults() {
         defaults.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
+        defaults.set(skippedEarlyAuth, forKey: "skippedEarlyAuth")
+        defaults.set(hasActiveSubscription, forKey: "hasActiveSubscription")
         defaults.set(displayName, forKey: "displayName")
         defaults.set(age, forKey: "age")
         defaults.set(gender?.rawValue, forKey: "gender")
@@ -386,6 +402,8 @@ class UserData: ObservableObject {
     
     private func loadFromUserDefaults() {
         hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
+        skippedEarlyAuth = defaults.bool(forKey: "skippedEarlyAuth")
+        hasActiveSubscription = defaults.bool(forKey: "hasActiveSubscription")
         displayName = defaults.string(forKey: "displayName") ?? ""
         age = defaults.object(forKey: "age") as? Int
         gender = defaults.string(forKey: "gender").flatMap { Gender(rawValue: $0) }
@@ -408,8 +426,11 @@ class UserData: ObservableObject {
     // MARK: - Reset (for testing)
     
     #if DEBUG
+    /// Resets all local data (UserDefaults only)
     func resetAllData() {
         hasCompletedOnboarding = false
+        skippedEarlyAuth = false
+        hasActiveSubscription = false
         displayName = ""
         age = nil
         gender = nil
@@ -428,10 +449,84 @@ class UserData: ObservableObject {
         currentMilestone = .red
         projectedRecoveryDate = nil
         subscriptionStatus = false
+        supabaseUserId = nil
         
         // Clear UserDefaults
         let domain = Bundle.main.bundleIdentifier!
         defaults.removePersistentDomain(forName: domain)
+        defaults.synchronize()
+        
+        print("🗑️ UserDefaults cleared")
+    }
+    
+    /// Wipes ALL app data - simulates fresh install
+    /// Clears: UserDefaults, Keychain, Supabase session
+    func nukeEverything() async {
+        print("☢️ NUKING EVERYTHING...")
+        
+        // 1. Sign out of Supabase (this clears Supabase's keychain tokens)
+        await AuthManager.shared.signOut()
+        print("✅ Signed out of Supabase")
+        
+        // 2. Delete ALL keychain items for this app
+        clearAllKeychainItems()
+        print("✅ Keychain wiped")
+        
+        // 3. Clear all UserDefaults
+        if let bundleId = Bundle.main.bundleIdentifier {
+            defaults.removePersistentDomain(forName: bundleId)
+            defaults.synchronize()
+        }
+        print("✅ UserDefaults wiped")
+        
+        // 4. Reset in-memory state
+        hasCompletedOnboarding = false
+        skippedEarlyAuth = false
+        hasActiveSubscription = false
+        displayName = ""
+        age = nil
+        gender = nil
+        lastRelapseDate = Date()
+        viewingFrequency = nil
+        escalationToExtreme = nil
+        ageFirstExposure = nil
+        arousalDifficulty = nil
+        copingEmotional = nil
+        stressResponse = nil
+        boredomResponse = nil
+        spentMoney = nil
+        dependencyScore = 0.0
+        appJoinDate = Date()
+        streakStartDate = Date()
+        currentMilestone = .red
+        projectedRecoveryDate = nil
+        subscriptionStatus = false
+        supabaseUserId = nil
+        
+        print("☢️ NUKE COMPLETE - Restart the app!")
+    }
+    
+    /// Deletes all keychain items for this app
+    private func clearAllKeychainItems() {
+        let secClasses = [
+            kSecClassGenericPassword,
+            kSecClassInternetPassword,
+            kSecClassCertificate,
+            kSecClassKey,
+            kSecClassIdentity
+        ]
+        
+        for secClass in secClasses {
+            let query: [String: Any] = [kSecClass as String: secClass]
+            let status = SecItemDelete(query as CFDictionary)
+            if status == errSecSuccess {
+                print("   Deleted keychain items of class: \(secClass)")
+            } else if status == errSecItemNotFound {
+                // No items of this class - that's fine
+            } else {
+                print("   ⚠️ Failed to delete keychain class \(secClass): \(status)")
+            }
+        }
     }
     #endif
 }

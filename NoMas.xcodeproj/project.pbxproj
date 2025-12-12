@@ -49,6 +49,7 @@
 		297AD17A2EE8AF3000CCE3BC /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1792EE8AF3000CCE3BC /* SplashView.swift */; };
 		297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD17B2EE8AF5200CCE3BC /* RootView.swift */; };
 		297AD17F2EE8F6CA00CCE3BC /* SuperwallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD17E2EE8F6CA00CCE3BC /* SuperwallManager.swift */; };
+		297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1942EEB8E8B00CCE3BC /* OptionalAuthView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +90,7 @@
 		297AD17B2EE8AF5200CCE3BC /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		297AD17D2EE8F46200CCE3BC /* NoMas.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NoMas.entitlements; sourceTree = "<group>"; };
 		297AD17E2EE8F6CA00CCE3BC /* SuperwallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperwallManager.swift; sourceTree = "<group>"; };
+		297AD1942EEB8E8B00CCE3BC /* OptionalAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalAuthView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +155,7 @@
 				297AD1192EE76EA700CCE3BC /* OnboardingPhase.swift */,
 				297AD11B2EE76F0F00CCE3BC /* QuizStep.swift */,
 				297AD11F2EE780F100CCE3BC /* QuizSharedComponents.swift */,
+				297AD1942EEB8E8B00CCE3BC /* OptionalAuthView.swift */,
 				297AD1212EE781C300CCE3BC /* OnboardingQuizFlow.swift */,
 				297AD11D2EE780C300CCE3BC /* ColorManager.swift */,
 				297AD1232EE7864E00CCE3BC /* FontManager.swift */,
@@ -290,6 +293,7 @@
 				297AD1742EE8AD6F00CCE3BC /* PaywallView.swift in Sources */,
 				297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */,
 				297AD1502EE7B02000CCE3BC /* LoopingVideoBackground.swift in Sources */,
+				297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */,
 				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
 				297AD1642EE7B36100CCE3BC /* TransitionView.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,

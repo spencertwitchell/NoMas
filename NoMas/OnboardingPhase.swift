@@ -12,10 +12,16 @@ import Combine
 // MARK: - Onboarding Phase Enum
 
 /// Represents each phase of the onboarding flow.
-/// Note: Splash is NOT included here because it runs on every app launch,
-/// not just during onboarding.
+///
+/// Flow: welcome → optionalAuth → quiz → ... → paywall → complete
+///
+/// Note:
+/// - Splash is NOT included here (runs on every app launch)
+/// - Auth after paywall is handled WITHIN the paywall phase (conditional based on skippedEarlyAuth)
+/// - The paywall phase doesn't advance until BOTH payment and auth (if needed) are complete
 enum OnboardingPhase: Int, CaseIterable, Codable {
     case welcome = 0
+    case optionalAuth      // NEW: Optional sign-in with skip button
     case quiz
     case quizCalculating
     case quizResults
@@ -28,8 +34,7 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
     case reviews
     case commitment
     case motivation
-    case paywall
-    case auth
+    case paywall           // Handles: paywall display + forced auth if skipped earlier
     case complete
     
     // MARK: - Navigation
@@ -48,7 +53,7 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
     /// Phases that allow going back
     var canGoBack: Bool {
         switch self {
-        case .welcome, .quizCalculating, .quizResults, .paywall, .auth, .complete:
+        case .welcome, .optionalAuth, .quizCalculating, .quizResults, .paywall, .complete:
             return false
         default:
             return true
@@ -58,7 +63,7 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
     /// Phases that show in progress indicator
     var isVisibleStep: Bool {
         switch self {
-        case .quizCalculating, .paywall, .auth, .complete:
+        case .optionalAuth, .quizCalculating, .paywall, .complete:
             return false
         default:
             return true
@@ -87,6 +92,7 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
     var displayName: String {
         switch self {
         case .welcome: return "Welcome"
+        case .optionalAuth: return "Optional Auth"
         case .quiz: return "Quiz"
         case .quizCalculating: return "Calculating"
         case .quizResults: return "Results"
@@ -100,7 +106,6 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
         case .commitment: return "Commitment"
         case .motivation: return "Motivation"
         case .paywall: return "Paywall"
-        case .auth: return "Auth"
         case .complete: return "Complete"
         }
     }
@@ -120,7 +125,7 @@ class OnboardingState: ObservableObject {
     @Published private(set) var currentPhase: OnboardingPhase = .welcome {
         didSet {
             persistPhase()
-            print("📍 Onboarding phase: \(oldValue.displayName) → \(currentPhase.displayName)")
+            print("ðŸ“ Onboarding phase: \(oldValue.displayName) â†’ \(currentPhase.displayName)")
         }
     }
     
@@ -149,7 +154,7 @@ class OnboardingState: ObservableObject {
     func advance() {
         guard !isTransitioning else { return }
         guard let next = currentPhase.next else {
-            print("⚠️ No next phase after \(currentPhase.displayName)")
+            print("âš ï¸ No next phase after \(currentPhase.displayName)")
             return
         }
         
@@ -161,7 +166,7 @@ class OnboardingState: ObservableObject {
     func goBack() {
         guard !isTransitioning else { return }
         guard currentPhase.canGoBack else {
-            print("⚠️ Cannot go back from \(currentPhase.displayName)")
+            print("âš ï¸ Cannot go back from \(currentPhase.displayName)")
             return
         }
         guard let prev = currentPhase.previous else { return }
@@ -199,15 +204,17 @@ class OnboardingState: ObservableObject {
         userData.hasCompletedOnboarding = true
         currentPhase = .complete
         clearPersistedPhase()
-        print("✅ Onboarding completed!")
+        print("âœ… Onboarding completed!")
     }
     
     /// Reset onboarding (for testing or re-onboarding)
     func resetOnboarding() {
         userData.hasCompletedOnboarding = false
+        userData.skippedEarlyAuth = false
+        userData.hasActiveSubscription = false
         currentPhase = .welcome
         clearPersistedPhase()
-        print("🔄 Onboarding reset")
+        print("ðŸ”„ Onboarding reset")
     }
     
     // MARK: - Persistence
@@ -231,7 +238,7 @@ class OnboardingState: ObservableObject {
         if let savedRaw = UserDefaults.standard.object(forKey: phaseKey) as? Int,
            let savedPhase = OnboardingPhase(rawValue: savedRaw) {
             currentPhase = savedPhase
-            print("📍 Restored onboarding phase: \(savedPhase.displayName)")
+            print("ðŸ“ Restored onboarding phase: \(savedPhase.displayName)")
         }
     }
     
