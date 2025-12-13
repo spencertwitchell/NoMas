@@ -57,6 +57,9 @@
 		297AD1B82EED245F00CCE3BC /* MilestonesSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */; };
 		297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */; };
 		297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */; };
+		297AD1BF2EEE042600CCE3BC /* ResetTimerFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BE2EEE042600CCE3BC /* ResetTimerFlowView.swift */; };
+		297AD1C12EEE042D00CCE3BC /* ResetAnimationFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */; };
+		297AD1C32EEE043500CCE3BC /* WhatNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C22EEE043500CCE3BC /* WhatNextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +108,9 @@
 		297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestonesSheetView.swift; sourceTree = "<group>"; };
 		297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholderviews.swift; sourceTree = "<group>"; };
+		297AD1BE2EEE042600CCE3BC /* ResetTimerFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTimerFlowView.swift; sourceTree = "<group>"; };
+		297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetAnimationFlowView.swift; sourceTree = "<group>"; };
+		297AD1C22EEE043500CCE3BC /* WhatNextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatNextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +219,9 @@
 			children = (
 				297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */,
 				297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */,
+				297AD1BE2EEE042600CCE3BC /* ResetTimerFlowView.swift */,
+				297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */,
+				297AD1C22EEE043500CCE3BC /* WhatNextView.swift */,
 			);
 			path = Timer;
 			sourceTree = "<group>";
@@ -307,6 +316,7 @@
 				297AD1542EE7B14300CCE3BC /* OnboardingWelcomeView.swift in Sources */,
 				297AD1522EE7B02D00CCE3BC /* OnboardingFlowView.swift in Sources */,
 				297AD1582EE7B15A00CCE3BC /* QuizResultsView.swift in Sources */,
+				297AD1BF2EEE042600CCE3BC /* ResetTimerFlowView.swift in Sources */,
 				297AD19C2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift in Sources */,
 				297AD1702EE8AD4100CCE3BC /* CommitmentView.swift in Sources */,
 				297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */,
@@ -322,6 +332,7 @@
 				297AD1682EE7B51100CCE3BC /* ScienceView.swift in Sources */,
 				297AD1602EE7B34000CCE3BC /* SymptomsView.swift in Sources */,
 				297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */,
+				297AD1C32EEE043500CCE3BC /* WhatNextView.swift in Sources */,
 				297AD10F2EE76D7500CCE3BC /* DeviceManager.swift in Sources */,
 				297AD1782EE8ADB700CCE3BC /* OnboardingCompleteView.swift in Sources */,
 				297AD11C2EE76F0F00CCE3BC /* QuizStep.swift in Sources */,
@@ -329,6 +340,7 @@
 				297AD16A2EE7B51700CCE3BC /* BenefitsView.swift in Sources */,
 				297AD11A2EE76EA700CCE3BC /* OnboardingPhase.swift in Sources */,
 				297AD1762EE8AD8A00CCE3BC /* AuthView.swift in Sources */,
+				297AD1C12EEE042D00CCE3BC /* ResetAnimationFlowView.swift in Sources */,
 				297AD1102EE76D7500CCE3BC /* Models.swift in Sources */,
 				297AD1112EE76D7500CCE3BC /* NoMasApp.swift in Sources */,
 				297AD1742EE8AD6F00CCE3BC /* PaywallView.swift in Sources */,

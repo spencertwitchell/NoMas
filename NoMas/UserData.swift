@@ -194,6 +194,34 @@ class UserData: ObservableObject {
     func recordRelapse() {
         timesRelapsed += 1
     }
+    
+    /// Reset the timer after a relapse
+    /// - Parameter resetDate: The date/time when the relapse occurred
+    func resetTimer(resetDate: Date) {
+        // 1. Save best streak before resetting
+        updateBestStreakIfNeeded()
+        
+        // 2. Update streak start date to the relapse date
+        streakStartDate = resetDate
+        
+        // 3. Increment relapse counter
+        recordRelapse()
+        
+        // 4. Reset milestone to bronze (day 0)
+        currentMilestone = .bronze
+        
+        // 5. Recalculate projected recovery date
+        // New date = resetDate + totalRecoveryDays
+        projectedRecoveryDate = Calendar.current.date(byAdding: .day, value: totalRecoveryDays, to: resetDate)
+        
+        // 6. Save to Supabase
+        saveProgressToSupabase()
+        
+        print("🔄 Timer reset to: \(resetDate)")
+        print("   New projected recovery: \(projectedRecoveryDate?.description ?? "nil")")
+        print("   Times relapsed: \(timesRelapsed)")
+        print("   Best streak preserved: \(bestStreak)")
+    }
 
     // MARK: - Score Calculation
     

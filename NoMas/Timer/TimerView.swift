@@ -86,7 +86,7 @@ struct TimerView: View {
             MightBreakFlowView()
         }
         .fullScreenCover(isPresented: $showingResetTimer) {
-            ResetTimerFlowView()
+            ResetTimerFlowView(selectedTab: $selectedTab)
         }
         .fullScreenCover(isPresented: $showingPanicButton) {
             PanicButtonFlowView()
