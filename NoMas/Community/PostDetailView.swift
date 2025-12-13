@@ -11,6 +11,7 @@ import Supabase
 struct PostDetailView: View {
     @State var post: Post
     var onUpvoteChanged: ((Int) -> Void)?
+    var onPostDeleted: (() -> Void)?
     @Environment(\.dismiss) var dismiss
     
     @State private var comments: [Comment] = []
@@ -22,6 +23,7 @@ struct PostDetailView: View {
     @State private var showingDeleteCommentAlert = false
     @State private var commentToDelete: Comment? = nil
     @State private var isUpvotingPost = false
+    @State private var selectedUserId: UUID? = nil
     
     private var userData: UserData { UserData.shared }
     
@@ -32,10 +34,37 @@ struct PostDetailView: View {
     var body: some View {
         ZStack {
             AppBackground()
-            
-            VStack(spacing: 0) {
-                // Post content
-                ScrollView {
+                
+                VStack(spacing: 0) {
+                    // Custom header
+                    HStack {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
+                        
+                        Spacer()
+                        
+                        Text("Post")
+                            .font(.titleSmall)
+                            .foregroundColor(.textPrimary)
+                        
+                        Spacer()
+                        
+                        // Invisible spacer to balance the back button
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.clear)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 16)
+                    .padding(.bottom, 12)
+                    
+                    // Post content
+                    ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         // Post card
                         VStack(alignment: .leading, spacing: 0) {
@@ -49,7 +78,9 @@ struct PostDetailView: View {
                                         size: 40
                                     )
                                 } else {
-                                    NavigationLink(destination: UserProfileView(userId: post.userId)) {
+                                    Button {
+                                        selectedUserId = post.userId
+                                    } label: {
                                         ProfilePictureView(
                                             userName: post.userName,
                                             profilePictureURL: post.profilePictureURL,
@@ -174,6 +205,9 @@ struct PostDetailView: View {
                                             onDelete: { commentToDeleteParam in
                                                 commentToDelete = commentToDeleteParam
                                                 showingDeleteCommentAlert = true
+                                            },
+                                            onProfileTap: { userId in
+                                                selectedUserId = userId
                                             }
                                         )
                                         .padding(.horizontal, 20)
@@ -253,15 +287,6 @@ struct PostDetailView: View {
                 }
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Post")
-                    .font(.titleSmall)
-                    .foregroundColor(.textPrimary)
-            }
-        }
         .alert("Delete Post", isPresented: $showingDeletePostAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
@@ -284,6 +309,9 @@ struct PostDetailView: View {
         } message: { _ in
             Text("Are you sure you want to delete this comment?")
         }
+        .fullScreenCover(item: $selectedUserId) { userId in
+            UserProfileView(userId: userId)
+        }
         .task {
             await loadComments()
         }
@@ -303,12 +331,12 @@ struct PostDetailView: View {
                 .rpc("increment_post_upvote", params: ["post_uuid": post.id.uuidString])
                 .execute()
             
-            print("✅ Upvoted post")
+            print("âœ… Upvoted post")
             isUpvotingPost = false
         } catch {
             post.upvoteCount -= 1
             onUpvoteChanged?(post.upvoteCount)
-            print("❌ Failed to upvote: \(error)")
+            print("âŒ Failed to upvote: \(error)")
             isUpvotingPost = false
         }
     }
@@ -330,9 +358,9 @@ struct PostDetailView: View {
                 ))
                 .execute()
             
-            print("✅ Reported post")
+            print("âœ… Reported post")
         } catch {
-            print("❌ Failed to report post: \(error)")
+            print("âŒ Failed to report post: \(error)")
         }
     }
     
@@ -347,10 +375,11 @@ struct PostDetailView: View {
                 .eq("id", value: post.id.uuidString)
                 .execute()
             
-            print("✅ Deleted post")
+            print("âœ… Deleted post")
+            onPostDeleted?()
             dismiss()
         } catch {
-            print("❌ Failed to delete post: \(error)")
+            print("âŒ Failed to delete post: \(error)")
         }
     }
     
@@ -369,10 +398,10 @@ struct PostDetailView: View {
                 .value
             
             comments = response.compactMap { $0.toComment() }
-            print("✅ Loaded \(comments.count) comments")
+            print("âœ… Loaded \(comments.count) comments")
             isLoadingComments = false
         } catch {
-            print("❌ Failed to load comments: \(error)")
+            print("âŒ Failed to load comments: \(error)")
             isLoadingComments = false
         }
     }
@@ -403,13 +432,13 @@ struct PostDetailView: View {
                 .insert(comment)
                 .execute()
             
-            print("✅ Comment submitted")
+            print("âœ… Comment submitted")
             newCommentText = ""
             replyingTo = nil
             await loadComments()
             isSubmittingComment = false
         } catch {
-            print("❌ Failed to submit comment: \(error)")
+            print("âŒ Failed to submit comment: \(error)")
             isSubmittingComment = false
         }
     }
@@ -425,10 +454,10 @@ struct PostDetailView: View {
                 .eq("id", value: comment.id.uuidString)
                 .execute()
             
-            print("✅ Deleted comment")
+            print("âœ… Deleted comment")
             await loadComments()
         } catch {
-            print("❌ Failed to delete comment: \(error)")
+            print("âŒ Failed to delete comment: \(error)")
         }
     }
 }
@@ -440,6 +469,7 @@ struct CommentView: View {
     let allComments: [Comment]
     let onReply: (Comment) -> Void
     let onDelete: (Comment) -> Void
+    let onProfileTap: (UUID) -> Void
     
     @State private var isUpvoting = false
     
@@ -461,7 +491,9 @@ struct CommentView: View {
                         size: 32
                     )
                 } else {
-                    NavigationLink(destination: UserProfileView(userId: comment.userId)) {
+                    Button {
+                        onProfileTap(comment.userId)
+                    } label: {
                         ProfilePictureView(
                             userName: comment.userName,
                             profilePictureURL: comment.profilePictureURL,
@@ -548,7 +580,8 @@ struct CommentView: View {
                             comment: reply,
                             allComments: allComments,
                             onReply: onReply,
-                            onDelete: onDelete
+                            onDelete: onDelete,
+                            onProfileTap: onProfileTap
                         )
                         .padding(.leading, 44)
                     }
@@ -569,11 +602,11 @@ struct CommentView: View {
                 .rpc("increment_comment_upvote", params: ["comment_uuid": comment.id.uuidString])
                 .execute()
             
-            print("✅ Upvoted comment")
+            print("âœ… Upvoted comment")
             isUpvoting = false
         } catch {
             comment.upvoteCount -= 1
-            print("❌ Failed to upvote comment: \(error)")
+            print("âŒ Failed to upvote comment: \(error)")
             isUpvoting = false
         }
     }
@@ -595,11 +628,17 @@ struct CommentView: View {
                 ))
                 .execute()
             
-            print("✅ Reported comment")
+            print("âœ… Reported comment")
         } catch {
-            print("❌ Failed to report comment: \(error)")
+            print("âŒ Failed to report comment: \(error)")
         }
     }
+}
+
+// MARK: - UUID Identifiable Extension
+
+extension UUID: @retroactive Identifiable {
+    public var id: UUID { self }
 }
 
 // MARK: - Preview

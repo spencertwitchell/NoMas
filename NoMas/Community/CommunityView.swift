@@ -15,6 +15,7 @@ struct CommunityView: View {
     @State private var showingCreatePost = false
     @State private var showingDeleteAlert = false
     @State private var postToDelete: Post?
+    @State private var selectedPost: Post?
     
     private var userData: UserData { UserData.shared }
     
@@ -30,135 +31,139 @@ struct CommunityView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // Background handled by MainView
-                
-                VStack(spacing: 0) {
-                    // Search bar
-                    HStack(spacing: 12) {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.textTertiary)
-                            .font(.system(size: 16))
-                        
-                        TextField("", text: $searchText)
-                            .placeholder(when: searchText.isEmpty) {
-                                Text("Search posts...")
-                                    .foregroundColor(.textTertiary)
-                            }
-                            .foregroundColor(.textPrimary)
-                            .font(.body)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 14)
-                    .background(Color.surfaceBackground)
-                    .cornerRadius(25)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
-                    .padding(.bottom, 16)
+        ZStack {
+            // Background handled by MainView
+            
+            VStack(spacing: 0) {
+                // Search bar
+                HStack(spacing: 12) {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.textTertiary)
+                        .font(.system(size: 16))
                     
-                    // Posts feed
-                    if isLoading {
-                        Spacer()
-                        ProgressView()
-                            .tint(.textPrimary)
-                        Spacer()
-                    } else if filteredPosts.isEmpty {
-                        Spacer()
-                        VStack(spacing: 12) {
-                            Image(systemName: "person.3.fill")
-                                .font(.system(size: 48))
+                    TextField("", text: $searchText)
+                        .placeholder(when: searchText.isEmpty) {
+                            Text("Search posts...")
                                 .foregroundColor(.textTertiary)
-                            Text(searchText.isEmpty ? "No posts yet" : "No results found")
-                                .foregroundColor(.textSecondary)
-                                .font(.bodyLarge)
-                            if searchText.isEmpty {
-                                Text("Be the first to share your journey")
-                                    .foregroundColor(.textTertiary)
-                                    .font(.bodySmall)
-                            }
                         }
-                        Spacer()
-                    } else {
-                        ScrollView {
-                            LazyVStack(spacing: 16) {
-                                ForEach(Array(filteredPosts.enumerated()), id: \.element.id) { _, post in
-                                    if let index = posts.firstIndex(where: { $0.id == post.id }) {
-                                        let onUpvoteChanged: (Int) -> Void = { newCount in
-                                            posts[index].upvoteCount = newCount
-                                        }
-                                        
-                                        NavigationLink(
-                                            destination: PostDetailView(
-                                                post: posts[index],
-                                                onUpvoteChanged: onUpvoteChanged
-                                            )
-                                        ) {
-                                            PostCardView(
-                                                post: $posts[index],
-                                                onDelete: {
-                                                    postToDelete = posts[index]
-                                                    showingDeleteAlert = true
-                                                },
-                                                onRefresh: {
-                                                    Task { await loadPosts() }
-                                                }
-                                            )
-                                        }
-                                        .buttonStyle(PlainButtonStyle())
+                        .foregroundColor(.textPrimary)
+                        .font(.body)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
+                .background(Color.surfaceBackground)
+                .cornerRadius(25)
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+                .padding(.bottom, 16)
+                
+                // Posts feed
+                if isLoading {
+                    Spacer()
+                    ProgressView()
+                        .tint(.textPrimary)
+                    Spacer()
+                } else if filteredPosts.isEmpty {
+                    Spacer()
+                    VStack(spacing: 12) {
+                        Image(systemName: "person.3.fill")
+                            .font(.system(size: 48))
+                            .foregroundColor(.textTertiary)
+                        Text(searchText.isEmpty ? "No posts yet" : "No results found")
+                            .foregroundColor(.textSecondary)
+                            .font(.bodyLarge)
+                        if searchText.isEmpty {
+                            Text("Be the first to share your journey")
+                                .foregroundColor(.textTertiary)
+                                .font(.bodySmall)
+                        }
+                    }
+                    Spacer()
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 16) {
+                            ForEach(Array(filteredPosts.enumerated()), id: \.element.id) { _, post in
+                                if let index = posts.firstIndex(where: { $0.id == post.id }) {
+                                    Button {
+                                        selectedPost = posts[index]
+                                    } label: {
+                                        PostCardView(
+                                            post: $posts[index],
+                                            onDelete: {
+                                                postToDelete = posts[index]
+                                                showingDeleteAlert = true
+                                            },
+                                            onRefresh: {
+                                                Task { await loadPosts() }
+                                            }
+                                        )
                                     }
+                                    .buttonStyle(PlainButtonStyle())
                                 }
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.bottom, 100)
                         }
-                        .refreshable {
-                            await loadPosts()
-                        }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 100)
                     }
-                }
-                
-                // Floating action button
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button {
-                            showingCreatePost = true
-                        } label: {
-                            ZStack {
-                                Circle()
-                                    .fill(LinearGradient.accent)
-                                    .frame(width: 60, height: 60)
-                                    .shadow(color: Color.accentGradientStart.opacity(0.4), radius: 8, y: 4)
-                                
-                                Image(systemName: "plus")
-                                    .font(.system(size: 24, weight: .semibold))
-                                    .foregroundColor(.textPrimary)
-                            }
-                        }
-                        .padding(.trailing, 20)
-                        .padding(.bottom, 20)
-                    }
-                }
-            }
-            .navigationBarHidden(true)
-            .sheet(isPresented: $showingCreatePost) {
-                CreatePostView(onPostCreated: {
-                    Task {
+                    .refreshable {
                         await loadPosts()
                     }
-                })
-            }
-            .alert("Delete Post", isPresented: $showingDeleteAlert, presenting: postToDelete) { post in
-                Button("Cancel", role: .cancel) { }
-                Button("Delete", role: .destructive) {
-                    Task {
-                        await deletePost(post)
-                    }
                 }
-            } message: { _ in
-                Text("Are you sure you want to delete this post? This action cannot be undone.")
+            }
+            
+            // Floating action button
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button {
+                        showingCreatePost = true
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(LinearGradient.accent)
+                                .frame(width: 60, height: 60)
+                                .shadow(color: Color.accentGradientStart.opacity(0.4), radius: 8, y: 4)
+                            
+                            Image(systemName: "plus")
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundColor(.textPrimary)
+                        }
+                    }
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 20)
+                }
+            }
+        }
+        .sheet(isPresented: $showingCreatePost) {
+            CreatePostView(onPostCreated: {
+                Task {
+                    await loadPosts()
+                }
+            })
+        }
+        .alert("Delete Post", isPresented: $showingDeleteAlert, presenting: postToDelete) { post in
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                Task {
+                    await deletePost(post)
+                }
+            }
+        } message: { _ in
+            Text("Are you sure you want to delete this post? This action cannot be undone.")
+        }
+        .fullScreenCover(item: $selectedPost) { post in
+            if let index = posts.firstIndex(where: { $0.id == post.id }) {
+                PostDetailView(
+                    post: posts[index],
+                    onUpvoteChanged: { newCount in
+                        posts[index].upvoteCount = newCount
+                    },
+                    onPostDeleted: {
+                        selectedPost = nil
+                        Task { await loadPosts() }
+                    }
+                )
             }
         }
         .task {
@@ -172,7 +177,7 @@ struct CommunityView: View {
         isLoading = true
         
         do {
-            print("🔵 Loading posts from Supabase...")
+            print("ðŸ”µ Loading posts from Supabase...")
             
             let response: [PostResponse] = try await supabase
                 .from("posts")
@@ -181,20 +186,20 @@ struct CommunityView: View {
                 .execute()
                 .value
             
-            print("🔵 Raw response count: \(response.count)")
+            print("ðŸ”µ Raw response count: \(response.count)")
             
             posts = response.compactMap { postResponse in
                 let post = postResponse.toPost()
                 if post == nil {
-                    print("❌ Failed to convert post: \(postResponse.id)")
+                    print("âŒ Failed to convert post: \(postResponse.id)")
                 }
                 return post
             }
             
-            print("✅ Successfully loaded \(posts.count) posts")
+            print("âœ… Successfully loaded \(posts.count) posts")
             isLoading = false
         } catch {
-            print("❌ Failed to load posts: \(error)")
+            print("âŒ Failed to load posts: \(error)")
             isLoading = false
         }
     }
@@ -210,10 +215,10 @@ struct CommunityView: View {
                 .eq("id", value: post.id.uuidString)
                 .execute()
             
-            print("✅ Deleted post")
+            print("âœ… Deleted post")
             await loadPosts()
         } catch {
-            print("❌ Failed to delete post: \(error)")
+            print("âŒ Failed to delete post: \(error)")
         }
     }
 }
@@ -223,6 +228,7 @@ struct CommunityView: View {
 struct PostCardView: View {
     @Binding var post: Post
     @State private var isUpvoting = false
+    @State private var showingUserProfile = false
     let onDelete: () -> Void
     let onRefresh: () -> Void
     
@@ -232,7 +238,7 @@ struct PostCardView: View {
         VStack(alignment: .leading, spacing: 0) {
             // Header with user info
             HStack(spacing: 12) {
-                // Profile picture - navigates to user profile if public
+                // Profile picture - opens user profile if public
                 if post.isAnonymous {
                     ProfilePictureView(
                         userName: post.userName,
@@ -241,7 +247,9 @@ struct PostCardView: View {
                         size: 40
                     )
                 } else {
-                    NavigationLink(destination: UserProfileView(userId: post.userId)) {
+                    Button {
+                        showingUserProfile = true
+                    } label: {
                         ProfilePictureView(
                             userName: post.userName,
                             profilePictureURL: post.profilePictureURL,
@@ -334,6 +342,9 @@ struct PostCardView: View {
         }
         .background(LinearGradient.accent)
         .cornerRadius(16)
+        .fullScreenCover(isPresented: $showingUserProfile) {
+            UserProfileView(userId: post.userId)
+        }
     }
     
     private func upvotePost() async {
@@ -348,11 +359,11 @@ struct PostCardView: View {
                 .rpc("increment_post_upvote", params: ["post_uuid": post.id.uuidString])
                 .execute()
             
-            print("✅ Upvoted post - new count: \(post.upvoteCount)")
+            print("âœ… Upvoted post - new count: \(post.upvoteCount)")
             isUpvoting = false
         } catch {
             post.upvoteCount -= 1
-            print("❌ Failed to upvote: \(error)")
+            print("âŒ Failed to upvote: \(error)")
             isUpvoting = false
         }
     }
@@ -374,12 +385,12 @@ struct PostCardView: View {
                 ))
                 .execute()
             
-            print("✅ Reported post")
+            print("âœ… Reported post")
         } catch {
             if error.localizedDescription.contains("duplicate") || error.localizedDescription.contains("unique") {
-                print("⚠️ You've already reported this post")
+                print("âš ï¸ You've already reported this post")
             } else {
-                print("❌ Failed to report post: \(error)")
+                print("âŒ Failed to report post: \(error)")
             }
         }
     }

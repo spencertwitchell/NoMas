@@ -14,15 +14,46 @@ struct UserProfileView: View {
     @State private var profile: CommunityUserProfile? = nil
     @State private var userPosts: [Post] = []
     @State private var isLoading = true
+    @State private var selectedPost: Post? = nil
     
     var body: some View {
         ZStack {
             AppBackground()
             
-            if isLoading {
-                ProgressView()
-                    .tint(.textPrimary)
-            } else if let profile = profile {
+            VStack(spacing: 0) {
+                // Custom header
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.white)
+                    }
+                    
+                    Spacer()
+                    
+                    Text("Profile")
+                        .font(.titleSmall)
+                        .foregroundColor(.textPrimary)
+                    
+                    Spacer()
+                    
+                    // Invisible spacer to balance the back button
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.clear)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+                .padding(.bottom, 12)
+                
+                if isLoading {
+                    Spacer()
+                    ProgressView()
+                        .tint(.textPrimary)
+                    Spacer()
+                } else if let profile = profile {
                 ScrollView {
                     VStack(spacing: 24) {
                         // Profile Card
@@ -54,15 +85,12 @@ struct UserProfileView: View {
                             } else {
                                 VStack(spacing: 16) {
                                     ForEach(Array(userPosts.enumerated()), id: \.element.id) { index, post in
-                                        let onUpvoteChanged: (Int) -> Void = { newCount in
-                                            userPosts[index].upvoteCount = newCount
-                                        }
-                                        NavigationLink(destination: PostDetailView(
-                                            post: userPosts[index],
-                                            onUpvoteChanged: onUpvoteChanged
-                                        )) {
+                                        Button {
+                                            selectedPost = userPosts[index]
+                                        } label: {
                                             UserPostCardView(post: $userPosts[index])
                                         }
+                                        .buttonStyle(PlainButtonStyle())
                                     }
                                 }
                                 .padding(.horizontal, 20)
@@ -72,24 +100,28 @@ struct UserProfileView: View {
                     .padding(.top, 20)
                     .padding(.bottom, 40)
                 }
-            } else {
-                VStack(spacing: 16) {
-                    Image(systemName: "person.slash")
-                        .font(.system(size: 48))
-                        .foregroundColor(.textTertiary)
-                    Text("Profile not found or private")
-                        .foregroundColor(.textSecondary)
-                        .font(.body)
+                } else {
+                    Spacer()
+                    VStack(spacing: 16) {
+                        Image(systemName: "person.slash")
+                            .font(.system(size: 48))
+                            .foregroundColor(.textTertiary)
+                        Text("Profile not found or private")
+                            .foregroundColor(.textSecondary)
+                            .font(.body)
+                    }
+                    Spacer()
                 }
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Profile")
-                    .font(.titleSmall)
-                    .foregroundColor(.textPrimary)
+        .fullScreenCover(item: $selectedPost) { post in
+            if let index = userPosts.firstIndex(where: { $0.id == post.id }) {
+                PostDetailView(
+                    post: userPosts[index],
+                    onUpvoteChanged: { newCount in
+                        userPosts[index].upvoteCount = newCount
+                    }
+                )
             }
         }
         .task {
@@ -118,14 +150,14 @@ struct UserProfileView: View {
                 .value
             
             guard let profileData = profileResponse.first else {
-                print("❌ Profile not found")
+                print("âŒ Profile not found")
                 isLoading = false
                 return
             }
             
             // Only show profile if it's public
             guard profileData.is_profile_public == true else {
-                print("❌ Profile is private")
+                print("âŒ Profile is private")
                 isLoading = false
                 return
             }
@@ -149,10 +181,10 @@ struct UserProfileView: View {
             
             userPosts = postsResponse.compactMap { $0.toPost() }
             
-            print("✅ Loaded profile and \(userPosts.count) posts")
+            print("âœ… Loaded profile and \(userPosts.count) posts")
             isLoading = false
         } catch {
-            print("❌ Failed to load profile: \(error)")
+            print("âŒ Failed to load profile: \(error)")
             isLoading = false
         }
     }
@@ -271,7 +303,5 @@ struct UserPostCardView: View {
 // MARK: - Preview
 
 #Preview {
-    NavigationStack {
-        UserProfileView(userId: UUID())
-    }
+    UserProfileView(userId: UUID())
 }
