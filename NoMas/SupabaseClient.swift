@@ -172,6 +172,8 @@ struct ProgressUpdate: Encodable {
     var currentMilestone: String?
     var projectedRecoveryDate: String?
     var totalRecoveryDays: Int?
+    var bestStreak: Int?
+    var timesRelapsed: Int?
     var subscriptionStatus: Bool?
     
     enum CodingKeys: String, CodingKey {
@@ -181,6 +183,8 @@ struct ProgressUpdate: Encodable {
         case currentMilestone = "current_milestone"
         case projectedRecoveryDate = "projected_recovery_date"
         case totalRecoveryDays = "total_recovery_days"
+        case bestStreak = "best_streak"
+        case timesRelapsed = "times_relapsed"
         case subscriptionStatus = "subscription_status"
     }
 }
@@ -407,6 +411,12 @@ class DatabaseService {
         if let totalRecoveryDays = progress.totalRecoveryDays {
             update.totalRecoveryDays = totalRecoveryDays
         }
+        if let bestStreak = progress.bestStreak {
+            update.bestStreak = bestStreak
+        }
+        if let timesRelapsed = progress.timesRelapsed {
+            update.timesRelapsed = timesRelapsed
+        }
         if let subscriptionStatus = progress.subscriptionStatus {
             update.subscriptionStatus = subscriptionStatus
         }
@@ -472,5 +482,7 @@ struct ProgressInput {
     var currentMilestone: Milestone?
     var projectedRecoveryDate: Date?
     var totalRecoveryDays: Int?
+    var bestStreak: Int?
+    var timesRelapsed: Int?
     var subscriptionStatus: Bool?
 }

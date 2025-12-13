@@ -134,6 +134,14 @@ class UserData: ObservableObject {
         didSet { saveProgressToSupabase() }
     }
     
+    @Published var bestStreak: Int = 0 {
+        didSet { saveProgressToSupabase() }
+    }
+    
+    @Published var timesRelapsed: Int = 0 {
+        didSet { saveProgressToSupabase() }
+    }
+    
     @Published var subscriptionStatus: Bool = false
     
     // MARK: - Loading State
@@ -170,6 +178,23 @@ class UserData: ObservableObject {
         Calendar.current.dateComponents([.day], from: appJoinDate, to: Date()).day ?? 0
     }
     
+    /// Effective best streak - max of stored best and current streak (for real-time display)
+    var effectiveBestStreak: Int {
+        max(bestStreak, daysSinceRelapse)
+    }
+    
+    /// Update best streak if current streak exceeds it (call periodically)
+    func updateBestStreakIfNeeded() {
+        if daysSinceRelapse > bestStreak {
+            bestStreak = daysSinceRelapse
+        }
+    }
+    
+    /// Record a relapse - increments counter and can be called when resetting timer
+    func recordRelapse() {
+        timesRelapsed += 1
+    }
+
     // MARK: - Score Calculation
     
     func calculateDependencyScore() -> Double {
@@ -321,6 +346,8 @@ class UserData: ObservableObject {
             currentMilestone = progress.currentMilestone.flatMap { Milestone(rawValue: $0) } ?? .bronze
             projectedRecoveryDate = progress.projectedRecoveryDate
             totalRecoveryDays = progress.totalRecoveryDays ?? 90
+            bestStreak = progress.bestStreak ?? 0
+            timesRelapsed = progress.timesRelapsed ?? 0
             subscriptionStatus = progress.subscriptionStatus ?? false
         }
         
@@ -399,6 +426,8 @@ class UserData: ObservableObject {
                 currentMilestone: currentMilestone,
                 projectedRecoveryDate: projectedRecoveryDate,
                 totalRecoveryDays: totalRecoveryDays,
+                bestStreak: bestStreak,
+                timesRelapsed: timesRelapsed,
                 subscriptionStatus: subscriptionStatus
             )
             
@@ -442,6 +471,8 @@ class UserData: ObservableObject {
         defaults.set(streakStartDate, forKey: "streakStartDate")
         defaults.set(currentMilestone.rawValue, forKey: "currentMilestone")
         defaults.set(totalRecoveryDays, forKey: "totalRecoveryDays")
+        defaults.set(bestStreak, forKey: "bestStreak")
+        defaults.set(timesRelapsed, forKey: "timesRelapsed")
         defaults.set(subscriptionStatus, forKey: "subscriptionStatus")
     }
     
@@ -470,6 +501,8 @@ class UserData: ObservableObject {
         streakStartDate = defaults.object(forKey: "streakStartDate") as? Date ?? Date()
         currentMilestone = defaults.string(forKey: "currentMilestone").flatMap { Milestone(rawValue: $0) } ?? .bronze
         totalRecoveryDays = defaults.object(forKey: "totalRecoveryDays") as? Int ?? 90
+        bestStreak = defaults.integer(forKey: "bestStreak")
+        timesRelapsed = defaults.integer(forKey: "timesRelapsed")
         subscriptionStatus = defaults.bool(forKey: "subscriptionStatus")
     }
     
@@ -503,6 +536,8 @@ class UserData: ObservableObject {
         currentMilestone = .bronze
         projectedRecoveryDate = nil
         totalRecoveryDays = 90
+        bestStreak = 0
+        timesRelapsed = 0
         subscriptionStatus = false
         supabaseUserId = nil
         
@@ -564,6 +599,8 @@ class UserData: ObservableObject {
         currentMilestone = .bronze
         projectedRecoveryDate = nil
         totalRecoveryDays = 90
+        bestStreak = 0
+        timesRelapsed = 0
         subscriptionStatus = false
         supabaseUserId = nil
         

@@ -55,6 +55,8 @@
 		297AD19C2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD19B2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift */; };
 		297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */; };
 		297AD1B82EED245F00CCE3BC /* MilestonesSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */; };
+		297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */; };
+		297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +103,8 @@
 		297AD19B2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureUploader.swift; sourceTree = "<group>"; };
 		297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestonesSheetView.swift; sourceTree = "<group>"; };
+		297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholderviews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +164,7 @@
 				297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */,
 				297AD1982EEBB7C800CCE3BC /* Settings Profile */,
 				297AD1092EE76D7500CCE3BC /* Info.plist */,
+				297AD1B92EED2CB100CCE3BC /* Timer */,
 				297AD10A2EE76D7500CCE3BC /* Models.swift */,
 				297AD10C2EE76D7500CCE3BC /* SupabaseClient.swift */,
 				297AD1082EE76D7500CCE3BC /* DeviceManager.swift */,
@@ -201,6 +206,15 @@
 				297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */,
 			);
 			path = "Settings Profile";
+			sourceTree = "<group>";
+		};
+		297AD1B92EED2CB100CCE3BC /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */,
+				297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */,
+			);
+			path = Timer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,6 +321,7 @@
 				297AD16E2EE8AD3300CCE3BC /* ReviewsView.swift in Sources */,
 				297AD1682EE7B51100CCE3BC /* ScienceView.swift in Sources */,
 				297AD1602EE7B34000CCE3BC /* SymptomsView.swift in Sources */,
+				297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */,
 				297AD10F2EE76D7500CCE3BC /* DeviceManager.swift in Sources */,
 				297AD1782EE8ADB700CCE3BC /* OnboardingCompleteView.swift in Sources */,
 				297AD11C2EE76F0F00CCE3BC /* QuizStep.swift in Sources */,
@@ -322,6 +337,7 @@
 				297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */,
 				297AD19A2EEBB7D700CCE3BC /* ProfilePictureView.swift in Sources */,
 				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
+				297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */,
 				297AD1642EE7B36100CCE3BC /* TransitionView.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
 				297AD1222EE781C300CCE3BC /* OnboardingQuizFlow.swift in Sources */,

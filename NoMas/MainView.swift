@@ -93,9 +93,10 @@ struct MainHeaderView: View {
                         showingMilestones = true
                     }) {
                         HStack(spacing: 6) {
+                            // Gradient flame icon
                             Image(systemName: "flame.fill")
                                 .font(.system(size: 16))
-                                .foregroundColor(userData.currentMilestone.color)
+                                .foregroundStyle(userData.currentMilestone.gradient)
                             
                             Text("\(userData.daysSinceRelapse)")
                                 .font(.system(size: 14, weight: .semibold))
@@ -217,138 +218,8 @@ struct TabBarButton: View {
     }
 }
 
-// MARK: - Placeholder Tab Views
-
-struct TimerView: View {
-    @Binding var selectedTab: Int
-    @StateObject private var userData = UserData.shared
-    
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 32) {
-                Spacer()
-                    .frame(height: 40)
-                
-                // Streak Circle
-                ZStack {
-                    // Outer glow
-                    Circle()
-                        .fill(
-                            RadialGradient(
-                                gradient: Gradient(colors: [
-                                    userData.currentMilestone.color.opacity(0.3),
-                                    userData.currentMilestone.color.opacity(0)
-                                ]),
-                                center: .center,
-                                startRadius: 80,
-                                endRadius: 160
-                            )
-                        )
-                        .frame(width: 320, height: 320)
-                    
-                    // Progress ring background
-                    Circle()
-                        .stroke(Color.surfaceBackground, lineWidth: 12)
-                        .frame(width: 220, height: 220)
-                    
-                    // Progress ring
-                    Circle()
-                        .trim(from: 0, to: progressToNextMilestone)
-                        .stroke(
-                            LinearGradient.accent,
-                            style: StrokeStyle(lineWidth: 12, lineCap: .round)
-                        )
-                        .frame(width: 220, height: 220)
-                        .rotationEffect(.degrees(-90))
-                    
-                    // Center content
-                    VStack(spacing: 8) {
-                        Image(systemName: "flame.fill")
-                            .font(.system(size: 40))
-                            .foregroundColor(userData.currentMilestone.color)
-                        
-                        Text("\(userData.daysSinceRelapse)")
-                            .font(.system(size: 56, weight: .bold))
-                            .foregroundColor(.textPrimary)
-                        
-                        Text(userData.daysSinceRelapse == 1 ? "Day Clean" : "Days Clean")
-                            .font(.titleSmall)
-                            .foregroundColor(.textSecondary)
-                    }
-                }
-                
-                // Milestone info
-                VStack(spacing: 8) {
-                    Text(userData.currentMilestone.title)
-                        .font(.titleMedium)
-                        .foregroundColor(.textPrimary)
-                    
-                    if let next = userData.currentMilestone.next {
-                        Text("\(next.daysRequired - userData.daysSinceRelapse) days until \(next.displayName)")
-                            .font(.bodySmall)
-                            .foregroundColor(.textSecondary)
-                    } else {
-                        Text("You've reached the final milestone!")
-                            .font(.bodySmall)
-                            .foregroundColor(.accentGradientStart)
-                    }
-                }
-                
-                Spacer()
-                
-                // Quick actions
-                HStack(spacing: 16) {
-                    QuickActionButton(
-                        icon: "plus.circle.fill",
-                        label: "Log Urge",
-                        action: { }
-                    )
-                    
-                    QuickActionButton(
-                        icon: "arrow.counterclockwise",
-                        label: "Reset",
-                        action: { }
-                    )
-                }
-                .padding(.horizontal, 32)
-                
-                Spacer()
-                    .frame(height: 20)
-            }
-        }
-    }
-    
-    private var progressToNextMilestone: CGFloat {
-        guard let next = userData.currentMilestone.next else { return 1.0 }
-        let current = userData.currentMilestone.daysRequired
-        let progress = Double(userData.daysSinceRelapse - current) / Double(next.daysRequired - current)
-        return CGFloat(min(max(progress, 0), 1))
-    }
-}
-
-struct QuickActionButton: View {
-    let icon: String
-    let label: String
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(.system(size: 24))
-                    .foregroundColor(.accentGradientStart)
-                
-                Text(label)
-                    .font(.caption)
-                    .foregroundColor(.textSecondary)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(Color.surfaceBackground)
-            .cornerRadius(16)
-        }
-    }
-}
+// MARK: - Tab Views
+// NOTE: TimerView has been moved to TimerView.swift
 
 struct ChatView: View {
     var body: some View {

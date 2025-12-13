@@ -245,6 +245,36 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
         return .red
     }
     
+    /// Gradient for this milestone (used in milestone cards and header)
+    var gradient: LinearGradient {
+        switch self {
+        case .bronze: return LinearGradient.bronze
+        case .silver: return LinearGradient.silver
+        case .gold: return LinearGradient.gold
+        case .platinum: return LinearGradient.platinum
+        case .diamond: return LinearGradient.diamond
+        case .ruby: return LinearGradient.ruby
+        case .elite: return LinearGradient.elite
+        case .master: return LinearGradient.master
+        case .grandmaster: return LinearGradient.grandmaster
+        }
+    }
+    
+    /// Gradient colors array for this milestone (for custom gradient rendering)
+    var gradientColors: [Color] {
+        switch self {
+        case .bronze: return [Color.bronzeGradientStart, Color.bronzeGradientEnd]
+        case .silver: return [Color.silverGradientStart, Color.silverGradientEnd]
+        case .gold: return [Color.goldGradientStart, Color.goldGradientEnd]
+        case .platinum: return [Color.platinumGradientStart, Color.platinumGradientEnd]
+        case .diamond: return [Color.diamondGradientStart, Color.diamondGradientEnd]
+        case .ruby: return [Color.rubyGradientStart, Color.rubyGradientEnd]
+        case .elite: return [Color.eliteGradientStart, Color.eliteGradientEnd]
+        case .master: return [Color.masterGradientStart, Color.masterGradientEnd]
+        case .grandmaster: return [Color.grandmasterGradientStart, Color.grandmasterGradientMid, Color.grandmasterGradientEnd]
+        }
+    }
+    
     /// SF Symbol name for this milestone
     var iconName: String {
         return "flame.fill"
@@ -356,6 +386,8 @@ struct SupabaseUserProgress: Codable {
     let currentMilestone: String?
     let projectedRecoveryDate: Date?
     let totalRecoveryDays: Int?
+    let bestStreak: Int?
+    let timesRelapsed: Int?
     let subscriptionStatus: Bool?
     let subscriptionExpiry: Date?
     let createdAt: Date?
@@ -370,6 +402,8 @@ struct SupabaseUserProgress: Codable {
         case currentMilestone = "current_milestone"
         case projectedRecoveryDate = "projected_recovery_date"
         case totalRecoveryDays = "total_recovery_days"
+        case bestStreak = "best_streak"
+        case timesRelapsed = "times_relapsed"
         case subscriptionStatus = "subscription_status"
         case subscriptionExpiry = "subscription_expiry"
         case createdAt = "created_at"

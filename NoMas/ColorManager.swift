@@ -37,6 +37,45 @@ extension Color {
     /// Border color
     static let borderColor = Color.white.opacity(0.1)
     
+    // MARK: - Milestone Gradient Colors
+    
+    // Bronze
+    static let bronzeGradientStart = Color(hex: "ad6b2b")
+    static let bronzeGradientEnd = Color(hex: "ce8b4a")
+    
+    // Silver
+    static let silverGradientStart = Color(hex: "c0c0c0")
+    static let silverGradientEnd = Color(hex: "d4d4d4")
+    
+    // Gold
+    static let goldGradientStart = Color(hex: "e7c46a")
+    static let goldGradientEnd = Color(hex: "f2de9b")
+    
+    // Platinum
+    static let platinumGradientStart = Color(hex: "e5f2f5")
+    static let platinumGradientEnd = Color(hex: "cfdde2")
+    
+    // Diamond
+    static let diamondGradientStart = Color(hex: "46d8e5")
+    static let diamondGradientEnd = Color(hex: "84edf6")
+    
+    // Ruby
+    static let rubyGradientStart = Color(hex: "9b112e")
+    static let rubyGradientEnd = Color(hex: "a6324a")
+    
+    // Elite
+    static let eliteGradientStart = Color(hex: "178668")
+    static let eliteGradientEnd = Color(hex: "1fbf8f")
+    
+    // Master
+    static let masterGradientStart = Color(hex: "7f45e5")
+    static let masterGradientEnd = Color(hex: "a656f6")
+    
+    // Grandmaster (3 colors)
+    static let grandmasterGradientStart = Color(hex: "51eac4")
+    static let grandmasterGradientMid = Color(hex: "9bbcff")
+    static let grandmasterGradientEnd = Color(hex: "cdb7ff")
+
 }
 
 // MARK: - Hex Color Initializer
@@ -92,6 +131,62 @@ extension LinearGradient {
         gradient: Gradient(colors: [Color.accentGradientStart, Color.accentGradientEnd]),
         startPoint: .top,
         endPoint: .bottom
+    )
+    
+    // MARK: - Milestone Gradients (top-left to bottom-right)
+    
+    static let bronze = LinearGradient(
+        gradient: Gradient(colors: [Color.bronzeGradientStart, Color.bronzeGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    static let silver = LinearGradient(
+        gradient: Gradient(colors: [Color.silverGradientStart, Color.silverGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    static let gold = LinearGradient(
+        gradient: Gradient(colors: [Color.goldGradientStart, Color.goldGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    static let platinum = LinearGradient(
+        gradient: Gradient(colors: [Color.platinumGradientStart, Color.platinumGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    static let diamond = LinearGradient(
+        gradient: Gradient(colors: [Color.diamondGradientStart, Color.diamondGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    static let ruby = LinearGradient(
+        gradient: Gradient(colors: [Color.rubyGradientStart, Color.rubyGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    static let elite = LinearGradient(
+        gradient: Gradient(colors: [Color.eliteGradientStart, Color.eliteGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    static let master = LinearGradient(
+        gradient: Gradient(colors: [Color.masterGradientStart, Color.masterGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
+    static let grandmaster = LinearGradient(
+        gradient: Gradient(colors: [Color.grandmasterGradientStart, Color.grandmasterGradientMid, Color.grandmasterGradientEnd]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
     )
 }
 
