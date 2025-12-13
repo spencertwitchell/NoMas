@@ -54,6 +54,7 @@
 		297AD19A2EEBB7D700CCE3BC /* ProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1992EEBB7D700CCE3BC /* ProfilePictureView.swift */; };
 		297AD19C2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD19B2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift */; };
 		297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */; };
+		297AD1B82EED245F00CCE3BC /* MilestonesSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +100,7 @@
 		297AD1992EEBB7D700CCE3BC /* ProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureView.swift; sourceTree = "<group>"; };
 		297AD19B2EEBB7DE00CCE3BC /* ProfilePictureUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureUploader.swift; sourceTree = "<group>"; };
 		297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestonesSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 				297AD17B2EE8AF5200CCE3BC /* RootView.swift */,
 				297AD17E2EE8F6CA00CCE3BC /* SuperwallManager.swift */,
 				297AD1962EEB96A800CCE3BC /* MainView.swift */,
+				297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */,
 				297AD1982EEBB7C800CCE3BC /* Settings Profile */,
 				297AD1092EE76D7500CCE3BC /* Info.plist */,
 				297AD10A2EE76D7500CCE3BC /* Models.swift */,
@@ -323,6 +326,7 @@
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
 				297AD1222EE781C300CCE3BC /* OnboardingQuizFlow.swift in Sources */,
 				297AD1562EE7B14C00CCE3BC /* QuizCalculatingView.swift in Sources */,
+				297AD1B82EED245F00CCE3BC /* MilestonesSheetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

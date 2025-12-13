@@ -159,93 +159,90 @@ enum YesNoResponse: String, Codable, CaseIterable, Identifiable {
 // MARK: - Milestones (Streak Progress)
 
 enum Milestone: String, Codable, CaseIterable, Identifiable {
-    case red
-    case orange
-    case yellow
-    case green
-    case blue
-    case purple
-    case pink
-    case white
+    case bronze
+    case silver
+    case gold
+    case platinum
+    case diamond
+    case ruby
+    case elite
+    case master
+    case grandmaster
     
     var id: String { rawValue }
     
     /// Days required to reach this milestone
     var daysRequired: Int {
         switch self {
-        case .red: return 0
-        case .orange: return 7
-        case .yellow: return 14
-        case .green: return 30
-        case .blue: return 60
-        case .purple: return 90
-        case .pink: return 180
-        case .white: return 365
+        case .bronze: return 0
+        case .silver: return 3
+        case .gold: return 7
+        case .platinum: return 10
+        case .diamond: return 15
+        case .ruby: return 30
+        case .elite: return 45
+        case .master: return 60
+        case .grandmaster: return 90
         }
     }
     
     /// Display name for the milestone
     var displayName: String {
         switch self {
-        case .red: return "Day 1"
-        case .orange: return "Week 1"
-        case .yellow: return "Week 2"
-        case .green: return "Month 1"
-        case .blue: return "Month 2"
-        case .purple: return "Month 3"
-        case .pink: return "6 Months"
-        case .white: return "1 Year"
+        case .bronze: return "Bronze"
+        case .silver: return "Silver"
+        case .gold: return "Gold"
+        case .platinum: return "Platinum"
+        case .diamond: return "Diamond"
+        case .ruby: return "Ruby"
+        case .elite: return "Elite"
+        case .master: return "Master"
+        case .grandmaster: return "Grandmaster"
         }
     }
     
     /// Motivational title for the milestone
     var title: String {
         switch self {
-        case .red: return "The First Step"
-        case .orange: return "Building Momentum"
-        case .yellow: return "Finding Your Rhythm"
-        case .green: return "Gaining Strength"
-        case .blue: return "Breaking Free"
-        case .purple: return "New Habits Forming"
-        case .pink: return "Transformation"
-        case .white: return "Freedom"
+        case .bronze: return "The Journey Begins"
+        case .silver: return "Building Foundation"
+        case .gold: return "First Week Victory"
+        case .platinum: return "Growing Stronger"
+        case .diamond: return "Breaking Through"
+        case .ruby: return "One Month Milestone"
+        case .elite: return "Elite Status"
+        case .master: return "Master Level"
+        case .grandmaster: return "Grandmaster Achievement"
         }
     }
     
     /// Description of what this milestone represents
     var description: String {
         switch self {
-        case .red:
-            return "Every journey begins with a single step. You've made the decision to change â€” that takes courage."
-        case .orange:
-            return "One week of commitment. Your brain is already starting to rewire itself. The hardest part is behind you."
-        case .yellow:
-            return "Two weeks strong. You're proving to yourself that you have control. Keep building on this foundation."
-        case .green:
-            return "A full month. This is a major achievement. You're developing new patterns and breaking old ones."
-        case .blue:
-            return "Two months of freedom. The urges are weakening as new neural pathways strengthen."
-        case .purple:
-            return "90 days â€” a complete reset cycle. You've fundamentally changed your relationship with temptation."
-        case .pink:
-            return "Six months of growth. You're not just abstaining â€” you're thriving. This is who you are now."
-        case .white:
-            return "One year. You've achieved what many thought impossible. Your freedom is complete and self-sustaining."
+        case .bronze:
+            return "Every journey begins with a single step. You've made the commitment to change — that takes real courage."
+        case .silver:
+            return "Three days of dedication. Your brain is already beginning to recognize new patterns. Keep pushing forward."
+        case .gold:
+            return "One full week accomplished. You're proving that you have the strength to take control of your life."
+        case .platinum:
+            return "Ten days of progress. The initial challenges are behind you, and you're building real momentum now."
+        case .diamond:
+            return "Two weeks of commitment. Your resolve is hardening like a diamond — unbreakable and brilliant."
+        case .ruby:
+            return "A full month of recovery. This is a major achievement that shows your dedication to lasting change."
+        case .elite:
+            return "45 days of transformation. You've entered elite territory — few make it this far. Be proud."
+        case .master:
+            return "Two months of mastery. You've developed new habits and your brain is rewiring itself for success."
+        case .grandmaster:
+            return "90 days of freedom. You've achieved grandmaster status — a complete recovery cycle. You are transformed."
         }
     }
     
-    /// Color for this milestone
+    /// Color for this milestone (placeholder - will be replaced with Lottie animations)
     var color: Color {
-        switch self {
-        case .red: return .red
-        case .orange: return .orange
-        case .yellow: return .yellow
-        case .green: return .green
-        case .blue: return .blue
-        case .purple: return .purple
-        case .pink: return Color(red: 1.0, green: 0.4, blue: 0.7)
-        case .white: return .white
-        }
+        return .red
     }
     
     /// SF Symbol name for this milestone
@@ -256,7 +253,7 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
     /// Get milestone for a given day count
     static func forDays(_ days: Int) -> Milestone {
         let sorted = Milestone.allCases.sorted { $0.daysRequired > $1.daysRequired }
-        return sorted.first { days >= $0.daysRequired } ?? .red
+        return sorted.first { days >= $0.daysRequired } ?? .bronze
     }
     
     /// Next milestone after this one
@@ -274,6 +271,10 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
 struct QuizScoringConfig {
     static let baseScore: Double = 55.0
     static let maxScore: Double = 94.0
+    
+    // Recovery calculation
+    static let baseRecoveryDays: Double = 90.0
+    static let averageScore: Double = 70.0
     
     // Binary question weights
     static let escalationYesWeight: Double = 5.0
@@ -354,6 +355,7 @@ struct SupabaseUserProgress: Codable {
     let streakStartDate: Date?
     let currentMilestone: String?
     let projectedRecoveryDate: Date?
+    let totalRecoveryDays: Int?
     let subscriptionStatus: Bool?
     let subscriptionExpiry: Date?
     let createdAt: Date?
@@ -367,6 +369,7 @@ struct SupabaseUserProgress: Codable {
         case streakStartDate = "streak_start_date"
         case currentMilestone = "current_milestone"
         case projectedRecoveryDate = "projected_recovery_date"
+        case totalRecoveryDays = "total_recovery_days"
         case subscriptionStatus = "subscription_status"
         case subscriptionExpiry = "subscription_expiry"
         case createdAt = "created_at"

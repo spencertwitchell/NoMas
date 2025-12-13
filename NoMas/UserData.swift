@@ -124,11 +124,15 @@ class UserData: ObservableObject {
         didSet { saveProgressToSupabase() }
     }
     
-    @Published var currentMilestone: Milestone = .red {
+    @Published var currentMilestone: Milestone = .bronze {
         didSet { saveProgressToSupabase() }
     }
     
     @Published var projectedRecoveryDate: Date? = nil
+    
+    @Published var totalRecoveryDays: Int = 90 {
+        didSet { saveProgressToSupabase() }
+    }
     
     @Published var subscriptionStatus: Bool = false
     
@@ -220,6 +224,11 @@ class UserData: ObservableObject {
         appJoinDate = Date()
         streakStartDate = lastRelapseDate
         currentMilestone = Milestone.forDays(daysSinceRelapse)
+        
+        // Calculate total recovery days: ceil(90 * (score / 70))
+        totalRecoveryDays = calculateTotalRecoveryDays()
+        
+        // Calculate projected recovery date based on total days minus days already clean
         calculateProjectedRecoveryDate()
         
         // Save everything
@@ -227,11 +236,21 @@ class UserData: ObservableObject {
         saveProgressToSupabase()
     }
     
+    /// Calculate total recovery days based on dependency score
+    /// Formula: ceil(90 * (dependency_score / 70))
+    func calculateTotalRecoveryDays() -> Int {
+        let baseDays = QuizScoringConfig.baseRecoveryDays
+        let avgScore = QuizScoringConfig.averageScore
+        let result = baseDays * (dependencyScore / avgScore)
+        return Int(ceil(result))
+    }
+    
+    /// Calculate projected recovery date
+    /// Takes into account days already clean (from lastRelapseDate)
     func calculateProjectedRecoveryDate() {
-        // Estimate 90 days for recovery (can adjust based on score)
-        let baseDays = 90
-        let adjustedDays = Int(Double(baseDays) * (dependencyScore / 70.0))
-        projectedRecoveryDate = Calendar.current.date(byAdding: .day, value: adjustedDays, to: appJoinDate)
+        // Days remaining = totalRecoveryDays - daysSinceRelapse
+        let daysRemaining = max(totalRecoveryDays - daysSinceRelapse, 0)
+        projectedRecoveryDate = Calendar.current.date(byAdding: .day, value: daysRemaining, to: Date())
     }
     
     /// Update milestone based on current streak
@@ -260,9 +279,9 @@ class UserData: ObservableObject {
                 populateFromSupabase(user: allData.user, quiz: allData.quiz, progress: allData.progress)
             }
             
-            print("âœ… UserData initialized from Supabase")
+            print("Ã¢Å“â€¦ UserData initialized from Supabase")
         } catch {
-            print("âŒ Failed to initialize from Supabase: \(error)")
+            print("Ã¢ÂÅ’ Failed to initialize from Supabase: \(error)")
             loadError = error.localizedDescription
         }
         
@@ -299,8 +318,9 @@ class UserData: ObservableObject {
             hasCompletedOnboarding = progress.hasCompletedOnboarding ?? false
             appJoinDate = progress.appJoinDate ?? Date()
             streakStartDate = progress.streakStartDate ?? Date()
-            currentMilestone = progress.currentMilestone.flatMap { Milestone(rawValue: $0) } ?? .red
+            currentMilestone = progress.currentMilestone.flatMap { Milestone(rawValue: $0) } ?? .bronze
             projectedRecoveryDate = progress.projectedRecoveryDate
+            totalRecoveryDays = progress.totalRecoveryDays ?? 90
             subscriptionStatus = progress.subscriptionStatus ?? false
         }
         
@@ -327,9 +347,9 @@ class UserData: ObservableObject {
                     profilePictureUrl: profilePictureURL,
                     isProfilePublic: isProfilePublic
                 )
-                print("✅ User data saved to Supabase")
+                print("âœ… User data saved to Supabase")
             } catch {
-                print("❌ Failed to save user: \(error)")
+                print("âŒ Failed to save user: \(error)")
             }
         }
         
@@ -357,9 +377,9 @@ class UserData: ObservableObject {
             
             do {
                 try await database.saveQuizData(userId: userId, quizData: input)
-                print("âœ… Quiz data saved to Supabase")
+                print("Ã¢Å“â€¦ Quiz data saved to Supabase")
             } catch {
-                print("âŒ Failed to save quiz: \(error)")
+                print("Ã¢ÂÅ’ Failed to save quiz: \(error)")
             }
         }
         
@@ -378,14 +398,15 @@ class UserData: ObservableObject {
                 streakStartDate: streakStartDate,
                 currentMilestone: currentMilestone,
                 projectedRecoveryDate: projectedRecoveryDate,
+                totalRecoveryDays: totalRecoveryDays,
                 subscriptionStatus: subscriptionStatus
             )
             
             do {
                 try await database.updateProgress(userId: userId, progress: input)
-                print("âœ… Progress saved to Supabase")
+                print("Ã¢Å“â€¦ Progress saved to Supabase")
             } catch {
-                print("âŒ Failed to save progress: \(error)")
+                print("Ã¢ÂÅ’ Failed to save progress: \(error)")
             }
         }
         
@@ -420,6 +441,7 @@ class UserData: ObservableObject {
         defaults.set(appJoinDate, forKey: "appJoinDate")
         defaults.set(streakStartDate, forKey: "streakStartDate")
         defaults.set(currentMilestone.rawValue, forKey: "currentMilestone")
+        defaults.set(totalRecoveryDays, forKey: "totalRecoveryDays")
         defaults.set(subscriptionStatus, forKey: "subscriptionStatus")
     }
     
@@ -446,7 +468,8 @@ class UserData: ObservableObject {
         dependencyScore = defaults.double(forKey: "dependencyScore")
         appJoinDate = defaults.object(forKey: "appJoinDate") as? Date ?? Date()
         streakStartDate = defaults.object(forKey: "streakStartDate") as? Date ?? Date()
-        currentMilestone = defaults.string(forKey: "currentMilestone").flatMap { Milestone(rawValue: $0) } ?? .red
+        currentMilestone = defaults.string(forKey: "currentMilestone").flatMap { Milestone(rawValue: $0) } ?? .bronze
+        totalRecoveryDays = defaults.object(forKey: "totalRecoveryDays") as? Int ?? 90
         subscriptionStatus = defaults.bool(forKey: "subscriptionStatus")
     }
     
@@ -477,8 +500,9 @@ class UserData: ObservableObject {
         dependencyScore = 0.0
         appJoinDate = Date()
         streakStartDate = Date()
-        currentMilestone = .red
+        currentMilestone = .bronze
         projectedRecoveryDate = nil
+        totalRecoveryDays = 90
         subscriptionStatus = false
         supabaseUserId = nil
         
@@ -487,7 +511,7 @@ class UserData: ObservableObject {
         defaults.removePersistentDomain(forName: domain)
         defaults.synchronize()
         
-        print("🗑️ UserDefaults cleared")
+        print("ðŸ—‘ï¸ UserDefaults cleared")
     }
     #endif
     
@@ -497,22 +521,22 @@ class UserData: ObservableObject {
     /// Clears: UserDefaults, Keychain, Supabase session
     /// Available in all builds (hidden behind 7-tap activation in Settings)
     func nukeEverything() async {
-        print("☢️ NUKING EVERYTHING...")
+        print("â˜¢ï¸ NUKING EVERYTHING...")
         
         // 1. Sign out of Supabase (this clears Supabase's keychain tokens)
         await AuthManager.shared.signOut()
-        print("✅ Signed out of Supabase")
+        print("âœ… Signed out of Supabase")
         
         // 2. Delete ALL keychain items for this app
         clearAllKeychainItems()
-        print("✅ Keychain wiped")
+        print("âœ… Keychain wiped")
         
         // 3. Clear all UserDefaults
         if let bundleId = Bundle.main.bundleIdentifier {
             defaults.removePersistentDomain(forName: bundleId)
             defaults.synchronize()
         }
-        print("✅ UserDefaults wiped")
+        print("âœ… UserDefaults wiped")
         
         // 4. Reset in-memory state
         hasCompletedOnboarding = false
@@ -537,12 +561,13 @@ class UserData: ObservableObject {
         dependencyScore = 0.0
         appJoinDate = Date()
         streakStartDate = Date()
-        currentMilestone = .red
+        currentMilestone = .bronze
         projectedRecoveryDate = nil
+        totalRecoveryDays = 90
         subscriptionStatus = false
         supabaseUserId = nil
         
-        print("☢️ NUKE COMPLETE - Restart the app!")
+        print("â˜¢ï¸ NUKE COMPLETE - Restart the app!")
     }
     
     /// Deletes all keychain items for this app
@@ -563,7 +588,7 @@ class UserData: ObservableObject {
             } else if status == errSecItemNotFound {
                 // No items of this class - that's fine
             } else {
-                print("   ⚠️ Failed to delete keychain class \(secClass): \(status)")
+                print("   âš ï¸ Failed to delete keychain class \(secClass): \(status)")
             }
         }
     }

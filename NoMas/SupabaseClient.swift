@@ -171,6 +171,7 @@ struct ProgressUpdate: Encodable {
     var streakStartDate: String?
     var currentMilestone: String?
     var projectedRecoveryDate: String?
+    var totalRecoveryDays: Int?
     var subscriptionStatus: Bool?
     
     enum CodingKeys: String, CodingKey {
@@ -179,6 +180,7 @@ struct ProgressUpdate: Encodable {
         case streakStartDate = "streak_start_date"
         case currentMilestone = "current_milestone"
         case projectedRecoveryDate = "projected_recovery_date"
+        case totalRecoveryDays = "total_recovery_days"
         case subscriptionStatus = "subscription_status"
     }
 }
@@ -257,10 +259,10 @@ class DatabaseService {
                     .from("user_quiz_data")
                     .insert(QuizDataInsert(userId: userId.uuidString))
                     .execute()
-                print("âœ… Created missing quiz_data record")
+                print("Ã¢Å“â€¦ Created missing quiz_data record")
             }
         } catch {
-            print("âš ï¸ Failed to ensure quiz_data exists: \(error)")
+            print("Ã¢Å¡Â Ã¯Â¸Â Failed to ensure quiz_data exists: \(error)")
         }
         
         // Check and create progress if missing
@@ -277,10 +279,10 @@ class DatabaseService {
                     .from("user_progress")
                     .insert(ProgressInsert(userId: userId.uuidString))
                     .execute()
-                print("âœ… Created missing progress record")
+                print("Ã¢Å“â€¦ Created missing progress record")
             }
         } catch {
-            print("âš ï¸ Failed to ensure progress exists: \(error)")
+            print("Ã¢Å¡Â Ã¯Â¸Â Failed to ensure progress exists: \(error)")
         }
     }
     
@@ -402,6 +404,9 @@ class DatabaseService {
         if let projectedRecoveryDate = progress.projectedRecoveryDate {
             update.projectedRecoveryDate = dateFormatter.string(from: projectedRecoveryDate)
         }
+        if let totalRecoveryDays = progress.totalRecoveryDays {
+            update.totalRecoveryDays = totalRecoveryDays
+        }
         if let subscriptionStatus = progress.subscriptionStatus {
             update.subscriptionStatus = subscriptionStatus
         }
@@ -466,5 +471,6 @@ struct ProgressInput {
     var streakStartDate: Date?
     var currentMilestone: Milestone?
     var projectedRecoveryDate: Date?
+    var totalRecoveryDays: Int?
     var subscriptionStatus: Bool?
 }
