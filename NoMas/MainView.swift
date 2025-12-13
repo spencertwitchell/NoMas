@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Supabase
 
 // MARK: - Main View
 
@@ -218,8 +219,9 @@ struct TabBarButton: View {
     }
 }
 
-// MARK: - Tab Views
+// MARK: - Tab Views (Placeholders)
 // NOTE: TimerView has been moved to TimerView.swift
+// NOTE: CommunityView has been moved to CommunityView.swift
 
 struct ChatView: View {
     var body: some View {
@@ -269,37 +271,15 @@ struct LibraryView: View {
     }
 }
 
-struct CommunityView: View {
-    var body: some View {
-        VStack {
-            Spacer()
-            
-            VStack(spacing: 16) {
-                Image(systemName: "person.3.fill")
-                    .font(.system(size: 48))
-                    .foregroundColor(.accentGradientStart)
-                
-                Text("Community")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                
-                Text("Connect with others coming soon")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-            }
-            
-            Spacer()
-        }
-    }
-}
-
-// MARK: - Placeholder Sheet Views
+// MARK: - Profile View (with Your Posts)
 
 struct ProfileView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject private var userData = UserData.shared
     @StateObject private var authManager = AuthManager.shared
     @State private var showingSettings = false
+    @State private var userPosts: [Post] = []
+    @State private var isLoadingPosts = false
     
     var body: some View {
         NavigationStack {
@@ -334,14 +314,29 @@ struct ProfileView: View {
                             
                             // Instagram (if exists)
                             if let instagram = userData.instagramHandle, !instagram.isEmpty {
-                                HStack(spacing: 6) {
-                                    Image(systemName: "camera.fill")
-                                        .font(.caption)
-                                    Text("@\(instagram)")
-                                        .font(.bodySmall)
+                                Button {
+                                    if let url = URL(string: "https://instagram.com/\(instagram)") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                } label: {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "camera.fill")
+                                            .font(.caption)
+                                        Text("@\(instagram)")
+                                            .font(.bodySmall)
+                                    }
+                                    .foregroundColor(.accentGradientStart)
                                 }
-                                .foregroundColor(.accentGradientStart)
                             }
+                            
+                            // Privacy indicator
+                            HStack(spacing: 6) {
+                                Image(systemName: userData.isProfilePublic ? "eye" : "eye.slash")
+                                    .font(.system(size: 12))
+                                Text(userData.isProfilePublic ? "Public Profile" : "Private Profile")
+                                    .font(.captionSmall)
+                            }
+                            .foregroundColor(.textTertiary)
                         }
                         .padding(24)
                         .frame(maxWidth: .infinity)
@@ -366,6 +361,8 @@ struct ProfileView: View {
                             VStack(spacing: 12) {
                                 StatRow(label: "Days in App", value: "\(userData.daysInApp)")
                                 StatRow(label: "Current Streak", value: "\(userData.daysSinceRelapse) days")
+                                StatRow(label: "Best Streak", value: "\(userData.effectiveBestStreak) days")
+                                StatRow(label: "Times Relapsed", value: "\(userData.timesRelapsed)")
                                 StatRow(label: "Dependency Score", value: "\(Int(userData.dependencyScore))%")
                                 if let projectedDate = userData.projectedRecoveryDate {
                                     StatRow(label: "Projected Recovery", value: projectedDate.formatted(date: .abbreviated, time: .omitted))
@@ -376,6 +373,53 @@ struct ProfileView: View {
                         .background(Color.surfaceBackground)
                         .cornerRadius(16)
                         .padding(.horizontal, 20)
+                        
+                        // Your Posts Section
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Your Posts")
+                                .font(.titleSmall)
+                                .foregroundColor(.textPrimary)
+                                .padding(.horizontal, 20)
+                            
+                            if isLoadingPosts {
+                                HStack {
+                                    Spacer()
+                                    ProgressView()
+                                        .tint(.textPrimary)
+                                    Spacer()
+                                }
+                                .padding(.vertical, 20)
+                            } else if userPosts.isEmpty {
+                                VStack(spacing: 12) {
+                                    Image(systemName: "square.and.pencil")
+                                        .font(.system(size: 40))
+                                        .foregroundColor(.textTertiary)
+                                    Text("You haven't posted anything yet")
+                                        .foregroundColor(.textSecondary)
+                                        .font(.bodySmall)
+                                    Text("Share your journey in the Community tab")
+                                        .foregroundColor(.textTertiary)
+                                        .font(.captionSmall)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 30)
+                            } else {
+                                VStack(spacing: 16) {
+                                    ForEach(Array(userPosts.enumerated()), id: \.element.id) { index, post in
+                                        let onUpvoteChanged: (Int) -> Void = { newCount in
+                                            userPosts[index].upvoteCount = newCount
+                                        }
+                                        NavigationLink(destination: PostDetailView(
+                                            post: userPosts[index],
+                                            onUpvoteChanged: onUpvoteChanged
+                                        )) {
+                                            ProfilePostCardView(post: $userPosts[index])
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal, 20)
+                            }
+                        }
                         
                         Spacer()
                             .frame(height: 40)
@@ -414,11 +458,92 @@ struct ProfileView: View {
             .sheet(isPresented: $showingSettings) {
                 SettingsView()
             }
+            .task {
+                await loadUserPosts()
+            }
+        }
+    }
+    
+    private func loadUserPosts() async {
+        guard let userId = userData.supabaseUserId else {
+            print("❌ No user ID for loading posts")
+            return
+        }
+        
+        isLoadingPosts = true
+        
+        do {
+            let response: [PostResponse] = try await supabase
+                .from("posts")
+                .select("*, users(display_name, profile_picture_url, is_profile_public)")
+                .eq("user_id", value: userId.uuidString)
+                .order("created_at", ascending: false)
+                .execute()
+                .value
+            
+            userPosts = response.compactMap { $0.toPost() }
+            print("✅ Loaded \(userPosts.count) user posts")
+            isLoadingPosts = false
+        } catch {
+            print("❌ Failed to load user posts: \(error)")
+            isLoadingPosts = false
         }
     }
 }
 
-// MARK: - Stat Row
+// MARK: - Profile Post Card (for ProfileView)
+
+struct ProfilePostCardView: View {
+    @Binding var post: Post
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text(post.title)
+                    .foregroundColor(.textPrimary)
+                    .font(.titleSmall)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                
+                Spacer()
+                
+                VStack(spacing: 4) {
+                    Image(systemName: "arrowtriangle.up.circle.fill")
+                        .foregroundStyle(LinearGradient.accent)
+                        .font(.system(size: 20))
+                    
+                    Text("\(post.upvoteCount)")
+                        .foregroundColor(.textPrimary)
+                        .font(.captionSmall)
+                        .fontWeight(.semibold)
+                }
+            }
+            
+            Text(post.body)
+                .foregroundColor(.textPrimary.opacity(0.9))
+                .font(.bodySmall)
+                .lineLimit(3)
+                .multilineTextAlignment(.leading)
+            
+            HStack {
+                Text(post.timeAgo)
+                    .foregroundColor(.textSecondary)
+                    .font(.captionSmall)
+                
+                Spacer()
+                
+                Image(systemName: "arrow.right")
+                    .foregroundColor(.textSecondary)
+                    .font(.system(size: 14))
+            }
+        }
+        .padding(16)
+        .background(LinearGradient.accent)
+        .cornerRadius(12)
+    }
+}
+
+// MARK: - Stat Components
 
 struct StatRow: View {
     let label: String

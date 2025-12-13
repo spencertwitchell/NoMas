@@ -60,6 +60,11 @@
 		297AD1BF2EEE042600CCE3BC /* ResetTimerFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BE2EEE042600CCE3BC /* ResetTimerFlowView.swift */; };
 		297AD1C12EEE042D00CCE3BC /* ResetAnimationFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */; };
 		297AD1C32EEE043500CCE3BC /* WhatNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C22EEE043500CCE3BC /* WhatNextView.swift */; };
+		297AD1C62EEE0EE700CCE3BC /* Communitymodels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C52EEE0EE700CCE3BC /* Communitymodels.swift */; };
+		297AD1C82EEE0EF100CCE3BC /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C72EEE0EF100CCE3BC /* CommunityView.swift */; };
+		297AD1CA2EEE0EF900CCE3BC /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C92EEE0EF900CCE3BC /* PostDetailView.swift */; };
+		297AD1CC2EEE0F0000CCE3BC /* CreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1CB2EEE0F0000CCE3BC /* CreatePostView.swift */; };
+		297AD1CE2EEE0F0900CCE3BC /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1CD2EEE0F0900CCE3BC /* UserProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,6 +116,11 @@
 		297AD1BE2EEE042600CCE3BC /* ResetTimerFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTimerFlowView.swift; sourceTree = "<group>"; };
 		297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetAnimationFlowView.swift; sourceTree = "<group>"; };
 		297AD1C22EEE043500CCE3BC /* WhatNextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatNextView.swift; sourceTree = "<group>"; };
+		297AD1C52EEE0EE700CCE3BC /* Communitymodels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Communitymodels.swift; sourceTree = "<group>"; };
+		297AD1C72EEE0EF100CCE3BC /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
+		297AD1C92EEE0EF900CCE3BC /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
+		297AD1CB2EEE0F0000CCE3BC /* CreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostView.swift; sourceTree = "<group>"; };
+		297AD1CD2EEE0F0900CCE3BC /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +181,7 @@
 				297AD1982EEBB7C800CCE3BC /* Settings Profile */,
 				297AD1092EE76D7500CCE3BC /* Info.plist */,
 				297AD1B92EED2CB100CCE3BC /* Timer */,
+				297AD1C42EEE0E9700CCE3BC /* Community */,
 				297AD10A2EE76D7500CCE3BC /* Models.swift */,
 				297AD10C2EE76D7500CCE3BC /* SupabaseClient.swift */,
 				297AD1082EE76D7500CCE3BC /* DeviceManager.swift */,
@@ -224,6 +235,18 @@
 				297AD1C22EEE043500CCE3BC /* WhatNextView.swift */,
 			);
 			path = Timer;
+			sourceTree = "<group>";
+		};
+		297AD1C42EEE0E9700CCE3BC /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				297AD1C52EEE0EE700CCE3BC /* Communitymodels.swift */,
+				297AD1C72EEE0EF100CCE3BC /* CommunityView.swift */,
+				297AD1C92EEE0EF900CCE3BC /* PostDetailView.swift */,
+				297AD1CB2EEE0F0000CCE3BC /* CreatePostView.swift */,
+				297AD1CD2EEE0F0900CCE3BC /* UserProfileView.swift */,
+			);
+			path = Community;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -321,6 +344,7 @@
 				297AD1702EE8AD4100CCE3BC /* CommitmentView.swift in Sources */,
 				297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */,
 				297AD1162EE76D8000CCE3BC /* UserData.swift in Sources */,
+				297AD1C62EEE0EE700CCE3BC /* Communitymodels.swift in Sources */,
 				297AD11E2EE780C300CCE3BC /* ColorManager.swift in Sources */,
 				297AD1202EE780F100CCE3BC /* QuizSharedComponents.swift in Sources */,
 				297AD1622EE7B35100CCE3BC /* NegativeEffectsView.swift in Sources */,
@@ -332,8 +356,10 @@
 				297AD1682EE7B51100CCE3BC /* ScienceView.swift in Sources */,
 				297AD1602EE7B34000CCE3BC /* SymptomsView.swift in Sources */,
 				297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */,
+				297AD1CC2EEE0F0000CCE3BC /* CreatePostView.swift in Sources */,
 				297AD1C32EEE043500CCE3BC /* WhatNextView.swift in Sources */,
 				297AD10F2EE76D7500CCE3BC /* DeviceManager.swift in Sources */,
+				297AD1C82EEE0EF100CCE3BC /* CommunityView.swift in Sources */,
 				297AD1782EE8ADB700CCE3BC /* OnboardingCompleteView.swift in Sources */,
 				297AD11C2EE76F0F00CCE3BC /* QuizStep.swift in Sources */,
 				297AD17A2EE8AF3000CCE3BC /* SplashView.swift in Sources */,
@@ -343,6 +369,7 @@
 				297AD1C12EEE042D00CCE3BC /* ResetAnimationFlowView.swift in Sources */,
 				297AD1102EE76D7500CCE3BC /* Models.swift in Sources */,
 				297AD1112EE76D7500CCE3BC /* NoMasApp.swift in Sources */,
+				297AD1CA2EEE0EF900CCE3BC /* PostDetailView.swift in Sources */,
 				297AD1742EE8AD6F00CCE3BC /* PaywallView.swift in Sources */,
 				297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */,
 				297AD1502EE7B02000CCE3BC /* LoopingVideoBackground.swift in Sources */,
@@ -351,6 +378,7 @@
 				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
 				297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */,
 				297AD1642EE7B36100CCE3BC /* TransitionView.swift in Sources */,
+				297AD1CE2EEE0F0900CCE3BC /* UserProfileView.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
 				297AD1222EE781C300CCE3BC /* OnboardingQuizFlow.swift in Sources */,
 				297AD1562EE7B14C00CCE3BC /* QuizCalculatingView.swift in Sources */,
