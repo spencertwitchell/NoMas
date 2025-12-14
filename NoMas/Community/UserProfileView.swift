@@ -266,7 +266,7 @@ struct UserPostCardView: View {
                 
                 VStack(spacing: 4) {
                     Image(systemName: "arrowtriangle.up.circle.fill")
-                        .foregroundStyle(LinearGradient.accent)
+                        .foregroundColor(.white)
                         .font(.system(size: 20))
                     
                     Text("\(post.upvoteCount)")

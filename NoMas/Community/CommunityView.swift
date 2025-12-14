@@ -121,13 +121,13 @@ struct CommunityView: View {
                     } label: {
                         ZStack {
                             Circle()
-                                .fill(LinearGradient.accent)
+                                .fill(Color.white)
                                 .frame(width: 60, height: 60)
-                                .shadow(color: Color.accentGradientStart.opacity(0.4), radius: 8, y: 4)
+                                .shadow(color: Color.black.opacity(0.2), radius: 8, y: 4)
                             
                             Image(systemName: "plus")
                                 .font(.system(size: 24, weight: .semibold))
-                                .foregroundColor(.textPrimary)
+                                .foregroundStyle(LinearGradient.accent)
                         }
                     }
                     .padding(.trailing, 20)
@@ -302,7 +302,7 @@ struct PostCardView: View {
                         }
                     } label: {
                         Image(systemName: "arrowtriangle.up.circle.fill")
-                            .foregroundStyle(LinearGradient.accent)
+                            .foregroundColor(.white)
                             .font(.system(size: 24))
                     }
                     .disabled(isUpvoting)

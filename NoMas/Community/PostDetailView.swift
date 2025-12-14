@@ -132,7 +132,7 @@ struct PostDetailView: View {
                                         }
                                     } label: {
                                         Image(systemName: "arrowtriangle.up.circle.fill")
-                                            .foregroundStyle(LinearGradient.accent)
+                                            .foregroundColor(.white)
                                             .font(.system(size: 24))
                                     }
                                     .disabled(isUpvotingPost)
