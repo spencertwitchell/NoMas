@@ -37,9 +37,7 @@ struct NomiChatView: View {
                     if viewModel.dailyUsage.current >= 35 {
                         usageWarningBanner
                     }
-                    
                     messagesScrollView
-                    messageInputBar
                 }
             }
             .navigationTitle("Chat with Nomi")
@@ -67,6 +65,9 @@ struct NomiChatView: View {
                     scrollToBottom()
                 }
             }
+        }
+        .safeAreaInset(edge: .bottom) {
+            messageInputBar
         }
     }
     
