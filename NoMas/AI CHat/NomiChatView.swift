@@ -231,7 +231,12 @@ struct NomiChatView: View {
                             : LinearGradient.accent
                         )
                 }
-                .disabled(viewModel.messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || viewModel.isSendingMessage)
+                .disabled(
+                    viewModel.messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    || viewModel.isSendingMessage
+                    || viewModel.dailyUsage.current >= viewModel.dailyUsage.limit
+                )
+
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)

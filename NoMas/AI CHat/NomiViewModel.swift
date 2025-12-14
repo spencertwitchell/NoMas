@@ -51,6 +51,23 @@ class NomiViewModel: ObservableObject {
         }
     }
     
+    private struct DailyUsageRPCResponse: Decodable {
+        let current: Int
+        let limit: Int
+    }
+
+    private func incrementDailyUsageOrThrow() async throws -> (current: Int, limit: Int) {
+        // Default limit from app state, or hardcode 40
+        let limit = dailyUsage.limit
+
+        let response: DailyUsageRPCResponse = try await supabase
+            .rpc("increment_nomi_daily_usage", params: ["p_limit": limit])
+            .execute()
+            .value
+
+        return (response.current, response.limit)
+    }
+
     // MARK: - Quiz Methods
     
     func checkQuizCompletion() async {
@@ -299,76 +316,128 @@ class NomiViewModel: ObservableObject {
         let userMessageText = messageText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !userMessageText.isEmpty,
               let conversationId = currentConversation?.id else { return }
-        
+
+        // Clear input + set state
         messageText = ""
         isSendingMessage = true
-        
-        // Create optimistic user message
-        let userMessage = NomiMessage(
-            id: UUID(),
-            conversationId: conversationId,
-            role: "user",
-            content: userMessageText,
-            createdAt: Date(),
-            tokenCount: 0
-        )
-        messages.append(userMessage)
-        
-        // Create placeholder AI message
-        let aiMessageId = UUID()
-        let aiPlaceholder = NomiMessage(
-            id: aiMessageId,
-            conversationId: conversationId,
-            role: "assistant",
-            content: "",
-            createdAt: Date(),
-            tokenCount: 0
-        )
-        messages.append(aiPlaceholder)
-        
-        // Bump conversation to top
-        bumpCurrentConversation(addedMessages: 1)
-        
+        errorMessage = nil
+
+        // rollback helper for optimistic UI
+        func rollbackOptimistic(userId: UUID, aiId: UUID) {
+            messages.removeAll { $0.id == userId || $0.id == aiId }
+        }
+
+        struct DailyUsageRPCRow: Decodable {
+            let current: Int
+            let limit: Int
+        }
+
         do {
+            // 1) Auth
             guard let session = supabase.auth.currentSession else {
-                throw NSError(domain: "NomiViewModel", code: 401, userInfo: [NSLocalizedDescriptionKey: "Not authenticated"])
+                throw NSError(domain: "NomiViewModel", code: 401, userInfo: [
+                    NSLocalizedDescriptionKey: "Not authenticated"
+                ])
             }
-            
+
+            // 2) Increment daily usage FIRST (RPC returns an ARRAY of rows)
+            do {
+                let rows: [DailyUsageRPCRow] = try await supabase
+                    .rpc("increment_nomi_daily_usage", params: ["p_limit": dailyUsage.limit])
+                    .execute()
+                    .value
+
+                guard let row = rows.first else {
+                    throw NSError(domain: "NomiViewModel", code: 500, userInfo: [
+                        NSLocalizedDescriptionKey: "Daily usage RPC returned no rows."
+                    ])
+                }
+
+                dailyUsage = (row.current, row.limit)
+
+                // Block only if we somehow exceed limit (RPC should prevent that anyway)
+                if dailyUsage.current > dailyUsage.limit {
+                    throw NSError(domain: "NomiViewModel", code: 429, userInfo: [
+                        NSLocalizedDescriptionKey: "Daily message limit reached."
+                    ])
+                }
+            }
+
+            // 3) Optimistic UI
+            let userMessageId = UUID()
+            let aiMessageId = UUID()
+
+            let userMessage = NomiMessage(
+                id: userMessageId,
+                conversationId: conversationId,
+                role: "user",
+                content: userMessageText,
+                createdAt: Date(),
+                tokenCount: 0
+            )
+            messages.append(userMessage)
+
+            let aiPlaceholder = NomiMessage(
+                id: aiMessageId,
+                conversationId: conversationId,
+                role: "assistant",
+                content: "",
+                createdAt: Date(),
+                tokenCount: 0
+            )
+            messages.append(aiPlaceholder)
+
+            bumpCurrentConversation(addedMessages: 1)
+
+            // 4) Call Edge Function
             let requestBody: [String: Any] = [
                 "conversationId": conversationId.uuidString,
                 "message": userMessageText
             ]
-            
+
             let jsonData = try JSONSerialization.data(withJSONObject: requestBody)
-            
+
             var request = URLRequest(url: URL(string: "\(baseURL)/nomi-chat")!)
             request.httpMethod = "POST"
             request.setValue("Bearer \(session.accessToken)", forHTTPHeaderField: "Authorization")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
-            
+
             let (data, response) = try await URLSession.shared.data(for: request)
-            
+
             guard let httpResponse = response as? HTTPURLResponse else {
-                throw NSError(domain: "NomiViewModel", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])
+                rollbackOptimistic(userId: userMessageId, aiId: aiMessageId)
+                throw NSError(domain: "NomiViewModel", code: 0, userInfo: [
+                    NSLocalizedDescriptionKey: "Invalid response"
+                ])
             }
-            
+
             if httpResponse.statusCode == 429 {
-                // Rate limited
                 let rateLimitResponse = try JSONDecoder().decode(NomiRateLimitResponse.self, from: data)
                 dailyUsage = (rateLimitResponse.usage.current, rateLimitResponse.usage.limit)
-                throw NSError(domain: "NomiViewModel", code: 429, userInfo: [NSLocalizedDescriptionKey: rateLimitResponse.error])
+
+                rollbackOptimistic(userId: userMessageId, aiId: aiMessageId)
+
+                throw NSError(domain: "NomiViewModel", code: 429, userInfo: [
+                    NSLocalizedDescriptionKey: rateLimitResponse.error
+                ])
             }
-            
+
             if httpResponse.statusCode != 200 {
                 let errorResponse = try? JSONDecoder().decode(NomiErrorResponse.self, from: data)
-                throw NSError(domain: "NomiViewModel", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorResponse?.error ?? "Unknown error"])
+
+                rollbackOptimistic(userId: userMessageId, aiId: aiMessageId)
+
+                throw NSError(domain: "NomiViewModel", code: httpResponse.statusCode, userInfo: [
+                    NSLocalizedDescriptionKey: errorResponse?.error ?? "Unknown error"
+                ])
             }
-            
+
             let chatResponse = try JSONDecoder().decode(NomiChatResponse.self, from: data)
+
+            // If your Edge Function returns usage too, keep it (should match)
             dailyUsage = (chatResponse.usage.current, chatResponse.usage.limit)
-            
-            // Update AI message with response
+
             if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
                 messages[index] = NomiMessage(
                     id: aiMessageId,
@@ -379,39 +448,16 @@ class NomiViewModel: ObservableObject {
                     tokenCount: chatResponse.tokensUsed
                 )
             }
-            
-            // Bump again for assistant reply
-            bumpCurrentConversation(addedMessages: 1)
-            
-            // Update title if first message
-            if currentConversation?.title == "New Chat" {
-                let newTitle = String(userMessageText.prefix(50)) + (userMessageText.count > 50 ? "..." : "")
-                currentConversation?.title = newTitle
-                
-                try await supabase
-                    .from("nomi_conversations")
-                    .update(["title": newTitle])
-                    .eq("id", value: conversationId.uuidString)
-                    .execute()
-                
-                if let idx = conversations.firstIndex(where: { $0.id == conversationId }) {
-                    conversations[idx].title = newTitle
-                }
-                groupConversationsByDate()
-            }
-            
-            // Update cache
-            messageCache[conversationId] = messages
-            
+
         } catch {
-            // Remove placeholder AI message on error
-            messages.removeAll { $0.id == aiMessageId }
             errorMessage = error.localizedDescription
-            print("❌ Failed to send message: \(error)")
+            print("❌ sendMessage error: \(error.localizedDescription)")
         }
-        
+
         isSendingMessage = false
     }
+
+
     
     private func bumpCurrentConversation(updatedAt: Date = Date(), addedMessages: Int = 0) {
         guard let convoId = currentConversation?.id,
@@ -453,3 +499,5 @@ class NomiViewModel: ObservableObject {
         errorMessage = nil
     }
 }
+
+
