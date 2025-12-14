@@ -149,6 +149,10 @@ class UserData: ObservableObject {
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var loadError: String? = nil
     
+    /// Flag to prevent saves during initialization (avoids race condition where
+    /// stale UserDefaults data overwrites good Supabase data)
+    private var isInitializing: Bool = false
+    
     // MARK: - Debouncing
     
     private var saveUserTask: Task<Void, Never>?
@@ -217,7 +221,7 @@ class UserData: ObservableObject {
         // 6. Save to Supabase
         saveProgressToSupabase()
         
-        print("🔄 Timer reset to: \(resetDate)")
+        print("ðŸ”„ Timer reset to: \(resetDate)")
         print("   New projected recovery: \(projectedRecoveryDate?.description ?? "nil")")
         print("   Times relapsed: \(timesRelapsed)")
         print("   Best streak preserved: \(bestStreak)")
@@ -320,6 +324,7 @@ class UserData: ObservableObject {
     /// Initialize user in Supabase (call on app launch)
     func initializeFromSupabase() async {
         isLoading = true
+        isInitializing = true  // Prevent saves during initialization
         loadError = nil
         
         do {
@@ -332,12 +337,13 @@ class UserData: ObservableObject {
                 populateFromSupabase(user: allData.user, quiz: allData.quiz, progress: allData.progress)
             }
             
-            print("Ã¢Å“â€¦ UserData initialized from Supabase")
+            print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ UserData initialized from Supabase")
         } catch {
-            print("Ã¢ÂÅ’ Failed to initialize from Supabase: \(error)")
+            print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to initialize from Supabase: \(error)")
             loadError = error.localizedDescription
         }
         
+        isInitializing = false  // Allow saves now
         isLoading = false
     }
     
@@ -386,10 +392,12 @@ class UserData: ObservableObject {
     // MARK: - Debounced Save Operations
     
     private func saveUserToSupabase() {
+        guard !isInitializing else { return }  // Don't save during initialization
+        
         saveUserTask?.cancel()
         saveUserTask = Task {
             try? await Task.sleep(for: .milliseconds(500)) // Debounce
-            guard !Task.isCancelled, let userId = supabaseUserId else { return }
+            guard !Task.isCancelled, !isInitializing, let userId = supabaseUserId else { return }
             
             do {
                 try await database.updateUser(
@@ -402,9 +410,9 @@ class UserData: ObservableObject {
                     profilePictureUrl: profilePictureURL,
                     isProfilePublic: isProfilePublic
                 )
-                print("âœ… User data saved to Supabase")
+                print("Ã¢Å“â€¦ User data saved to Supabase")
             } catch {
-                print("âŒ Failed to save user: \(error)")
+                print("Ã¢ÂÅ’ Failed to save user: \(error)")
             }
         }
         
@@ -412,10 +420,12 @@ class UserData: ObservableObject {
     }
     
     private func saveQuizToSupabase() {
+        guard !isInitializing else { return }  // Don't save during initialization
+        
         saveQuizTask?.cancel()
         saveQuizTask = Task {
             try? await Task.sleep(for: .milliseconds(500)) // Debounce
-            guard !Task.isCancelled, let userId = supabaseUserId else { return }
+            guard !Task.isCancelled, !isInitializing, let userId = supabaseUserId else { return }
             
             let input = QuizDataInput(
                 lastRelapseDate: lastRelapseDate,
@@ -432,9 +442,9 @@ class UserData: ObservableObject {
             
             do {
                 try await database.saveQuizData(userId: userId, quizData: input)
-                print("Ã¢Å“â€¦ Quiz data saved to Supabase")
+                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Quiz data saved to Supabase")
             } catch {
-                print("Ã¢ÂÅ’ Failed to save quiz: \(error)")
+                print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to save quiz: \(error)")
             }
         }
         
@@ -442,10 +452,12 @@ class UserData: ObservableObject {
     }
     
     private func saveProgressToSupabase() {
+        guard !isInitializing else { return }  // Don't save during initialization
+        
         saveProgressTask?.cancel()
         saveProgressTask = Task {
             try? await Task.sleep(for: .milliseconds(500)) // Debounce
-            guard !Task.isCancelled, let userId = supabaseUserId else { return }
+            guard !Task.isCancelled, !isInitializing, let userId = supabaseUserId else { return }
             
             let input = ProgressInput(
                 hasCompletedOnboarding: hasCompletedOnboarding,
@@ -461,9 +473,9 @@ class UserData: ObservableObject {
             
             do {
                 try await database.updateProgress(userId: userId, progress: input)
-                print("Ã¢Å“â€¦ Progress saved to Supabase")
+                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Progress saved to Supabase")
             } catch {
-                print("Ã¢ÂÅ’ Failed to save progress: \(error)")
+                print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to save progress: \(error)")
             }
         }
         
@@ -502,6 +514,9 @@ class UserData: ObservableObject {
         defaults.set(bestStreak, forKey: "bestStreak")
         defaults.set(timesRelapsed, forKey: "timesRelapsed")
         defaults.set(subscriptionStatus, forKey: "subscriptionStatus")
+        
+        // Force immediate disk write to prevent data loss on force-quit
+        defaults.synchronize()
     }
     
     private func loadFromUserDefaults() {
@@ -574,7 +589,7 @@ class UserData: ObservableObject {
         defaults.removePersistentDomain(forName: domain)
         defaults.synchronize()
         
-        print("ðŸ—‘ï¸ UserDefaults cleared")
+        print("Ã°Å¸â€”â€˜Ã¯Â¸Â UserDefaults cleared")
     }
     #endif
     
@@ -584,22 +599,22 @@ class UserData: ObservableObject {
     /// Clears: UserDefaults, Keychain, Supabase session
     /// Available in all builds (hidden behind 7-tap activation in Settings)
     func nukeEverything() async {
-        print("â˜¢ï¸ NUKING EVERYTHING...")
+        print("Ã¢ËœÂ¢Ã¯Â¸Â NUKING EVERYTHING...")
         
         // 1. Sign out of Supabase (this clears Supabase's keychain tokens)
         await AuthManager.shared.signOut()
-        print("âœ… Signed out of Supabase")
+        print("Ã¢Å“â€¦ Signed out of Supabase")
         
         // 2. Delete ALL keychain items for this app
         clearAllKeychainItems()
-        print("âœ… Keychain wiped")
+        print("Ã¢Å“â€¦ Keychain wiped")
         
         // 3. Clear all UserDefaults
         if let bundleId = Bundle.main.bundleIdentifier {
             defaults.removePersistentDomain(forName: bundleId)
             defaults.synchronize()
         }
-        print("âœ… UserDefaults wiped")
+        print("Ã¢Å“â€¦ UserDefaults wiped")
         
         // 4. Reset in-memory state
         hasCompletedOnboarding = false
@@ -632,7 +647,7 @@ class UserData: ObservableObject {
         subscriptionStatus = false
         supabaseUserId = nil
         
-        print("â˜¢ï¸ NUKE COMPLETE - Restart the app!")
+        print("Ã¢ËœÂ¢Ã¯Â¸Â NUKE COMPLETE - Restart the app!")
     }
     
     /// Deletes all keychain items for this app
@@ -653,7 +668,7 @@ class UserData: ObservableObject {
             } else if status == errSecItemNotFound {
                 // No items of this class - that's fine
             } else {
-                print("   âš ï¸ Failed to delete keychain class \(secClass): \(status)")
+                print("   Ã¢Å¡Â Ã¯Â¸Â Failed to delete keychain class \(secClass): \(status)")
             }
         }
     }

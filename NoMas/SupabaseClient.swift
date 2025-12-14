@@ -195,9 +195,12 @@ struct ProgressUpdate: Encodable {
 class DatabaseService {
     static let shared = DatabaseService()
     
+    /// Date formatter for Supabase TIMESTAMP columns
+    /// Uses ISO8601 format with time to preserve hours/minutes/seconds
+    /// NOTE: Ensure Supabase columns are TIMESTAMP/TIMESTAMPTZ, not DATE
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         formatter.timeZone = TimeZone(identifier: "UTC")
         return formatter
     }()
@@ -263,10 +266,10 @@ class DatabaseService {
                     .from("user_quiz_data")
                     .insert(QuizDataInsert(userId: userId.uuidString))
                     .execute()
-                print("Ã¢Å“â€¦ Created missing quiz_data record")
+                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created missing quiz_data record")
             }
         } catch {
-            print("Ã¢Å¡Â Ã¯Â¸Â Failed to ensure quiz_data exists: \(error)")
+            print("ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Failed to ensure quiz_data exists: \(error)")
         }
         
         // Check and create progress if missing
@@ -283,10 +286,10 @@ class DatabaseService {
                     .from("user_progress")
                     .insert(ProgressInsert(userId: userId.uuidString))
                     .execute()
-                print("Ã¢Å“â€¦ Created missing progress record")
+                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created missing progress record")
             }
         } catch {
-            print("Ã¢Å¡Â Ã¯Â¸Â Failed to ensure progress exists: \(error)")
+            print("ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Failed to ensure progress exists: \(error)")
         }
     }
     
