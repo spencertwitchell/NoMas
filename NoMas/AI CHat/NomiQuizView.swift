@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct NomiQuizView: View {
     @ObservedObject var viewModel: NomiViewModel
@@ -34,6 +35,11 @@ struct NomiQuizView: View {
                     ScrollView {
                         VStack(spacing: 24) {
                             pageContent
+                                .id(currentPage) // Triggers transition on page change
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                                    removal: .move(edge: .leading).combined(with: .opacity)
+                                ))
                         }
                         .padding(.horizontal, 24)
                         .padding(.top, currentPage == 0 ? 40 : 20)
@@ -96,6 +102,7 @@ struct NomiQuizView: View {
                         RoundedRectangle(cornerRadius: 4)
                             .fill(LinearGradient.accent)
                             .frame(width: geometry.size.width * progress, height: 6)
+                            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: progress)
                     }
                 }
                 .frame(height: 6)
@@ -177,10 +184,9 @@ struct NomiQuizView: View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Placeholder animation (replace with Lottie later)
-            Image("heart_blue")
-                .resizable()
-                .scaledToFit()
+            // Lottie animation placeholder
+            LottieView(animation: .named("Heart_Blue"))
+                .playing(loopMode: .loop)
                 .frame(width: 180, height: 180)
             
             VStack(spacing: 12) {
@@ -250,10 +256,9 @@ struct NomiQuizView: View {
         VStack(spacing: 32) {
             Spacer()
             
-            // Placeholder animation (replace with Lottie later)
-            Image("heart_blue")
-                .resizable()
-                .scaledToFit()
+            // Lottie animation placeholder
+            LottieView(animation: .named("Heart_Blue"))
+                .playing(loopMode: .loop)
                 .frame(width: 180, height: 180)
             
             VStack(spacing: 12) {
@@ -273,17 +278,7 @@ struct NomiQuizView: View {
             
             Button {
                 Task {
-                    isSaving = true
-                    do {
-                        try await viewModel.saveQuizData()
-                        await viewModel.loadConversations()
-                        await MainActor.run {
-                            isPresented = false
-                        }
-                    } catch {
-                        viewModel.errorMessage = "Failed to save: \(error.localizedDescription)"
-                    }
-                    isSaving = false
+                    await saveAndDismiss()
                 }
             } label: {
                 if isSaving {
@@ -306,6 +301,28 @@ struct NomiQuizView: View {
             .disabled(isSaving)
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
+        }
+    }
+    
+    // MARK: - Save and Dismiss
+    
+    private func saveAndDismiss() async {
+        isSaving = true
+        
+        do {
+            try await viewModel.saveQuizData()
+            await viewModel.loadConversations()
+        } catch {
+            print("❌ Failed to save quiz data: \(error)")
+            viewModel.errorMessage = "Failed to save: \(error.localizedDescription)"
+        }
+        
+        isSaving = false
+        
+        // Always dismiss, even if there was an error saving
+        // The quiz data is marked complete in saveQuizData
+        await MainActor.run {
+            isPresented = false
         }
     }
     

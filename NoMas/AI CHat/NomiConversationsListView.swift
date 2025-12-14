@@ -2,43 +2,36 @@
 //  NomiConversationsListView.swift
 //  NoMas
 //
-//  Created by Spencer Twitchell on 12/13/25.
-//
-
-
-//
-//  NomiConversationsListView.swift
-//  NoMas
-//
 //  Main view for Chat tab - shows welcome or conversation list
 //
 
 import SwiftUI
+import Lottie
 
 struct NomiConversationsListView: View {
     @ObservedObject var viewModel: NomiViewModel
     @State private var showQuiz = false
-    @State private var navigateToNewChat = false
-    @State private var newConversation: NomiConversation?
+    @State private var showChat = false
+    @State private var selectedConversation: NomiConversation?
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                if viewModel.hasCompletedQuiz {
-                    // Show conversation list with normal layout
-                    conversationsContent
-                } else {
-                    // Show welcome view (no header, tabs still visible from parent)
-                    NomiWelcomeView(viewModel: viewModel, showQuiz: $showQuiz)
-                }
+        ZStack {
+            // No background - uses parent's AppBackground from MainView
+            
+            if viewModel.hasCompletedQuiz {
+                // Show conversation list
+                conversationsContent
+            } else {
+                // Show welcome view (no header, tabs still visible from parent)
+                NomiWelcomeView(viewModel: viewModel, showQuiz: $showQuiz)
             }
-            .fullScreenCover(isPresented: $showQuiz) {
-                NomiQuizView(viewModel: viewModel, isPresented: $showQuiz)
-            }
-            .navigationDestination(isPresented: $navigateToNewChat) {
-                if let conversation = newConversation {
-                    NomiChatView(viewModel: viewModel, conversation: conversation)
-                }
+        }
+        .fullScreenCover(isPresented: $showQuiz) {
+            NomiQuizView(viewModel: viewModel, isPresented: $showQuiz)
+        }
+        .fullScreenCover(isPresented: $showChat) {
+            if let conversation = selectedConversation {
+                NomiChatView(viewModel: viewModel, conversation: conversation)
             }
         }
         .onAppear {
@@ -62,16 +55,7 @@ struct NomiConversationsListView: View {
     
     private var conversationsContent: some View {
         ZStack(alignment: .bottom) {
-            // Background
-            ZStack {
-                Image("bg7")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-            }
+            // No background - uses parent's AppBackground from MainView
             
             VStack(spacing: 0) {
                 if viewModel.groupedConversations.isEmpty && !viewModel.isLoadingConversations {
@@ -81,9 +65,9 @@ struct NomiConversationsListView: View {
                 }
             }
             
-            // Floating new chat button
+            // Floating new chat button - positioned above tab bar
             newChatButton
-                .padding(.bottom, 20)
+                .padding(.bottom, 16)
         }
     }
     
@@ -93,10 +77,9 @@ struct NomiConversationsListView: View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Placeholder animation
-            Image("heart_blue")
-                .resizable()
-                .scaledToFit()
+            // Lottie animation placeholder
+            LottieView(animation: .named("Heart_Blue"))
+                .playing(loopMode: .loop)
                 .frame(width: 180, height: 180)
             
             Text("Start Your First Chat")
@@ -110,6 +93,9 @@ struct NomiConversationsListView: View {
                 .padding(.horizontal, 40)
             
             Spacer()
+            
+            // Extra space for the floating button
+            Spacer().frame(height: 80)
         }
     }
     
@@ -126,9 +112,10 @@ struct NomiConversationsListView: View {
                             .padding(.horizontal, 20)
                         
                         ForEach(group.conversations) { conversation in
-                            NavigationLink(destination:
-                                NomiChatView(viewModel: viewModel, conversation: conversation)
-                            ) {
+                            Button {
+                                selectedConversation = conversation
+                                showChat = true
+                            } label: {
                                 NomiConversationCard(conversation: conversation)
                             }
                             .buttonStyle(.plain)
@@ -137,14 +124,14 @@ struct NomiConversationsListView: View {
                     }
                 }
                 
-                // Total count
+                // Total count + space for floating button
                 if !viewModel.conversations.isEmpty {
                     Text("\(viewModel.conversations.count) \(viewModel.conversations.count == 1 ? "Conversation" : "Conversations") Total")
                         .font(.captionSmall)
                         .foregroundColor(.textTertiary)
                         .frame(maxWidth: .infinity)
                         .padding(.top, 12)
-                        .padding(.bottom, 100)
+                        .padding(.bottom, 100) // Space for floating button
                 }
             }
             .padding(.top, 20)
@@ -160,8 +147,8 @@ struct NomiConversationsListView: View {
         Button {
             Task {
                 if let conversation = await viewModel.createNewConversation() {
-                    newConversation = conversation
-                    navigateToNewChat = true
+                    selectedConversation = conversation
+                    showChat = true
                 }
             }
         } label: {
@@ -216,5 +203,8 @@ struct NomiConversationCard: View {
 }
 
 #Preview {
-    NomiConversationsListView(viewModel: NomiViewModel())
+    ZStack {
+        AppBackground()
+        NomiConversationsListView(viewModel: NomiViewModel())
+    }
 }

@@ -55,7 +55,7 @@ class NomiViewModel: ObservableObject {
     
     func checkQuizCompletion() async {
         do {
-            guard let userId = UserData.shared.supabaseUserId else { return }
+            guard let userId = supabase.auth.currentUser?.id else { return }
             
             let response: [NomiContextData] = try await supabase
                 .from("nomi_context_data")
@@ -79,7 +79,7 @@ class NomiViewModel: ObservableObject {
     }
     
     func saveQuizData() async throws {
-        guard let userId = UserData.shared.supabaseUserId else {
+        guard let userId = supabase.auth.currentUser?.id else {
             throw NSError(domain: "NomiViewModel", code: 401, userInfo: [NSLocalizedDescriptionKey: "Not authenticated"])
         }
         
@@ -136,7 +136,7 @@ class NomiViewModel: ObservableObject {
         errorMessage = nil
         
         do {
-            guard let userId = UserData.shared.supabaseUserId else {
+            guard let userId = supabase.auth.currentUser?.id else {
                 isLoadingConversations = false
                 return
             }
@@ -200,7 +200,7 @@ class NomiViewModel: ObservableObject {
     
     func createNewConversation() async -> NomiConversation? {
         do {
-            guard let userId = UserData.shared.supabaseUserId else { return nil }
+            guard let userId = supabase.auth.currentUser?.id else { return nil }
             
             let newConversation = NomiConversation(
                 id: UUID(),

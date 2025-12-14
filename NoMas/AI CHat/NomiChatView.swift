@@ -2,18 +2,12 @@
 //  NomiChatView.swift
 //  NoMas
 //
-//  Created by Spencer Twitchell on 12/13/25.
-//
-
-
-//
-//  NomiChatView.swift
-//  NoMas
-//
 //  Individual chat view for Nomi AI conversations
+//  Presented as fullScreenCover - completely hides tabs/header
 //
 
 import SwiftUI
+import Lottie
 
 struct NomiChatView: View {
     @ObservedObject var viewModel: NomiViewModel
@@ -29,7 +23,7 @@ struct NomiChatView: View {
     
     var body: some View {
         ZStack {
-            // Background
+            // Full screen background
             Image("bg7")
                 .resizable()
                 .scaledToFill()
@@ -39,6 +33,9 @@ struct NomiChatView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
+                // Custom header for full screen cover
+                chatHeader
+                
                 // Usage warning banner
                 if viewModel.dailyUsage.current >= 35 {
                     usageWarningBanner
@@ -48,22 +45,6 @@ struct NomiChatView: View {
                 messageInputBar
             }
         }
-        .navigationTitle("Chat with Nomi")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    dismiss()
-                    Task { await viewModel.summarizeConversation() }
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.textPrimary)
-                }
-            }
-        }
-        .toolbarBackground(.hidden, for: .navigationBar)
         .onAppear {
             viewModel.selectConversation(conversation)
         }
@@ -72,6 +53,37 @@ struct NomiChatView: View {
                 scrollToBottom()
             }
         }
+    }
+    
+    // MARK: - Custom Header
+    
+    private var chatHeader: some View {
+        HStack {
+            Button {
+                dismiss()
+                Task { await viewModel.summarizeConversation() }
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.textPrimary)
+                    .frame(width: 44, height: 44)
+            }
+            
+            Spacer()
+            
+            Text("Chat with Nomi")
+                .font(.titleSmall)
+                .foregroundColor(.textPrimary)
+            
+            Spacer()
+            
+            // Invisible spacer for symmetry
+            Color.clear
+                .frame(width: 44, height: 44)
+        }
+        .padding(.horizontal, 8)
+        .padding(.top, 8)
+        .padding(.bottom, 8)
     }
     
     // MARK: - Usage Warning Banner
@@ -181,10 +193,9 @@ struct NomiChatView: View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Placeholder animation
-            Image("heart_blue")
-                .resizable()
-                .scaledToFit()
+            // Lottie animation placeholder
+            LottieView(animation: .named("Heart_Blue"))
+                .playing(loopMode: .loop)
                 .frame(width: 160, height: 160)
             
             VStack(spacing: 12) {
@@ -369,18 +380,16 @@ struct NomiMessageBubble: View {
 }
 
 #Preview {
-    NavigationStack {
-        NomiChatView(
-            viewModel: NomiViewModel(),
-            conversation: NomiConversation(
-                id: UUID(),
-                userId: UUID(),
-                title: "Test Conversation",
-                createdAt: Date(),
-                updatedAt: Date(),
-                messageCount: 5,
-                contextSummary: nil
-            )
+    NomiChatView(
+        viewModel: NomiViewModel(),
+        conversation: NomiConversation(
+            id: UUID(),
+            userId: UUID(),
+            title: "Test Conversation",
+            createdAt: Date(),
+            updatedAt: Date(),
+            messageCount: 5,
+            contextSummary: nil
         )
-    }
+    )
 }
