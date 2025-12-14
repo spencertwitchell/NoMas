@@ -4,9 +4,12 @@
 //
 //  Created by Spencer Twitchell on 12/11/25.
 //
+//  UPDATED: Integrated NomiConversationsListView to replace ChatView placeholder
+//
 
 import SwiftUI
 import Supabase
+import Combine
 
 // MARK: - Main View
 
@@ -14,6 +17,12 @@ struct MainView: View {
     @State private var selectedTab = 0
     @StateObject private var userData = UserData.shared
     @StateObject private var authManager = AuthManager.shared
+    @StateObject private var nomiViewModel = NomiViewModel() // Added for Nomi chat
+    
+    // Computed property to determine if header should be hidden
+    private var shouldHideHeader: Bool {
+        selectedTab == 1 && !nomiViewModel.hasCompletedQuiz
+    }
     
     var body: some View {
         ZStack {
@@ -21,15 +30,18 @@ struct MainView: View {
             AppBackground()
             
             VStack(spacing: 0) {
-                // Header
-                MainHeaderView(title: tabTitle)
+                // Header - conditionally hidden for Nomi welcome state
+                if !shouldHideHeader {
+                    MainHeaderView(title: tabTitle)
+                }
                 
                 // Tab Content
                 TabView(selection: $selectedTab) {
                     TimerView(selectedTab: $selectedTab)
                         .tag(0)
                     
-                    ChatView()
+                    // UPDATED: Replace ChatView with NomiConversationsListView
+                    NomiConversationsListView(viewModel: nomiViewModel)
                         .tag(1)
                     
                     LibraryView()
@@ -222,30 +234,7 @@ struct TabBarButton: View {
 // MARK: - Tab Views (Placeholders)
 // NOTE: TimerView has been moved to TimerView.swift
 // NOTE: CommunityView has been moved to CommunityView.swift
-
-struct ChatView: View {
-    var body: some View {
-        VStack {
-            Spacer()
-            
-            VStack(spacing: 16) {
-                Image(systemName: "ellipsis.message.fill")
-                    .font(.system(size: 48))
-                    .foregroundColor(.accentGradientStart)
-                
-                Text("Chat")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                
-                Text("AI-powered support coming soon")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-            }
-            
-            Spacer()
-        }
-    }
-}
+// NOTE: ChatView has been replaced with NomiConversationsListView
 
 struct LibraryView: View {
     var body: some View {
@@ -271,12 +260,11 @@ struct LibraryView: View {
     }
 }
 
-// MARK: - Profile View (with Your Posts)
+// MARK: - Profile View
 
 struct ProfileView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var userData = UserData.shared
-    @StateObject private var authManager = AuthManager.shared
     @State private var showingSettings = false
     @State private var userPosts: [Post] = []
     @State private var isLoadingPosts = false
@@ -288,67 +276,42 @@ struct ProfileView: View {
                 
                 ScrollView {
                     VStack(spacing: 24) {
-                        // Profile Card
+                        // Profile Header
                         VStack(spacing: 16) {
-                            // Profile Picture
                             ProfilePictureView(
                                 userName: userData.displayName,
                                 profilePictureURL: userData.profilePictureURL,
-                                isPublic: true,
+                                isPublic: userData.isProfilePublic,
                                 size: 100
                             )
                             
-                            // Name
-                            Text(userData.displayName.isEmpty ? "User" : userData.displayName)
-                                .font(.titleLarge)
-                                .foregroundColor(.textPrimary)
-                            
-                            // Bio (if exists)
-                            if let bio = userData.bio, !bio.isEmpty {
-                                Text(bio)
-                                    .font(.body)
-                                    .foregroundColor(.textSecondary)
-                                    .multilineTextAlignment(.center)
-                                    .padding(.horizontal, 20)
-                            }
-                            
-                            // Instagram (if exists)
-                            if let instagram = userData.instagramHandle, !instagram.isEmpty {
-                                Button {
-                                    if let url = URL(string: "https://instagram.com/\(instagram)") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                } label: {
-                                    HStack(spacing: 6) {
-                                        Image(systemName: "camera.fill")
-                                            .font(.caption)
-                                        Text("@\(instagram)")
-                                            .font(.bodySmall)
-                                    }
-                                    .foregroundColor(.accentGradientStart)
+                            VStack(spacing: 4) {
+                                Text(userData.displayName)
+                                    .font(.titleMedium)
+                                    .foregroundColor(.textPrimary)
+                                
+                                if let bio = userData.bio, !bio.isEmpty {
+                                    Text(bio)
+                                        .font(.bodySmall)
+                                        .foregroundColor(.textSecondary)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 40)
+                                }
+                                
+                                if let instagram = userData.instagramHandle, !instagram.isEmpty {
+                                    Text("@\(instagram)")
+                                        .font(.captionSmall)
+                                        .foregroundColor(.accentGradientStart)
                                 }
                             }
-                            
-                            // Privacy indicator
-                            HStack(spacing: 6) {
-                                Image(systemName: userData.isProfilePublic ? "eye" : "eye.slash")
-                                    .font(.system(size: 12))
-                                Text(userData.isProfilePublic ? "Public Profile" : "Private Profile")
-                                    .font(.captionSmall)
-                            }
-                            .foregroundColor(.textTertiary)
                         }
-                        .padding(24)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.surfaceBackground)
-                        .cornerRadius(16)
-                        .padding(.horizontal, 20)
                         .padding(.top, 20)
                         
-                        // Stats
+                        // Stats Grid
                         HStack(spacing: 16) {
-                            StatBox(value: "\(userData.daysSinceRelapse)", label: "Days Clean")
-                            StatBox(value: userData.currentMilestone.displayName, label: "Milestone")
+                            StatBox(value: "\(userData.daysSinceRelapse)", label: "Day Streak")
+                            StatBox(value: "\(userData.effectiveBestStreak)", label: "Best Streak")
+                            StatBox(value: userData.currentMilestone.displayName, label: "Rank")
                         }
                         .padding(.horizontal, 20)
                         

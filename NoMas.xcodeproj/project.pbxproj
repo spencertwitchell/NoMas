@@ -65,6 +65,12 @@
 		297AD1CA2EEE0EF900CCE3BC /* PostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C92EEE0EF900CCE3BC /* PostDetailView.swift */; };
 		297AD1CC2EEE0F0000CCE3BC /* CreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1CB2EEE0F0000CCE3BC /* CreatePostView.swift */; };
 		297AD1CE2EEE0F0900CCE3BC /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1CD2EEE0F0900CCE3BC /* UserProfileView.swift */; };
+		297AD1E02EEE505B00CCE3BC /* NomiConversationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1DF2EEE505B00CCE3BC /* NomiConversationsListView.swift */; };
+		297AD1E22EEE506C00CCE3BC /* Nomimodels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1E12EEE506C00CCE3BC /* Nomimodels.swift */; };
+		297AD1E42EEE507900CCE3BC /* NomiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1E32EEE507900CCE3BC /* NomiViewModel.swift */; };
+		297AD1E62EEE508100CCE3BC /* NomiWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1E52EEE508100CCE3BC /* NomiWelcomeView.swift */; };
+		297AD1E82EEE508E00CCE3BC /* NomiQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1E72EEE508E00CCE3BC /* NomiQuizView.swift */; };
+		297AD1EA2EEE509900CCE3BC /* NomiChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1E92EEE509900CCE3BC /* NomiChatView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,6 +127,12 @@
 		297AD1C92EEE0EF900CCE3BC /* PostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailView.swift; sourceTree = "<group>"; };
 		297AD1CB2EEE0F0000CCE3BC /* CreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostView.swift; sourceTree = "<group>"; };
 		297AD1CD2EEE0F0900CCE3BC /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		297AD1DF2EEE505B00CCE3BC /* NomiConversationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NomiConversationsListView.swift; sourceTree = "<group>"; };
+		297AD1E12EEE506C00CCE3BC /* Nomimodels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nomimodels.swift; sourceTree = "<group>"; };
+		297AD1E32EEE507900CCE3BC /* NomiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NomiViewModel.swift; sourceTree = "<group>"; };
+		297AD1E52EEE508100CCE3BC /* NomiWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NomiWelcomeView.swift; sourceTree = "<group>"; };
+		297AD1E72EEE508E00CCE3BC /* NomiQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NomiQuizView.swift; sourceTree = "<group>"; };
+		297AD1E92EEE509900CCE3BC /* NomiChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NomiChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +193,7 @@
 				297AD1982EEBB7C800CCE3BC /* Settings Profile */,
 				297AD1092EE76D7500CCE3BC /* Info.plist */,
 				297AD1B92EED2CB100CCE3BC /* Timer */,
+				297AD1DE2EEE504800CCE3BC /* AI CHat */,
 				297AD1C42EEE0E9700CCE3BC /* Community */,
 				297AD10A2EE76D7500CCE3BC /* Models.swift */,
 				297AD10C2EE76D7500CCE3BC /* SupabaseClient.swift */,
@@ -247,6 +260,19 @@
 				297AD1CD2EEE0F0900CCE3BC /* UserProfileView.swift */,
 			);
 			path = Community;
+			sourceTree = "<group>";
+		};
+		297AD1DE2EEE504800CCE3BC /* AI CHat */ = {
+			isa = PBXGroup;
+			children = (
+				297AD1DF2EEE505B00CCE3BC /* NomiConversationsListView.swift */,
+				297AD1E12EEE506C00CCE3BC /* Nomimodels.swift */,
+				297AD1E32EEE507900CCE3BC /* NomiViewModel.swift */,
+				297AD1E52EEE508100CCE3BC /* NomiWelcomeView.swift */,
+				297AD1E72EEE508E00CCE3BC /* NomiQuizView.swift */,
+				297AD1E92EEE509900CCE3BC /* NomiChatView.swift */,
+			);
+			path = "AI CHat";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,13 +372,16 @@
 				297AD1162EE76D8000CCE3BC /* UserData.swift in Sources */,
 				297AD1C62EEE0EE700CCE3BC /* Communitymodels.swift in Sources */,
 				297AD11E2EE780C300CCE3BC /* ColorManager.swift in Sources */,
+				297AD1EA2EEE509900CCE3BC /* NomiChatView.swift in Sources */,
 				297AD1202EE780F100CCE3BC /* QuizSharedComponents.swift in Sources */,
 				297AD1622EE7B35100CCE3BC /* NegativeEffectsView.swift in Sources */,
 				297AD1182EE76E3600CCE3BC /* AuthManager.swift in Sources */,
+				297AD1E82EEE508E00CCE3BC /* NomiQuizView.swift in Sources */,
 				297AD16C2EE7B53000CCE3BC /* TestimonialsView.swift in Sources */,
 				297AD1972EEB96A800CCE3BC /* MainView.swift in Sources */,
 				297AD17F2EE8F6CA00CCE3BC /* SuperwallManager.swift in Sources */,
 				297AD16E2EE8AD3300CCE3BC /* ReviewsView.swift in Sources */,
+				297AD1E62EEE508100CCE3BC /* NomiWelcomeView.swift in Sources */,
 				297AD1682EE7B51100CCE3BC /* ScienceView.swift in Sources */,
 				297AD1602EE7B34000CCE3BC /* SymptomsView.swift in Sources */,
 				297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */,
@@ -367,8 +396,10 @@
 				297AD11A2EE76EA700CCE3BC /* OnboardingPhase.swift in Sources */,
 				297AD1762EE8AD8A00CCE3BC /* AuthView.swift in Sources */,
 				297AD1C12EEE042D00CCE3BC /* ResetAnimationFlowView.swift in Sources */,
+				297AD1E22EEE506C00CCE3BC /* Nomimodels.swift in Sources */,
 				297AD1102EE76D7500CCE3BC /* Models.swift in Sources */,
 				297AD1112EE76D7500CCE3BC /* NoMasApp.swift in Sources */,
+				297AD1E02EEE505B00CCE3BC /* NomiConversationsListView.swift in Sources */,
 				297AD1CA2EEE0EF900CCE3BC /* PostDetailView.swift in Sources */,
 				297AD1742EE8AD6F00CCE3BC /* PaywallView.swift in Sources */,
 				297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */,
@@ -376,6 +407,7 @@
 				297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */,
 				297AD19A2EEBB7D700CCE3BC /* ProfilePictureView.swift in Sources */,
 				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
+				297AD1E42EEE507900CCE3BC /* NomiViewModel.swift in Sources */,
 				297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */,
 				297AD1642EE7B36100CCE3BC /* TransitionView.swift in Sources */,
 				297AD1CE2EEE0F0900CCE3BC /* UserProfileView.swift in Sources */,
