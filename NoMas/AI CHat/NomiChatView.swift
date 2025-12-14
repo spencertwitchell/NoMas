@@ -3,7 +3,7 @@
 //  NoMas
 //
 //  Individual chat view for Nomi AI conversations
-//  Presented as fullScreenCover - completely hides tabs/header
+//  Structure matches NoContact AIChatView for proper keyboard handling
 //
 
 import SwiftUI
@@ -20,78 +20,59 @@ struct NomiChatView: View {
     
     // Track which messages already animated so we never re-animate
     @State private var animatedMessageIds: Set<UUID> = []
-    
+
     var body: some View {
-        ZStack {
-            // Full screen background
-            Image("bg7")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            Color.black.opacity(0.4)
-                .ignoresSafeArea()
-            
-            VStack(spacing: 0) {
-                // Custom header for full screen cover
-                chatHeader
+        NavigationStack {
+            ZStack {
+                // Background
+                Image("bg7")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
                 
-                // Usage warning banner
-                if viewModel.dailyUsage.current >= 35 {
-                    usageWarningBanner
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                
+                VStack(spacing: 0) {
+                    if viewModel.dailyUsage.current >= 35 {
+                        usageWarningBanner
+                    }
+                    
+                    messagesScrollView
+                    messageInputBar
                 }
-                
-                messagesScrollView
-                messageInputBar
             }
-        }
-        .onAppear {
-            viewModel.selectConversation(conversation)
-        }
-        .onChange(of: viewModel.messages) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                scrollToBottom()
+            .navigationTitle("Chat with Nomi")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                        Task { await viewModel.summarizeConversation() }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.textPrimary)
+                    }
+                }
+            }
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .onAppear {
+                viewModel.selectConversation(conversation)
+            }
+            .onChange(of: viewModel.messages) {
+                // Delay scroll slightly to let keyboard dismiss first
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                    scrollToBottom()
+                }
             }
         }
     }
-    
-    // MARK: - Custom Header
-    
-    private var chatHeader: some View {
-        HStack {
-            Button {
-                dismiss()
-                Task { await viewModel.summarizeConversation() }
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(.textPrimary)
-                    .frame(width: 44, height: 44)
-            }
-            
-            Spacer()
-            
-            Text("Chat with Nomi")
-                .font(.titleSmall)
-                .foregroundColor(.textPrimary)
-            
-            Spacer()
-            
-            // Invisible spacer for symmetry
-            Color.clear
-                .frame(width: 44, height: 44)
-        }
-        .padding(.horizontal, 8)
-        .padding(.top, 8)
-        .padding(.bottom, 8)
-    }
-    
-    // MARK: - Usage Warning Banner
     
     private var usageWarningBanner: some View {
         HStack(spacing: 8) {
-            Image(systemName: "info.circle.fill")
-                .font(.system(size: 16))
+            Image(systemName: "info.circle.fill").font(.system(size: 16))
             Text("\(viewModel.dailyUsage.current)/\(viewModel.dailyUsage.limit) Messages Used Today")
                 .font(.captionSmall)
                 .fontWeight(.medium)
@@ -103,30 +84,26 @@ struct NomiChatView: View {
         .background(LinearGradient.accent)
     }
     
-    // MARK: - Messages Scroll View
-    
     private var messagesScrollView: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 Group {
-                    // Loading state
+                    // A) First page still loading: small spinner (no placeholder flicker)
                     if !viewModel.hasLoadedMessagesForCurrentConversation && viewModel.isLoadingMessages {
                         VStack {
                             Spacer(minLength: 60)
-                            ProgressView()
-                                .tint(.textPrimary)
+                            ProgressView().tint(.textPrimary)
                             Spacer(minLength: 60)
                         }
                         .frame(maxWidth: .infinity, minHeight: 300)
-                        
-                    // Empty state
+
+                    // B) Loaded and empty: true empty state
                     } else if viewModel.hasLoadedMessagesForCurrentConversation && viewModel.messages.isEmpty {
                         placeholderView
-                        
-                    // Messages
+
+                    // C) Messages (either cache shown instantly, or fetched)
                     } else {
                         LazyVStack(spacing: 16) {
-                            // Load more button
                             if viewModel.canLoadMoreMessages && !viewModel.isLoadingMessages {
                                 Button {
                                     Task { await viewModel.loadMessages(for: conversation.id, loadMore: true) }
@@ -139,9 +116,7 @@ struct NomiChatView: View {
                             }
                             
                             if viewModel.isLoadingMessages {
-                                ProgressView()
-                                    .tint(.textPrimary)
-                                    .padding(.vertical, 8)
+                                ProgressView().tint(.textPrimary).padding(.vertical, 8)
                             }
                             
                             ForEach(Array(viewModel.messages.enumerated()), id: \.element.id) { index, message in
@@ -187,52 +162,40 @@ struct NomiChatView: View {
         }
     }
     
-    // MARK: - Placeholder View
-    
     private var placeholderView: some View {
         VStack(spacing: 24) {
             Spacer()
-            
-            // Lottie animation placeholder
             LottieView(animation: .named("Heart_Blue"))
                 .playing(loopMode: .loop)
                 .frame(width: 160, height: 160)
-            
             VStack(spacing: 12) {
                 Text("What's on your mind?")
                     .font(.titleMedium)
                     .foregroundColor(.textPrimary)
-                
                 Text("This is your space to talk through what you're feeling. Whether you're struggling with urges or celebrating progress, Nomi is here to help.")
                     .font(.bodySmall)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            
             Spacer()
         }
         .frame(maxWidth: .infinity)
         .frame(minHeight: 500)
     }
     
-    // MARK: - Message Input Bar
-    
     private var messageInputBar: some View {
         VStack(spacing: 0) {
-            Divider()
-                .background(Color.white.opacity(0.2))
-            
+            Divider().background(Color.white.opacity(0.2))
             HStack(alignment: .bottom, spacing: 12) {
                 TextField("Ask anything...", text: $viewModel.messageText, axis: .vertical)
-                    .font(.body)
-                    .foregroundColor(.textPrimary)
                     .textFieldStyle(.plain)
                     .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                    .background(Color.surfaceBackground)
-                    .cornerRadius(24)
+                    .padding(.vertical, 10)
+                    .background(Color.black.opacity(0.3))
+                    .cornerRadius(20)
                     .lineLimit(1...5)
+                    .foregroundColor(.textPrimary)
                     .focused($isInputFocused)
                     .onChange(of: viewModel.messageText) {
                         if viewModel.messageText.count > 1000 {
@@ -240,10 +203,12 @@ struct NomiChatView: View {
                         }
                     }
                     .onSubmit {
+                        // Dismiss keyboard and send on return key
                         if !viewModel.messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                             isInputFocused = false
                             Task {
-                                try? await Task.sleep(nanoseconds: 100_000_000)
+                                // Small delay to let keyboard dismiss smoothly
+                                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1s
                                 await viewModel.sendMessage()
                             }
                         }
@@ -252,27 +217,26 @@ struct NomiChatView: View {
                 Button {
                     isInputFocused = false
                     Task {
-                        try? await Task.sleep(nanoseconds: 100_000_000)
+                        // Small delay to let keyboard dismiss smoothly
+                        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1s
                         await viewModel.sendMessage()
                     }
                 } label: {
                     Image(systemName: "arrow.up.circle.fill")
-                        .font(.system(size: 40))
+                        .font(.system(size: 38))
                         .foregroundStyle(
                             viewModel.messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                                ? LinearGradient(colors: [Color.gray.opacity(0.5)], startPoint: .leading, endPoint: .trailing)
-                                : LinearGradient.accent
+                            ? LinearGradient(colors: [Color.gray.opacity(0.5)], startPoint: .leading, endPoint: .trailing)
+                            : LinearGradient.accent
                         )
                 }
                 .disabled(viewModel.messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || viewModel.isSendingMessage)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 12)
+            .padding(.vertical, 8)
         }
-        .background(Color.backgroundGradientEnd.opacity(0.9))
+        .background(Color.clear)
     }
-    
-    // MARK: - Scroll Helper
     
     private func scrollToBottom(animated: Bool = true) {
         guard let scrollProxy = scrollProxy else { return }
@@ -298,6 +262,7 @@ struct NomiMessageBubble: View {
     @State private var displayedText = ""
     @State private var animTask: Task<Void, Never>? = nil
     
+    // Fast, "ChatGPT-like"
     private let charDelay: TimeInterval = 0.012
     
     var body: some View {
@@ -312,9 +277,9 @@ struct NomiMessageBubble: View {
                         .font(.body)
                         .foregroundColor(.textPrimary)
                         .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
+                        .padding(.vertical, 10)
                         .background(bubbleBackground)
-                        .cornerRadius(20)
+                        .cornerRadius(18)
                 }
             }
             
@@ -338,7 +303,7 @@ struct NomiMessageBubble: View {
     }
     
     private var typingIndicator: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 8) {
             ForEach(0..<3, id: \.self) { i in
                 Circle()
                     .fill(Color.textSecondary)
@@ -353,13 +318,15 @@ struct NomiMessageBubble: View {
             }
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.vertical, 10)
         .background(LinearGradient.accent.opacity(0.25))
-        .cornerRadius(20)
+        .cornerRadius(18)
     }
     
     private func maybeAnimate() {
+        // Only animate once per message id
         guard shouldAnimateOnce else {
+            // ensure full text shows when not animating
             displayedText = message.content
             return
         }
