@@ -11,7 +11,6 @@ import Lottie
 struct NomiConversationsListView: View {
     @ObservedObject var viewModel: NomiViewModel
     @State private var showQuiz = false
-    @State private var showChat = false
     @State private var selectedConversation: NomiConversation?
     
     var body: some View {
@@ -29,10 +28,8 @@ struct NomiConversationsListView: View {
         .fullScreenCover(isPresented: $showQuiz) {
             NomiQuizView(viewModel: viewModel, isPresented: $showQuiz)
         }
-        .fullScreenCover(isPresented: $showChat) {
-            if let conversation = selectedConversation {
-                NomiChatView(viewModel: viewModel, conversation: conversation)
-            }
+        .fullScreenCover(item: $selectedConversation) { conversation in
+            NomiChatView(viewModel: viewModel, conversation: conversation)
         }
         .onAppear {
             Task {
@@ -114,7 +111,6 @@ struct NomiConversationsListView: View {
                         ForEach(group.conversations) { conversation in
                             Button {
                                 selectedConversation = conversation
-                                showChat = true
                             } label: {
                                 NomiConversationCard(conversation: conversation)
                             }
@@ -148,7 +144,6 @@ struct NomiConversationsListView: View {
             Task {
                 if let conversation = await viewModel.createNewConversation() {
                     selectedConversation = conversation
-                    showChat = true
                 }
             }
         } label: {
