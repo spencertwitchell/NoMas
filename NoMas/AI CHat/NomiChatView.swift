@@ -14,9 +14,7 @@ struct NomiChatView: View {
     let conversation: NomiConversation
     
     @Environment(\.dismiss) private var dismiss
-    @State private var scrollProxy: ScrollViewProxy?
     @FocusState private var isInputFocused: Bool
-    @State private var hasScrolledToBottom = false
     
     // Track which messages already animated so we never re-animate
     @State private var animatedMessageIds: Set<UUID> = []
@@ -58,12 +56,6 @@ struct NomiChatView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
             .onAppear {
                 viewModel.selectConversation(conversation)
-            }
-            .onChange(of: viewModel.messages) {
-                // Delay scroll slightly to let keyboard dismiss first
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                    scrollToBottom()
-                }
             }
         }
         .safeAreaInset(edge: .bottom) {
@@ -141,24 +133,45 @@ struct NomiChatView: View {
                                 .id(message.id)
                             }
                             
-                            // Bottom spacer
-                            Color.clear.frame(height: 10).id("bottom")
+                            // Bottom anchor for scrolling
+                            Color.clear
+                                .frame(height: 275)
+                                .id("bottom")
                         }
                         .padding(.horizontal, 16)
                         .padding(.top, 12)
+                        .padding(.bottom, 10)
                     }
                 }
             }
-            .scrollDismissesKeyboard(.immediately)
+            .scrollDismissesKeyboard(.interactively)
             .scrollContentBackground(.hidden)
+            .defaultScrollAnchor(.bottom)
             .onAppear {
-                scrollProxy = proxy
-                if !hasScrolledToBottom && !viewModel.messages.isEmpty {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        scrollToBottom(animated: false)
-                        hasScrolledToBottom = true
-                    }
+                // Initial scroll to bottom
+                scrollToBottom(proxy: proxy, animated: false)
+            }
+            .onChange(of: viewModel.messages.count) { _, _ in
+                // Scroll when message count changes
+                scrollToBottom(proxy: proxy, animated: true)
+            }
+            .onChange(of: viewModel.isSendingMessage) { _, isSending in
+                // Scroll when sending starts (typing indicator appears)
+                if isSending {
+                    scrollToBottom(proxy: proxy, animated: true)
                 }
+            }
+        }
+    }
+    
+    private func scrollToBottom(proxy: ScrollViewProxy, animated: Bool) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            if animated {
+                withAnimation(.easeOut(duration: 0.2)) {
+                    proxy.scrollTo("bottom", anchor: .bottom)
+                }
+            } else {
+                proxy.scrollTo("bottom", anchor: .bottom)
             }
         }
     }
@@ -179,6 +192,7 @@ struct NomiChatView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
+            .padding(.bottom, 222)
             Spacer()
         }
         .frame(maxWidth: .infinity)
@@ -242,18 +256,6 @@ struct NomiChatView: View {
             .padding(.vertical, 8)
         }
         .background(Color.clear)
-    }
-    
-    private func scrollToBottom(animated: Bool = true) {
-        guard let scrollProxy = scrollProxy else { return }
-        
-        if animated {
-            withAnimation(.easeOut(duration: 0.25)) {
-                scrollProxy.scrollTo("bottom", anchor: .bottom)
-            }
-        } else {
-            scrollProxy.scrollTo("bottom", anchor: .bottom)
-        }
     }
 }
 
