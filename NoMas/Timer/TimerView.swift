@@ -106,7 +106,7 @@ struct TimerView: View {
             await remindersManager.fetchReminders()
         }
         .fullScreenCover(isPresented: $showingMightBreak) {
-            MightBreakFlowView()
+            MightBreakFlowView(selectedTab: $selectedTab)
         }
         .fullScreenCover(isPresented: $showingResetTimer) {
             ResetTimerFlowView(selectedTab: $selectedTab)

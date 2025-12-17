@@ -20,6 +20,10 @@
 		2932FC682EF3505400D02A1A /* PledgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC672EF3505400D02A1A /* PledgeView.swift */; };
 		2932FC6A2EF3505E00D02A1A /* PledgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC692EF3505E00D02A1A /* PledgeManager.swift */; };
 		2932FC6C2EF357F700D02A1A /* Remindersmanager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC6B2EF357F700D02A1A /* Remindersmanager.swift */; };
+		2932FC6E2EF35D8A00D02A1A /* MightBreakFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC6D2EF35D8900D02A1A /* MightBreakFlowView.swift */; };
+		2932FC702EF35D8F00D02A1A /* MightBreakAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC6F2EF35D8F00D02A1A /* MightBreakAnimationView.swift */; };
+		2932FC722EF35D9500D02A1A /* MightBreakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC712EF35D9500D02A1A /* MightBreakView.swift */; };
+		2932FC742EF35FA500D02A1A /* bg8.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2932FC732EF35FA500D02A1A /* bg8.mp4 */; };
 		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
 		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
 		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
@@ -111,6 +115,10 @@
 		2932FC672EF3505400D02A1A /* PledgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeView.swift; sourceTree = "<group>"; };
 		2932FC692EF3505E00D02A1A /* PledgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManager.swift; sourceTree = "<group>"; };
 		2932FC6B2EF357F700D02A1A /* Remindersmanager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remindersmanager.swift; sourceTree = "<group>"; };
+		2932FC6D2EF35D8900D02A1A /* MightBreakFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MightBreakFlowView.swift; sourceTree = "<group>"; };
+		2932FC6F2EF35D8F00D02A1A /* MightBreakAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MightBreakAnimationView.swift; sourceTree = "<group>"; };
+		2932FC712EF35D9500D02A1A /* MightBreakView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MightBreakView.swift; sourceTree = "<group>"; };
+		2932FC732EF35FA500D02A1A /* bg8.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg8.mp4; sourceTree = "<group>"; };
 		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -231,6 +239,7 @@
 			children = (
 				297AD17D2EE8F46200CCE3BC /* NoMas.entitlements */,
 				297AD1062EE76D7500CCE3BC /* Assets.xcassets */,
+				2932FC732EF35FA500D02A1A /* bg8.mp4 */,
 				297AD1652EE7B46B00CCE3BC /* bg flow.mp4 */,
 				297AD10B2EE76D7500CCE3BC /* NoMasApp.swift */,
 				297AD1792EE8AF3000CCE3BC /* SplashView.swift */,
@@ -296,6 +305,9 @@
 				297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */,
 				297AD1C22EEE043500CCE3BC /* WhatNextView.swift */,
 				2932FC6B2EF357F700D02A1A /* Remindersmanager.swift */,
+				2932FC6D2EF35D8900D02A1A /* MightBreakFlowView.swift */,
+				2932FC6F2EF35D8F00D02A1A /* MightBreakAnimationView.swift */,
+				2932FC712EF35D9500D02A1A /* MightBreakView.swift */,
 			);
 			path = Timer;
 			sourceTree = "<group>";
@@ -430,6 +442,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2932FC742EF35FA500D02A1A /* bg8.mp4 in Resources */,
 				297AD1132EE76D7500CCE3BC /* Assets.xcassets in Resources */,
 				297AD1662EE7B46B00CCE3BC /* bg flow.mp4 in Resources */,
 			);
@@ -446,6 +459,7 @@
 				297AD1722EE8AD5800CCE3BC /* MotivationView.swift in Sources */,
 				297AD1542EE7B14300CCE3BC /* OnboardingWelcomeView.swift in Sources */,
 				2932FC542EF32CB000D02A1A /* WebsiteBlockerView.swift in Sources */,
+				2932FC702EF35D8F00D02A1A /* MightBreakAnimationView.swift in Sources */,
 				297AD1F82EF24ABE00CCE3BC /* Librarymarkdownstyle.swift in Sources */,
 				297AD1522EE7B02D00CCE3BC /* OnboardingFlowView.swift in Sources */,
 				297AD1582EE7B15A00CCE3BC /* QuizResultsView.swift in Sources */,
@@ -497,6 +511,7 @@
 				297AD1E22EEE506C00CCE3BC /* Nomimodels.swift in Sources */,
 				297AD1102EE76D7500CCE3BC /* Models.swift in Sources */,
 				297AD1112EE76D7500CCE3BC /* NoMasApp.swift in Sources */,
+				2932FC722EF35D9500D02A1A /* MightBreakView.swift in Sources */,
 				297AD1E02EEE505B00CCE3BC /* NomiConversationsListView.swift in Sources */,
 				297AD1CA2EEE0EF900CCE3BC /* PostDetailView.swift in Sources */,
 				297AD1742EE8AD6F00CCE3BC /* PaywallView.swift in Sources */,
@@ -508,6 +523,7 @@
 				297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */,
 				297AD2022EF25BA700CCE3BC /* RelaxationSound.swift in Sources */,
 				297AD19A2EEBB7D700CCE3BC /* ProfilePictureView.swift in Sources */,
+				2932FC6E2EF35D8A00D02A1A /* MightBreakFlowView.swift in Sources */,
 				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
 				297AD1E42EEE507900CCE3BC /* NomiViewModel.swift in Sources */,
 				297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */,
