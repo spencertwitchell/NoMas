@@ -72,21 +72,12 @@ struct ToolPlaceholderView: View {
     }
 }
 
-// MARK: - Self Care Tools
-
-struct GratitudeView: View {
-    var body: some View {
-        ToolPlaceholderView(
-            icon: "hands.sparkles.fill",
-            title: "Express Gratitude",
-            description: "Shift your focus to the positive aspects of your life and recovery journey through daily gratitude practice."
-        )
-    }
-}
-
 // MARK: - Previews
-
 
 #Preview("Breathing") {
     BreathingExerciseView()
+}
+
+#Preview("Pledge") {
+    PledgeView()
 }

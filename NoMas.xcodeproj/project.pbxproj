@@ -17,6 +17,8 @@
 		2932FC622EF3392200D02A1A /* JournalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC612EF3392200D02A1A /* JournalModels.swift */; };
 		2932FC642EF3420100D02A1A /* Dailyprayerview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC632EF3420100D02A1A /* Dailyprayerview.swift */; };
 		2932FC662EF349B900D02A1A /* BreathingExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC652EF349B900D02A1A /* BreathingExerciseView.swift */; };
+		2932FC682EF3505400D02A1A /* PledgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC672EF3505400D02A1A /* PledgeView.swift */; };
+		2932FC6A2EF3505E00D02A1A /* PledgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC692EF3505E00D02A1A /* PledgeManager.swift */; };
 		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
 		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
 		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
@@ -105,6 +107,8 @@
 		2932FC612EF3392200D02A1A /* JournalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalModels.swift; sourceTree = "<group>"; };
 		2932FC632EF3420100D02A1A /* Dailyprayerview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dailyprayerview.swift; sourceTree = "<group>"; };
 		2932FC652EF349B900D02A1A /* BreathingExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingExerciseView.swift; sourceTree = "<group>"; };
+		2932FC672EF3505400D02A1A /* PledgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeView.swift; sourceTree = "<group>"; };
+		2932FC692EF3505E00D02A1A /* PledgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeManager.swift; sourceTree = "<group>"; };
 		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -341,6 +345,8 @@
 				2932FC612EF3392200D02A1A /* JournalModels.swift */,
 				2932FC632EF3420100D02A1A /* Dailyprayerview.swift */,
 				2932FC652EF349B900D02A1A /* BreathingExerciseView.swift */,
+				2932FC672EF3505400D02A1A /* PledgeView.swift */,
+				2932FC692EF3505E00D02A1A /* PledgeManager.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -483,6 +489,7 @@
 				297AD1762EE8AD8A00CCE3BC /* AuthView.swift in Sources */,
 				297AD1F42EF24A9100CCE3BC /* Librarymodels.swift in Sources */,
 				297AD1C12EEE042D00CCE3BC /* ResetAnimationFlowView.swift in Sources */,
+				2932FC6A2EF3505E00D02A1A /* PledgeManager.swift in Sources */,
 				297AD1E22EEE506C00CCE3BC /* Nomimodels.swift in Sources */,
 				297AD1102EE76D7500CCE3BC /* Models.swift in Sources */,
 				297AD1112EE76D7500CCE3BC /* NoMasApp.swift in Sources */,
@@ -492,6 +499,7 @@
 				2932FC582EF32CCA00D02A1A /* BlockedDomain.swift in Sources */,
 				297AD1EF2EF24A5200CCE3BC /* LibraryViewModel.swift in Sources */,
 				297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */,
+				2932FC682EF3505400D02A1A /* PledgeView.swift in Sources */,
 				297AD1502EE7B02000CCE3BC /* LoopingVideoBackground.swift in Sources */,
 				297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */,
 				297AD2022EF25BA700CCE3BC /* RelaxationSound.swift in Sources */,

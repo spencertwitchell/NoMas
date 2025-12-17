@@ -10,13 +10,14 @@ import MarkdownUI
 
 struct LibraryView: View {
     @StateObject private var viewModel = LibraryViewModel()
+    @ObservedObject private var pledgeManager = PledgeManager.shared
     @State private var selectedArticle: Article?
     
     // Self Care tool sheet states
     @State private var showingJournal = false
     @State private var showingPrayer = false
     @State private var showingBreathing = false
-    @State private var showingGratitude = false
+    @State private var showingPledge = false
     @State private var showingMeditation = false
     @State private var showingWebsiteBlocker = false
     
@@ -33,6 +34,9 @@ struct LibraryView: View {
         .task {
             await viewModel.fetchData()
         }
+        .onAppear {
+            pledgeManager.refreshState()
+        }
         .fullScreenCover(item: $selectedArticle) { article in
             ArticleDetailView(article: article)
         }
@@ -40,7 +44,7 @@ struct LibraryView: View {
         .fullScreenCover(isPresented: $showingJournal) { ReflectionJournalView() }
         .fullScreenCover(isPresented: $showingPrayer) { DailyPrayerView() }
         .fullScreenCover(isPresented: $showingBreathing) { BreathingExerciseView() }
-        .fullScreenCover(isPresented: $showingGratitude) { GratitudeView() }
+        .fullScreenCover(isPresented: $showingPledge) { PledgeView() }
         .fullScreenCover(isPresented: $showingMeditation) { RelaxationSoundsView() }
         .fullScreenCover(isPresented: $showingWebsiteBlocker) { WebsiteBlockerView() }
     }
@@ -79,10 +83,10 @@ struct LibraryView: View {
                     action: { showingBreathing = true }
                 )
                 
-                SelfCareCircleButton(
-                    icon: "hands.sparkles.fill",
-                    label: "Express\nGratitude",
-                    action: { showingGratitude = true }
+                // Pledge button with gray-out when already pledged
+                PledgeCircleButton(
+                    isPledged: pledgeManager.isPledgedToday,
+                    action: { showingPledge = true }
                 )
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -176,6 +180,43 @@ struct SelfCareCircleButton: View {
             Text(label)
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .frame(width: 70)
+        }
+    }
+}
+
+// MARK: - Pledge Circle Button (with gray-out state)
+
+struct PledgeCircleButton: View {
+    let isPledged: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Button(action: action) {
+                ZStack {
+                    if isPledged {
+                        Circle()
+                            .fill(Color.gray.opacity(0.4))
+                            .frame(width: 70, height: 70)
+                    } else {
+                        Circle()
+                            .fill(LinearGradient.accent)
+                            .frame(width: 70, height: 70)
+                    }
+                    
+                    Image(systemName: isPledged ? "checkmark.seal.fill" : "hand.raised.fill")
+                        .font(.system(size: 28))
+                        .foregroundColor(isPledged ? .white.opacity(0.5) : .white)
+                }
+            }
+            .disabled(isPledged)
+            
+            Text(isPledged ? "Pledged\nToday" : "Daily\nPledge")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(isPledged ? .white.opacity(0.5) : .white)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .frame(width: 70)
