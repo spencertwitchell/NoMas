@@ -15,5 +15,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSFamilyControlsUsageDescription</key>
+	<string>NoMas uses Screen Time to block adult websites and help you stay focused on recovery.</string>
 </dict>
 </plist>

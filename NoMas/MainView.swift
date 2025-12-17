@@ -231,35 +231,6 @@ struct TabBarButton: View {
     }
 }
 
-// MARK: - Tab Views (Placeholders)
-// NOTE: TimerView has been moved to TimerView.swift
-// NOTE: CommunityView has been moved to CommunityView.swift
-// NOTE: ChatView has been replaced with NomiConversationsListView
-
-struct LibraryView: View {
-    var body: some View {
-        VStack {
-            Spacer()
-            
-            VStack(spacing: 16) {
-                Image(systemName: "book.pages.fill")
-                    .font(.system(size: 48))
-                    .foregroundColor(.accentGradientStart)
-                
-                Text("Library")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                
-                Text("Recovery resources coming soon")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-            }
-            
-            Spacer()
-        }
-    }
-}
-
 // MARK: - Profile View
 
 struct ProfileView: View {

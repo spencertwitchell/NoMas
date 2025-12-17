@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2932FC542EF32CB000D02A1A /* WebsiteBlockerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC532EF32CB000D02A1A /* WebsiteBlockerView.swift */; };
+		2932FC562EF32CBA00D02A1A /* WebsiteBlockerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC552EF32CBA00D02A1A /* WebsiteBlockerManager.swift */; };
+		2932FC582EF32CCA00D02A1A /* BlockedDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC572EF32CCA00D02A1A /* BlockedDomain.swift */; };
 		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
 		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
 		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
@@ -71,9 +74,23 @@
 		297AD1E62EEE508100CCE3BC /* NomiWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1E52EEE508100CCE3BC /* NomiWelcomeView.swift */; };
 		297AD1E82EEE508E00CCE3BC /* NomiQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1E72EEE508E00CCE3BC /* NomiQuizView.swift */; };
 		297AD1EA2EEE509900CCE3BC /* NomiChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1E92EEE509900CCE3BC /* NomiChatView.swift */; };
+		297AD1ED2EF24A3D00CCE3BC /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1EC2EF24A3D00CCE3BC /* LibraryView.swift */; };
+		297AD1EF2EF24A5200CCE3BC /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1EE2EF24A5200CCE3BC /* LibraryViewModel.swift */; };
+		297AD1F22EF24A6E00CCE3BC /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD1F12EF24A6E00CCE3BC /* MarkdownUI */; };
+		297AD1F42EF24A9100CCE3BC /* Librarymodels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1F32EF24A9100CCE3BC /* Librarymodels.swift */; };
+		297AD1F82EF24ABE00CCE3BC /* Librarymarkdownstyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1F72EF24ABE00CCE3BC /* Librarymarkdownstyle.swift */; };
+		297AD1FA2EF24AC600CCE3BC /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1F92EF24AC600CCE3BC /* ImageCacheManager.swift */; };
+		297AD1FC2EF24AD600CCE3BC /* ToolPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1FB2EF24AD600CCE3BC /* ToolPlaceholderView.swift */; };
+		297AD1FE2EF25B9800CCE3BC /* RelaxationSoundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1FD2EF25B9800CCE3BC /* RelaxationSoundsView.swift */; };
+		297AD2002EF25B9E00CCE3BC /* SoundPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1FF2EF25B9E00CCE3BC /* SoundPlayerView.swift */; };
+		297AD2022EF25BA700CCE3BC /* RelaxationSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD2012EF25BA700CCE3BC /* RelaxationSound.swift */; };
+		297AD2042EF25BB100CCE3BC /* RelaxationAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD2032EF25BB100CCE3BC /* RelaxationAudioManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2932FC532EF32CB000D02A1A /* WebsiteBlockerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteBlockerView.swift; sourceTree = "<group>"; };
+		2932FC552EF32CBA00D02A1A /* WebsiteBlockerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteBlockerManager.swift; sourceTree = "<group>"; };
+		2932FC572EF32CCA00D02A1A /* BlockedDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedDomain.swift; sourceTree = "<group>"; };
 		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -133,6 +150,16 @@
 		297AD1E52EEE508100CCE3BC /* NomiWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NomiWelcomeView.swift; sourceTree = "<group>"; };
 		297AD1E72EEE508E00CCE3BC /* NomiQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NomiQuizView.swift; sourceTree = "<group>"; };
 		297AD1E92EEE509900CCE3BC /* NomiChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NomiChatView.swift; sourceTree = "<group>"; };
+		297AD1EC2EF24A3D00CCE3BC /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		297AD1EE2EF24A5200CCE3BC /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
+		297AD1F32EF24A9100CCE3BC /* Librarymodels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Librarymodels.swift; sourceTree = "<group>"; };
+		297AD1F72EF24ABE00CCE3BC /* Librarymarkdownstyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Librarymarkdownstyle.swift; sourceTree = "<group>"; };
+		297AD1F92EF24AC600CCE3BC /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
+		297AD1FB2EF24AD600CCE3BC /* ToolPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPlaceholderView.swift; sourceTree = "<group>"; };
+		297AD1FD2EF25B9800CCE3BC /* RelaxationSoundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelaxationSoundsView.swift; sourceTree = "<group>"; };
+		297AD1FF2EF25B9E00CCE3BC /* SoundPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayerView.swift; sourceTree = "<group>"; };
+		297AD2012EF25BA700CCE3BC /* RelaxationSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelaxationSound.swift; sourceTree = "<group>"; };
+		297AD2032EF25BB100CCE3BC /* RelaxationAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelaxationAudioManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +170,7 @@
 				297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */,
 				297AD15B2EE7B2E500CCE3BC /* Lottie in Frameworks */,
 				297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */,
+				297AD1F22EF24A6E00CCE3BC /* MarkdownUI in Frameworks */,
 				297AD15E2EE7B31400CCE3BC /* SuperwallKit in Frameworks */,
 				297AD1032EE7683400CCE3BC /* Supabase in Frameworks */,
 				297AD0F92EE7683400CCE3BC /* Auth in Frameworks */,
@@ -194,6 +222,7 @@
 				297AD1092EE76D7500CCE3BC /* Info.plist */,
 				297AD1B92EED2CB100CCE3BC /* Timer */,
 				297AD1DE2EEE504800CCE3BC /* AI CHat */,
+				297AD1EB2EF24A3700CCE3BC /* Library */,
 				297AD1C42EEE0E9700CCE3BC /* Community */,
 				297AD10A2EE76D7500CCE3BC /* Models.swift */,
 				297AD10C2EE76D7500CCE3BC /* SupabaseClient.swift */,
@@ -275,6 +304,26 @@
 			path = "AI CHat";
 			sourceTree = "<group>";
 		};
+		297AD1EB2EF24A3700CCE3BC /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				297AD1EC2EF24A3D00CCE3BC /* LibraryView.swift */,
+				297AD1EE2EF24A5200CCE3BC /* LibraryViewModel.swift */,
+				297AD1F32EF24A9100CCE3BC /* Librarymodels.swift */,
+				297AD1F72EF24ABE00CCE3BC /* Librarymarkdownstyle.swift */,
+				297AD1F92EF24AC600CCE3BC /* ImageCacheManager.swift */,
+				297AD1FB2EF24AD600CCE3BC /* ToolPlaceholderView.swift */,
+				297AD1FD2EF25B9800CCE3BC /* RelaxationSoundsView.swift */,
+				297AD1FF2EF25B9E00CCE3BC /* SoundPlayerView.swift */,
+				297AD2012EF25BA700CCE3BC /* RelaxationSound.swift */,
+				297AD2032EF25BB100CCE3BC /* RelaxationAudioManager.swift */,
+				2932FC532EF32CB000D02A1A /* WebsiteBlockerView.swift */,
+				2932FC552EF32CBA00D02A1A /* WebsiteBlockerManager.swift */,
+				2932FC572EF32CCA00D02A1A /* BlockedDomain.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -300,6 +349,7 @@
 				297AD1022EE7683400CCE3BC /* Supabase */,
 				297AD15A2EE7B2E500CCE3BC /* Lottie */,
 				297AD15D2EE7B31400CCE3BC /* SuperwallKit */,
+				297AD1F12EF24A6E00CCE3BC /* MarkdownUI */,
 			);
 			productName = NoMas;
 			productReference = 297AD0D62EE7646800CCE3BC /* NoMas.app */;
@@ -333,6 +383,7 @@
 				297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				297AD1592EE7B2E500CCE3BC /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				297AD15C2EE7B31400CCE3BC /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
+				297AD1F02EF24A6E00CCE3BC /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 297AD0D72EE7646800CCE3BC /* Products */;
@@ -361,8 +412,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				297AD1FC2EF24AD600CCE3BC /* ToolPlaceholderView.swift in Sources */,
 				297AD1722EE8AD5800CCE3BC /* MotivationView.swift in Sources */,
 				297AD1542EE7B14300CCE3BC /* OnboardingWelcomeView.swift in Sources */,
+				2932FC542EF32CB000D02A1A /* WebsiteBlockerView.swift in Sources */,
+				297AD1F82EF24ABE00CCE3BC /* Librarymarkdownstyle.swift in Sources */,
 				297AD1522EE7B02D00CCE3BC /* OnboardingFlowView.swift in Sources */,
 				297AD1582EE7B15A00CCE3BC /* QuizResultsView.swift in Sources */,
 				297AD1BF2EEE042600CCE3BC /* ResetTimerFlowView.swift in Sources */,
@@ -374,15 +428,19 @@
 				297AD11E2EE780C300CCE3BC /* ColorManager.swift in Sources */,
 				297AD1EA2EEE509900CCE3BC /* NomiChatView.swift in Sources */,
 				297AD1202EE780F100CCE3BC /* QuizSharedComponents.swift in Sources */,
+				297AD1FE2EF25B9800CCE3BC /* RelaxationSoundsView.swift in Sources */,
 				297AD1622EE7B35100CCE3BC /* NegativeEffectsView.swift in Sources */,
 				297AD1182EE76E3600CCE3BC /* AuthManager.swift in Sources */,
 				297AD1E82EEE508E00CCE3BC /* NomiQuizView.swift in Sources */,
 				297AD16C2EE7B53000CCE3BC /* TestimonialsView.swift in Sources */,
 				297AD1972EEB96A800CCE3BC /* MainView.swift in Sources */,
+				297AD1ED2EF24A3D00CCE3BC /* LibraryView.swift in Sources */,
 				297AD17F2EE8F6CA00CCE3BC /* SuperwallManager.swift in Sources */,
 				297AD16E2EE8AD3300CCE3BC /* ReviewsView.swift in Sources */,
 				297AD1E62EEE508100CCE3BC /* NomiWelcomeView.swift in Sources */,
+				297AD2002EF25B9E00CCE3BC /* SoundPlayerView.swift in Sources */,
 				297AD1682EE7B51100CCE3BC /* ScienceView.swift in Sources */,
+				2932FC562EF32CBA00D02A1A /* WebsiteBlockerManager.swift in Sources */,
 				297AD1602EE7B34000CCE3BC /* SymptomsView.swift in Sources */,
 				297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */,
 				297AD1CC2EEE0F0000CCE3BC /* CreatePostView.swift in Sources */,
@@ -394,7 +452,9 @@
 				297AD17A2EE8AF3000CCE3BC /* SplashView.swift in Sources */,
 				297AD16A2EE7B51700CCE3BC /* BenefitsView.swift in Sources */,
 				297AD11A2EE76EA700CCE3BC /* OnboardingPhase.swift in Sources */,
+				297AD1FA2EF24AC600CCE3BC /* ImageCacheManager.swift in Sources */,
 				297AD1762EE8AD8A00CCE3BC /* AuthView.swift in Sources */,
+				297AD1F42EF24A9100CCE3BC /* Librarymodels.swift in Sources */,
 				297AD1C12EEE042D00CCE3BC /* ResetAnimationFlowView.swift in Sources */,
 				297AD1E22EEE506C00CCE3BC /* Nomimodels.swift in Sources */,
 				297AD1102EE76D7500CCE3BC /* Models.swift in Sources */,
@@ -402,15 +462,19 @@
 				297AD1E02EEE505B00CCE3BC /* NomiConversationsListView.swift in Sources */,
 				297AD1CA2EEE0EF900CCE3BC /* PostDetailView.swift in Sources */,
 				297AD1742EE8AD6F00CCE3BC /* PaywallView.swift in Sources */,
+				2932FC582EF32CCA00D02A1A /* BlockedDomain.swift in Sources */,
+				297AD1EF2EF24A5200CCE3BC /* LibraryViewModel.swift in Sources */,
 				297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */,
 				297AD1502EE7B02000CCE3BC /* LoopingVideoBackground.swift in Sources */,
 				297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */,
+				297AD2022EF25BA700CCE3BC /* RelaxationSound.swift in Sources */,
 				297AD19A2EEBB7D700CCE3BC /* ProfilePictureView.swift in Sources */,
 				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
 				297AD1E42EEE507900CCE3BC /* NomiViewModel.swift in Sources */,
 				297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */,
 				297AD1642EE7B36100CCE3BC /* TransitionView.swift in Sources */,
 				297AD1CE2EEE0F0900CCE3BC /* UserProfileView.swift in Sources */,
+				297AD2042EF25BB100CCE3BC /* RelaxationAudioManager.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
 				297AD1222EE781C300CCE3BC /* OnboardingQuizFlow.swift in Sources */,
 				297AD1562EE7B14C00CCE3BC /* QuizCalculatingView.swift in Sources */,
@@ -672,6 +736,14 @@
 				minimumVersion = 4.10.8;
 			};
 		};
+		297AD1F02EF24A6E00CCE3BC /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -714,6 +786,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 297AD15C2EE7B31400CCE3BC /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
 			productName = SuperwallKit;
+		};
+		297AD1F12EF24A6E00CCE3BC /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 297AD1F02EF24A6E00CCE3BC /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
