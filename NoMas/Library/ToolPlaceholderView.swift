@@ -74,16 +74,6 @@ struct ToolPlaceholderView: View {
 
 // MARK: - Self Care Tools
 
-struct AffirmationsView: View {
-    var body: some View {
-        ToolPlaceholderView(
-            icon: "brain.head.profile.fill",
-            title: "Daily Affirmations",
-            description: "Rewire your mindset with positive affirmations designed to strengthen your resolve and self-worth."
-        )
-    }
-}
-
 struct BreathingExerciseView: View {
     var body: some View {
         ToolPlaceholderView(
@@ -105,10 +95,6 @@ struct GratitudeView: View {
 }
 
 // MARK: - Previews
-
-#Preview("Affirmations") {
-    AffirmationsView()
-}
 
 #Preview("Breathing") {
     BreathingExerciseView()

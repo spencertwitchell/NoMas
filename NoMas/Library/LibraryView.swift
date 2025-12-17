@@ -14,7 +14,7 @@ struct LibraryView: View {
     
     // Self Care tool sheet states
     @State private var showingJournal = false
-    @State private var showingAffirmations = false
+    @State private var showingPrayer = false
     @State private var showingBreathing = false
     @State private var showingGratitude = false
     @State private var showingMeditation = false
@@ -38,7 +38,7 @@ struct LibraryView: View {
         }
         // Self Care sheets
         .fullScreenCover(isPresented: $showingJournal) { ReflectionJournalView() }
-        .fullScreenCover(isPresented: $showingAffirmations) { AffirmationsView() }
+        .fullScreenCover(isPresented: $showingPrayer) { DailyPrayerView() }
         .fullScreenCover(isPresented: $showingBreathing) { BreathingExerciseView() }
         .fullScreenCover(isPresented: $showingGratitude) { GratitudeView() }
         .fullScreenCover(isPresented: $showingMeditation) { RelaxationSoundsView() }
@@ -68,9 +68,9 @@ struct LibraryView: View {
                 )
                 
                 SelfCareCircleButton(
-                    icon: "brain.head.profile.fill",
-                    label: "Daily\nAffirmations",
-                    action: { showingAffirmations = true }
+                    icon: "figure.mind.and.body",
+                    label: "Daily\nPrayer",
+                    action: { showingPrayer = true }
                 )
                 
                 SelfCareCircleButton(
@@ -98,7 +98,7 @@ struct LibraryView: View {
                 
                 SelfCareImageCard(
                     title: "Website Blocker",
-                    imageName: "blocker",
+                    imageName: "website blocker",
                     action: { showingWebsiteBlocker = true }
                 )
             }
