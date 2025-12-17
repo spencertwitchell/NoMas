@@ -8,16 +8,20 @@
 import SwiftUI
 import Lottie
 import Combine
+import UserNotifications
 
 // MARK: - Timer View
 
 struct TimerView: View {
     @Binding var selectedTab: Int
     @StateObject private var userData = UserData.shared
+    @StateObject private var remindersManager = RemindersManager.shared
+    @StateObject private var pledgeManager = PledgeManager.shared
     
     @State private var showingMightBreak = false
     @State private var showingResetTimer = false
     @State private var showingPanicButton = false
+    @State private var showingReminders = false
     @State private var currentTime = Date()
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -62,6 +66,21 @@ struct TimerView: View {
                     CurrentMilestoneCard(userData: userData)
                         .padding(.horizontal, 20)
                     
+                    // Remind Yourself Why Section (NEW)
+                    RemindYourselfWhySection(
+                        remindersManager: remindersManager,
+                        showingReminders: $showingReminders
+                    )
+                    .padding(.horizontal, 20)
+                    
+                    // To-Do Section (NEW)
+                    ToDoSection(
+                        userData: userData,
+                        selectedTab: $selectedTab,
+                        pledgeManager: pledgeManager
+                    )
+                    .padding(.horizontal, 20)
+                    
                     // Extra space for floating button
                     Spacer()
                         .frame(height: 100)
@@ -82,6 +101,10 @@ struct TimerView: View {
             // Update best streak in real-time if current exceeds it
             userData.updateBestStreakIfNeeded()
         }
+        .task {
+            // Fetch reminders on appear
+            await remindersManager.fetchReminders()
+        }
         .fullScreenCover(isPresented: $showingMightBreak) {
             MightBreakFlowView()
         }
@@ -90,6 +113,9 @@ struct TimerView: View {
         }
         .fullScreenCover(isPresented: $showingPanicButton) {
             PanicButtonFlowView()
+        }
+        .sheet(isPresented: $showingReminders) {
+            RemindersManagementView(remindersManager: remindersManager)
         }
     }
 }
@@ -444,6 +470,371 @@ struct CurrentMilestoneCard: View {
             x: 0,
             y: 0
         )
+    }
+}
+
+// MARK: - Remind Yourself Why Section
+
+struct RemindYourselfWhySection: View {
+    @ObservedObject var remindersManager: RemindersManager
+    @Binding var showingReminders: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Remind Yourself Why")
+                .font(.titleSmall)
+                .foregroundColor(.textPrimary)
+            
+            Text("You chose to quit for a reason. When urges hit hard, remind yourself why you started:")
+                .font(.captionSmall)
+                .foregroundColor(.textSecondary)
+                .lineSpacing(4)
+            
+            if remindersManager.isLoading {
+                HStack {
+                    Spacer()
+                    ProgressView()
+                        .tint(.accentGradientStart)
+                    Spacer()
+                }
+                .padding(.vertical, 20)
+            } else {
+                VStack(spacing: 8) {
+                    ForEach(remindersManager.reminders.prefix(3)) { reminder in
+                        Text(reminder.text)
+                            .font(.bodySmall)
+                            .foregroundColor(.textPrimary)
+                            .lineSpacing(4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(12)
+                            .background(LinearGradient.accent.opacity(0.5))
+                            .cornerRadius(8)
+                    }
+                }
+            }
+            
+            Button(action: {
+                showingReminders = true
+            }) {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Add / Edit")
+                }
+                .font(.captionSmall)
+                .fontWeight(.medium)
+                .foregroundColor(.textPrimary)
+            }
+        }
+        .padding(16)
+        .background(
+            LinearGradient.accent
+                .opacity(0.3)
+        )
+        .cornerRadius(12)
+    }
+}
+
+// MARK: - To-Do Section
+
+struct ToDoSection: View {
+    let userData: UserData
+    @Binding var selectedTab: Int
+    @ObservedObject var pledgeManager: PledgeManager
+    
+    // State for checked items (persisted in UserDefaults)
+    @AppStorage("todoNotificationsChecked") private var notificationsChecked = false
+    @AppStorage("todoWebsiteBlockerChecked") private var websiteBlockerChecked = false
+    @AppStorage("todoChatAIChecked") private var chatAIChecked = false
+    @AppStorage("todoProfileChecked") private var profileChecked = false
+    @AppStorage("todoCreatePostChecked") private var createPostChecked = false
+    
+    // Sheet states
+    @State private var showingWebsiteBlocker = false
+    @State private var showingProfile = false
+    @State private var showingPledge = false
+    @State private var showingCreatePost = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("To Do")
+                .font(.titleSmall)
+                .foregroundColor(.textPrimary)
+            
+            // Enable Notifications (checkbox NOT manually tappable - controlled by system)
+            ToDoCard(
+                title: "Enable Notifications",
+                description: "Get timely check-ins, motivation, and quick interventions to catch urges before they spiral.",
+                isChecked: $notificationsChecked,
+                allowManualCheckbox: false,
+                action: {
+                    requestNotificationPermission()
+                }
+            )
+            
+            // Website Blocker (checkbox manually tappable)
+            ToDoCard(
+                title: "Website Blocker",
+                description: "Block adult content across all browsers and apps to remove temptation and protect your recovery.",
+                isChecked: $websiteBlockerChecked,
+                allowManualCheckbox: true,
+                action: {
+                    showingWebsiteBlocker = true
+                }
+            )
+            
+            // Chat with AI (checkbox manually tappable)
+            ToDoCard(
+                title: "Chat with AI",
+                description: "Talk to Nomi, your AI companion who understands your journey and can help when urges hit.",
+                isChecked: $chatAIChecked,
+                allowManualCheckbox: true,
+                action: {
+                    selectedTab = 1 // Navigate to Chat tab
+                }
+            )
+            
+            // Update Your Profile (checkbox manually tappable)
+            ToDoCard(
+                title: "Update Your Profile",
+                description: "Make your space feel like yours — add a photo, write a bio, or stay anonymous if you prefer.",
+                isChecked: $profileChecked,
+                allowManualCheckbox: true,
+                action: {
+                    showingProfile = true
+                }
+            )
+            
+            // Pledge for Today (checkbox NOT manually tappable - controlled by PledgeManager)
+            ToDoCard(
+                title: "Pledge for Today",
+                description: "Make a daily commitment to stay strong. Small, achievable goals build lasting change.",
+                isChecked: .constant(pledgeManager.isPledgedToday),
+                allowManualCheckbox: false,
+                action: {
+                    showingPledge = true
+                }
+            )
+            
+            // Create A Post (checkbox manually tappable)
+            ToDoCard(
+                title: "Create A Post",
+                description: "Share your story, struggles, or victories with the community. Your experience might help someone else.",
+                isChecked: $createPostChecked,
+                allowManualCheckbox: true,
+                action: {
+                    showingCreatePost = true
+                }
+            )
+        }
+        .padding(16)
+        .background(
+            LinearGradient.accent
+                .opacity(0.3)
+        )
+        .cornerRadius(12)
+        .sheet(isPresented: $showingWebsiteBlocker) {
+            WebsiteBlockerView()
+        }
+        .sheet(isPresented: $showingProfile) {
+            SettingsView()
+        }
+        .sheet(isPresented: $showingPledge) {
+            PledgeView()
+        }
+        .sheet(isPresented: $showingCreatePost) {
+            CreatePostView(onPostCreated: {
+                createPostChecked = true
+            })
+        }
+    }
+    
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            DispatchQueue.main.async {
+                if granted {
+                    notificationsChecked = true
+                }
+            }
+        }
+    }
+}
+
+// MARK: - To Do Card
+
+struct ToDoCard: View {
+    let title: String
+    let description: String
+    @Binding var isChecked: Bool
+    var allowManualCheckbox: Bool = true
+    var action: (() -> Void)? = nil
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            // Main tappable area (title, description, arrow)
+            Button(action: {
+                action?()
+            }) {
+                VStack(alignment: .leading, spacing: 8) {
+                    // Title and checkbox row
+                    HStack(alignment: .top, spacing: 12) {
+                        Text(title)
+                            .font(.bodySmall)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.textPrimary)
+                            .strikethrough(isChecked, color: .textPrimary)
+                        
+                        Spacer()
+                        
+                        // Checkbox (separate tap target for manual, display only for auto)
+                        if allowManualCheckbox {
+                            Button(action: {
+                                isChecked.toggle()
+                            }) {
+                                Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
+                                    .font(.system(size: 22))
+                                    .foregroundColor(isChecked ? .accentGradientStart : .textTertiary)
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
+                                .font(.system(size: 22))
+                                .foregroundColor(isChecked ? .accentGradientStart : .textTertiary)
+                        }
+                    }
+                    
+                    // Description and arrow row
+                    HStack(alignment: .bottom, spacing: 12) {
+                        Text(description)
+                            .font(.captionSmall)
+                            .foregroundColor(.textSecondary)
+                            .lineSpacing(4)
+                            .strikethrough(isChecked, color: .textSecondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(12)
+        .background(LinearGradient.accent.opacity(0.5))
+        .cornerRadius(8)
+    }
+}
+
+// MARK: - Reminders Management View
+
+struct RemindersManagementView: View {
+    @Environment(\.dismiss) var dismiss
+    @ObservedObject var remindersManager: RemindersManager
+    @State private var newReminder = ""
+    @State private var editingReminder: RecoveryReminder?
+    @State private var editText = ""
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                AppBackground()
+                
+                VStack(spacing: 20) {
+                    // Existing reminders
+                    ScrollView {
+                        VStack(spacing: 12) {
+                            ForEach(remindersManager.reminders) { reminder in
+                                HStack {
+                                    if editingReminder?.id == reminder.id {
+                                        // Edit mode
+                                        TextField("", text: $editText)
+                                            .foregroundColor(.textPrimary)
+                                            .onSubmit {
+                                                Task {
+                                                    await remindersManager.updateReminder(reminder, newText: editText)
+                                                    editingReminder = nil
+                                                }
+                                            }
+                                    } else {
+                                        Text(reminder.text)
+                                            .foregroundColor(.textPrimary)
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    HStack(spacing: 8) {
+                                        // Edit button
+                                        Button(action: {
+                                            editingReminder = reminder
+                                            editText = reminder.text
+                                        }) {
+                                            Image(systemName: "pencil")
+                                                .foregroundColor(.textSecondary)
+                                        }
+                                        
+                                        // Delete button
+                                        Button(action: {
+                                            Task {
+                                                await remindersManager.deleteReminder(reminder)
+                                            }
+                                        }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.textSecondary)
+                                        }
+                                    }
+                                }
+                                .padding()
+                                .background(LinearGradient.accent.opacity(0.5))
+                                .cornerRadius(8)
+                            }
+                        }
+                        .padding()
+                    }
+                    
+                    // Add new reminder
+                    VStack(spacing: 12) {
+                        TextField("", text: $newReminder, prompt: Text("Add new reminder...").foregroundColor(.textTertiary))
+                            .textFieldStyle(.plain)
+                            .foregroundColor(.textPrimary)
+                            .padding()
+                            .background(Color.surfaceBackground)
+                            .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.borderColor, lineWidth: 1)
+                            )
+                        
+                        Button(action: {
+                            if !newReminder.isEmpty {
+                                Task {
+                                    await remindersManager.createReminder(text: newReminder)
+                                    newReminder = ""
+                                }
+                            }
+                        }) {
+                            Text("Add Reminder")
+                                .font(.button)
+                                .foregroundColor(.textPrimary)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(LinearGradient.accent)
+                                .cornerRadius(12)
+                        }
+                    }
+                    .padding()
+                }
+            }
+            .navigationTitle("Manage Reminders")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") { dismiss() }
+                        .foregroundColor(.textPrimary)
+                }
+            }
+            .toolbarBackground(Color.backgroundGradientStart, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+        }
     }
 }
 
