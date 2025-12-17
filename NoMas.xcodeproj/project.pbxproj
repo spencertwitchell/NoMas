@@ -16,6 +16,7 @@
 		2932FC602EF3390800D02A1A /* PastEntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC5F2EF3390800D02A1A /* PastEntriesView.swift */; };
 		2932FC622EF3392200D02A1A /* JournalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC612EF3392200D02A1A /* JournalModels.swift */; };
 		2932FC642EF3420100D02A1A /* Dailyprayerview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC632EF3420100D02A1A /* Dailyprayerview.swift */; };
+		2932FC662EF349B900D02A1A /* BreathingExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC652EF349B900D02A1A /* BreathingExerciseView.swift */; };
 		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
 		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
 		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
@@ -103,6 +104,7 @@
 		2932FC5F2EF3390800D02A1A /* PastEntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastEntriesView.swift; sourceTree = "<group>"; };
 		2932FC612EF3392200D02A1A /* JournalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalModels.swift; sourceTree = "<group>"; };
 		2932FC632EF3420100D02A1A /* Dailyprayerview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dailyprayerview.swift; sourceTree = "<group>"; };
+		2932FC652EF349B900D02A1A /* BreathingExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingExerciseView.swift; sourceTree = "<group>"; };
 		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 				2932FC5F2EF3390800D02A1A /* PastEntriesView.swift */,
 				2932FC612EF3392200D02A1A /* JournalModels.swift */,
 				2932FC632EF3420100D02A1A /* Dailyprayerview.swift */,
+				2932FC652EF349B900D02A1A /* BreathingExerciseView.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 				297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */,
 				297AD1162EE76D8000CCE3BC /* UserData.swift in Sources */,
 				297AD1C62EEE0EE700CCE3BC /* Communitymodels.swift in Sources */,
+				2932FC662EF349B900D02A1A /* BreathingExerciseView.swift in Sources */,
 				2932FC622EF3392200D02A1A /* JournalModels.swift in Sources */,
 				297AD11E2EE780C300CCE3BC /* ColorManager.swift in Sources */,
 				297AD1EA2EEE509900CCE3BC /* NomiChatView.swift in Sources */,

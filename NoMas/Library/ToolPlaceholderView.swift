@@ -74,16 +74,6 @@ struct ToolPlaceholderView: View {
 
 // MARK: - Self Care Tools
 
-struct BreathingExerciseView: View {
-    var body: some View {
-        ToolPlaceholderView(
-            icon: "wind",
-            title: "Breathing Exercise",
-            description: "Calm urges and reduce anxiety with guided breathing techniques proven to help in moments of temptation."
-        )
-    }
-}
-
 struct GratitudeView: View {
     var body: some View {
         ToolPlaceholderView(
@@ -95,6 +85,7 @@ struct GratitudeView: View {
 }
 
 // MARK: - Previews
+
 
 #Preview("Breathing") {
     BreathingExerciseView()
