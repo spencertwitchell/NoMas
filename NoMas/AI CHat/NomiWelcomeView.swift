@@ -18,9 +18,9 @@ struct NomiWelcomeView: View {
             Spacer()
             
             // Lottie animation placeholder
-            LottieView(animation: .named("Heart_Blue"))
+            LottieView(animation: .named("nomaswink"))
                 .playing(loopMode: .loop)
-                .frame(width: 180, height: 180)
+                .frame(width: 200, height: 200)
             
             VStack(spacing: 16) {
                 Text("Meet Nomi")

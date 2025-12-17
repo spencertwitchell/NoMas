@@ -179,9 +179,9 @@ struct NomiChatView: View {
     private var placeholderView: some View {
         VStack(spacing: 24) {
             Spacer()
-            LottieView(animation: .named("Heart_Blue"))
+            LottieView(animation: .named("nomasnormal"))
                 .playing(loopMode: .loop)
-                .frame(width: 160, height: 160)
+                .frame(width: 200, height: 200)
             VStack(spacing: 12) {
                 Text("What's on your mind?")
                     .font(.titleMedium)

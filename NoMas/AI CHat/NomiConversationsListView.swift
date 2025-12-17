@@ -75,9 +75,9 @@ struct NomiConversationsListView: View {
             Spacer()
             
             // Lottie animation placeholder
-            LottieView(animation: .named("Heart_Blue"))
+            LottieView(animation: .named("nomasnormal"))
                 .playing(loopMode: .loop)
-                .frame(width: 180, height: 180)
+                .frame(width: 200, height: 200)
             
             Text("Start Your First Chat")
                 .font(.titleMedium)

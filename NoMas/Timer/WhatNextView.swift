@@ -2,15 +2,7 @@
 //  WhatNextView.swift
 //  NoMas
 //
-//  Created by Spencer Twitchell on 12/13/25.
-//
-
-
-//
-//  WhatNextView.swift
-//  NoMas
-//
-//  Post-reset guidance page with action buttons
+//  Post-reset guidance page with action buttons that link to real features
 //
 
 import SwiftUI
@@ -23,9 +15,9 @@ struct WhatNextView: View {
     @Binding var selectedTab: Int
     @Binding var shouldDismissToHome: Bool
     
-    @State private var showingReflectionView = false
-    @State private var showingWhyQuittingView = false
-    @State private var showingSelfCareView = false
+    @State private var showingPledge = false
+    @State private var showingReflectionJournal = false
+    @State private var showingCreatePost = false
     
     var body: some View {
         ZStack {
@@ -58,26 +50,26 @@ struct WhatNextView: View {
                     // Action Buttons
                     VStack(spacing: 12) {
                         WhatNextActionButton(
-                            icon: "pencil.and.outline",
-                            title: "Reflect on What Triggered You",
+                            icon: "hand.raised.fill",
+                            title: "Pledge to Stay Strong Tomorrow",
                             action: {
-                                showingReflectionView = true
+                                showingPledge = true
                             }
                         )
                         
                         WhatNextActionButton(
-                            icon: "brain.head.profile",
-                            title: "Remind Yourself Why You're Quitting",
+                            icon: "person.3.fill",
+                            title: "Make a Post to Stay Accountable",
                             action: {
-                                showingWhyQuittingView = true
+                                showingCreatePost = true
                             }
                         )
                         
                         WhatNextActionButton(
-                            icon: "heart.fill",
-                            title: "Practice Self-Compassion",
+                            icon: "book.pages.fill",
+                            title: "Reflect on What Happened",
                             action: {
-                                showingSelfCareView = true
+                                showingReflectionJournal = true
                             }
                         )
                     }
@@ -114,14 +106,16 @@ struct WhatNextView: View {
                 }
             }
         }
-        .sheet(isPresented: $showingReflectionView) {
-            ReflectionPlaceholderView()
+        .sheet(isPresented: $showingPledge) {
+            PledgeView()
         }
-        .sheet(isPresented: $showingWhyQuittingView) {
-            WhyQuittingPlaceholderView()
+        .sheet(isPresented: $showingCreatePost) {
+            CreatePostView(onPostCreated: {
+                // Post was created successfully
+            })
         }
-        .sheet(isPresented: $showingSelfCareView) {
-            SelfCarePlaceholderView()
+        .sheet(isPresented: $showingReflectionJournal) {
+            ReflectionJournalView()
         }
     }
 }
@@ -162,140 +156,8 @@ struct WhatNextActionButton: View {
     }
 }
 
-// MARK: - Placeholder Views (to be replaced later)
-
-struct ReflectionPlaceholderView: View {
-    @Environment(\.dismiss) var dismiss
-    
-    var body: some View {
-        ZStack {
-            AppBackground()
-            
-            VStack(spacing: 24) {
-                Spacer()
-                
-                Image(systemName: "pencil.and.outline")
-                    .font(.system(size: 60))
-                    .foregroundStyle(LinearGradient.accent)
-                
-                Text("Reflection Journal")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                
-                Text("Coming soon — a space to reflect on your triggers and learn from each experience.")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-                
-                Spacer()
-                
-                Button(action: { dismiss() }) {
-                    Text("Close")
-                        .font(.button)
-                        .foregroundColor(.textPrimary)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(LinearGradient.accent)
-                        .cornerRadius(16)
-                }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 40)
-            }
-        }
-    }
-}
-
-struct WhyQuittingPlaceholderView: View {
-    @Environment(\.dismiss) var dismiss
-    
-    var body: some View {
-        ZStack {
-            AppBackground()
-            
-            VStack(spacing: 24) {
-                Spacer()
-                
-                Image(systemName: "brain.head.profile")
-                    .font(.system(size: 60))
-                    .foregroundStyle(LinearGradient.accent)
-                
-                Text("Why I'm Quitting")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                
-                Text("Coming soon — reminders of your reasons for recovery and the benefits you're working toward.")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-                
-                Spacer()
-                
-                Button(action: { dismiss() }) {
-                    Text("Close")
-                        .font(.button)
-                        .foregroundColor(.textPrimary)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(LinearGradient.accent)
-                        .cornerRadius(16)
-                }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 40)
-            }
-        }
-    }
-}
-
-struct SelfCarePlaceholderView: View {
-    @Environment(\.dismiss) var dismiss
-    
-    var body: some View {
-        ZStack {
-            AppBackground()
-            
-            VStack(spacing: 24) {
-                Spacer()
-                
-                Image(systemName: "heart.fill")
-                    .font(.system(size: 60))
-                    .foregroundStyle(LinearGradient.accent)
-                
-                Text("Self-Compassion")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                
-                Text("Coming soon — guided exercises for self-compassion and healthy coping strategies.")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-                
-                Spacer()
-                
-                Button(action: { dismiss() }) {
-                    Text("Close")
-                        .font(.button)
-                        .foregroundColor(.textPrimary)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(LinearGradient.accent)
-                        .cornerRadius(16)
-                }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 40)
-            }
-        }
-    }
-}
-
 // MARK: - Preview
 
 #Preview("What Next View") {
     WhatNextView(selectedTab: .constant(0), shouldDismissToHome: .constant(false))
-}
-
-#Preview("Reflection Placeholder") {
-    ReflectionPlaceholderView()
 }
