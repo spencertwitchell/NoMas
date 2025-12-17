@@ -37,7 +37,7 @@ struct LibraryView: View {
             ArticleDetailView(article: article)
         }
         // Self Care sheets
-        .fullScreenCover(isPresented: $showingJournal) { JournalView() }
+        .fullScreenCover(isPresented: $showingJournal) { ReflectionJournalView() }
         .fullScreenCover(isPresented: $showingAffirmations) { AffirmationsView() }
         .fullScreenCover(isPresented: $showingBreathing) { BreathingExerciseView() }
         .fullScreenCover(isPresented: $showingGratitude) { GratitudeView() }
@@ -98,7 +98,7 @@ struct LibraryView: View {
                 
                 SelfCareImageCard(
                     title: "Website Blocker",
-                    imageName: "website blocker",
+                    imageName: "blocker",
                     action: { showingWebsiteBlocker = true }
                 )
             }

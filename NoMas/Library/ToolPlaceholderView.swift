@@ -74,16 +74,6 @@ struct ToolPlaceholderView: View {
 
 // MARK: - Self Care Tools
 
-struct JournalView: View {
-    var body: some View {
-        ToolPlaceholderView(
-            icon: "book.pages.fill",
-            title: "Recovery Journal",
-            description: "Document your journey, track triggers, and celebrate victories in your personal recovery journal."
-        )
-    }
-}
-
 struct AffirmationsView: View {
     var body: some View {
         ToolPlaceholderView(
@@ -115,10 +105,6 @@ struct GratitudeView: View {
 }
 
 // MARK: - Previews
-
-#Preview("Journal") {
-    JournalView()
-}
 
 #Preview("Affirmations") {
     AffirmationsView()

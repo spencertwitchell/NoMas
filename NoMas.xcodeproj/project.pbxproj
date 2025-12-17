@@ -10,6 +10,11 @@
 		2932FC542EF32CB000D02A1A /* WebsiteBlockerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC532EF32CB000D02A1A /* WebsiteBlockerView.swift */; };
 		2932FC562EF32CBA00D02A1A /* WebsiteBlockerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC552EF32CBA00D02A1A /* WebsiteBlockerManager.swift */; };
 		2932FC582EF32CCA00D02A1A /* BlockedDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC572EF32CCA00D02A1A /* BlockedDomain.swift */; };
+		2932FC5A2EF338D000D02A1A /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC592EF338D000D02A1A /* EntryDetailView.swift */; };
+		2932FC5C2EF338F300D02A1A /* JournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC5B2EF338F300D02A1A /* JournalViewModel.swift */; };
+		2932FC5E2EF3390000D02A1A /* ReflectionJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC5D2EF3390000D02A1A /* ReflectionJournalView.swift */; };
+		2932FC602EF3390800D02A1A /* PastEntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC5F2EF3390800D02A1A /* PastEntriesView.swift */; };
+		2932FC622EF3392200D02A1A /* JournalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC612EF3392200D02A1A /* JournalModels.swift */; };
 		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
 		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
 		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
@@ -91,6 +96,11 @@
 		2932FC532EF32CB000D02A1A /* WebsiteBlockerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteBlockerView.swift; sourceTree = "<group>"; };
 		2932FC552EF32CBA00D02A1A /* WebsiteBlockerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteBlockerManager.swift; sourceTree = "<group>"; };
 		2932FC572EF32CCA00D02A1A /* BlockedDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedDomain.swift; sourceTree = "<group>"; };
+		2932FC592EF338D000D02A1A /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
+		2932FC5B2EF338F300D02A1A /* JournalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViewModel.swift; sourceTree = "<group>"; };
+		2932FC5D2EF3390000D02A1A /* ReflectionJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionJournalView.swift; sourceTree = "<group>"; };
+		2932FC5F2EF3390800D02A1A /* PastEntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastEntriesView.swift; sourceTree = "<group>"; };
+		2932FC612EF3392200D02A1A /* JournalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalModels.swift; sourceTree = "<group>"; };
 		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -320,6 +330,11 @@
 				2932FC532EF32CB000D02A1A /* WebsiteBlockerView.swift */,
 				2932FC552EF32CBA00D02A1A /* WebsiteBlockerManager.swift */,
 				2932FC572EF32CCA00D02A1A /* BlockedDomain.swift */,
+				2932FC592EF338D000D02A1A /* EntryDetailView.swift */,
+				2932FC5B2EF338F300D02A1A /* JournalViewModel.swift */,
+				2932FC5D2EF3390000D02A1A /* ReflectionJournalView.swift */,
+				2932FC5F2EF3390800D02A1A /* PastEntriesView.swift */,
+				2932FC612EF3392200D02A1A /* JournalModels.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -425,6 +440,7 @@
 				297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */,
 				297AD1162EE76D8000CCE3BC /* UserData.swift in Sources */,
 				297AD1C62EEE0EE700CCE3BC /* Communitymodels.swift in Sources */,
+				2932FC622EF3392200D02A1A /* JournalModels.swift in Sources */,
 				297AD11E2EE780C300CCE3BC /* ColorManager.swift in Sources */,
 				297AD1EA2EEE509900CCE3BC /* NomiChatView.swift in Sources */,
 				297AD1202EE780F100CCE3BC /* QuizSharedComponents.swift in Sources */,
@@ -432,6 +448,7 @@
 				297AD1622EE7B35100CCE3BC /* NegativeEffectsView.swift in Sources */,
 				297AD1182EE76E3600CCE3BC /* AuthManager.swift in Sources */,
 				297AD1E82EEE508E00CCE3BC /* NomiQuizView.swift in Sources */,
+				2932FC5A2EF338D000D02A1A /* EntryDetailView.swift in Sources */,
 				297AD16C2EE7B53000CCE3BC /* TestimonialsView.swift in Sources */,
 				297AD1972EEB96A800CCE3BC /* MainView.swift in Sources */,
 				297AD1ED2EF24A3D00CCE3BC /* LibraryView.swift in Sources */,
@@ -444,10 +461,12 @@
 				297AD1602EE7B34000CCE3BC /* SymptomsView.swift in Sources */,
 				297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */,
 				297AD1CC2EEE0F0000CCE3BC /* CreatePostView.swift in Sources */,
+				2932FC5C2EF338F300D02A1A /* JournalViewModel.swift in Sources */,
 				297AD1C32EEE043500CCE3BC /* WhatNextView.swift in Sources */,
 				297AD10F2EE76D7500CCE3BC /* DeviceManager.swift in Sources */,
 				297AD1C82EEE0EF100CCE3BC /* CommunityView.swift in Sources */,
 				297AD1782EE8ADB700CCE3BC /* OnboardingCompleteView.swift in Sources */,
+				2932FC602EF3390800D02A1A /* PastEntriesView.swift in Sources */,
 				297AD11C2EE76F0F00CCE3BC /* QuizStep.swift in Sources */,
 				297AD17A2EE8AF3000CCE3BC /* SplashView.swift in Sources */,
 				297AD16A2EE7B51700CCE3BC /* BenefitsView.swift in Sources */,
@@ -477,6 +496,7 @@
 				297AD2042EF25BB100CCE3BC /* RelaxationAudioManager.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
 				297AD1222EE781C300CCE3BC /* OnboardingQuizFlow.swift in Sources */,
+				2932FC5E2EF3390000D02A1A /* ReflectionJournalView.swift in Sources */,
 				297AD1562EE7B14C00CCE3BC /* QuizCalculatingView.swift in Sources */,
 				297AD1B82EED245F00CCE3BC /* MilestonesSheetView.swift in Sources */,
 			);
