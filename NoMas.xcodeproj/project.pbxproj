@@ -24,6 +24,8 @@
 		2932FC702EF35D8F00D02A1A /* MightBreakAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC6F2EF35D8F00D02A1A /* MightBreakAnimationView.swift */; };
 		2932FC722EF35D9500D02A1A /* MightBreakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC712EF35D9500D02A1A /* MightBreakView.swift */; };
 		2932FC742EF35FA500D02A1A /* bg8.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2932FC732EF35FA500D02A1A /* bg8.mp4 */; };
+		2932FC762EF360B400D02A1A /* PanicButtonFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC752EF360B400D02A1A /* PanicButtonFlowView.swift */; };
+		2932FC782EF3618600D02A1A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2932FC772EF3618600D02A1A /* StoreKit.framework */; };
 		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
 		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
 		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
@@ -73,7 +75,6 @@
 		297AD19E2EEBB81E00CCE3BC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */; };
 		297AD1B82EED245F00CCE3BC /* MilestonesSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */; };
 		297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */; };
-		297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */; };
 		297AD1BF2EEE042600CCE3BC /* ResetTimerFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1BE2EEE042600CCE3BC /* ResetTimerFlowView.swift */; };
 		297AD1C12EEE042D00CCE3BC /* ResetAnimationFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */; };
 		297AD1C32EEE043500CCE3BC /* WhatNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1C22EEE043500CCE3BC /* WhatNextView.swift */; };
@@ -119,6 +120,8 @@
 		2932FC6F2EF35D8F00D02A1A /* MightBreakAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MightBreakAnimationView.swift; sourceTree = "<group>"; };
 		2932FC712EF35D9500D02A1A /* MightBreakView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MightBreakView.swift; sourceTree = "<group>"; };
 		2932FC732EF35FA500D02A1A /* bg8.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg8.mp4; sourceTree = "<group>"; };
+		2932FC752EF360B400D02A1A /* PanicButtonFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanicButtonFlowView.swift; sourceTree = "<group>"; };
+		2932FC772EF3618600D02A1A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -163,7 +166,6 @@
 		297AD19D2EEBB81E00CCE3BC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestonesSheetView.swift; sourceTree = "<group>"; };
 		297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
-		297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholderviews.swift; sourceTree = "<group>"; };
 		297AD1BE2EEE042600CCE3BC /* ResetTimerFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetTimerFlowView.swift; sourceTree = "<group>"; };
 		297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetAnimationFlowView.swift; sourceTree = "<group>"; };
 		297AD1C22EEE043500CCE3BC /* WhatNextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatNextView.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				297AD15E2EE7B31400CCE3BC /* SuperwallKit in Frameworks */,
 				297AD1032EE7683400CCE3BC /* Supabase in Frameworks */,
 				297AD0F92EE7683400CCE3BC /* Auth in Frameworks */,
+				2932FC782EF3618600D02A1A /* StoreKit.framework in Frameworks */,
 				297AD1012EE7683400CCE3BC /* Storage in Frameworks */,
 				297AD0FF2EE7683400CCE3BC /* Realtime in Frameworks */,
 			);
@@ -230,6 +233,7 @@
 		297AD0F72EE7683400CCE3BC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2932FC772EF3618600D02A1A /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -300,7 +304,6 @@
 			isa = PBXGroup;
 			children = (
 				297AD1BA2EED2CBA00CCE3BC /* TimerView.swift */,
-				297AD1BC2EED2CD200CCE3BC /* Placeholderviews.swift */,
 				297AD1BE2EEE042600CCE3BC /* ResetTimerFlowView.swift */,
 				297AD1C02EEE042D00CCE3BC /* ResetAnimationFlowView.swift */,
 				297AD1C22EEE043500CCE3BC /* WhatNextView.swift */,
@@ -308,6 +311,7 @@
 				2932FC6D2EF35D8900D02A1A /* MightBreakFlowView.swift */,
 				2932FC6F2EF35D8F00D02A1A /* MightBreakAnimationView.swift */,
 				2932FC712EF35D9500D02A1A /* MightBreakView.swift */,
+				2932FC752EF360B400D02A1A /* PanicButtonFlowView.swift */,
 			);
 			path = Timer;
 			sourceTree = "<group>";
@@ -526,8 +530,8 @@
 				2932FC6E2EF35D8A00D02A1A /* MightBreakFlowView.swift in Sources */,
 				297AD1242EE7864E00CCE3BC /* FontManager.swift in Sources */,
 				297AD1E42EEE507900CCE3BC /* NomiViewModel.swift in Sources */,
-				297AD1BD2EED2CD200CCE3BC /* Placeholderviews.swift in Sources */,
 				297AD1642EE7B36100CCE3BC /* TransitionView.swift in Sources */,
+				2932FC762EF360B400D02A1A /* PanicButtonFlowView.swift in Sources */,
 				297AD1CE2EEE0F0900CCE3BC /* UserProfileView.swift in Sources */,
 				297AD2042EF25BB100CCE3BC /* RelaxationAudioManager.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
@@ -676,6 +680,7 @@
 				INFOPLIST_FILE = NoMas/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "NOMÁS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NoMás utiliza el acceso a la cámara para habilitar diferentes herramientas dentro de la app que apoyan tu proceso de recuperación y bienestar.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -717,6 +722,7 @@
 				INFOPLIST_FILE = NoMas/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "NOMÁS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NoMás utiliza el acceso a la cámara para habilitar diferentes herramientas dentro de la app que apoyan tu proceso de recuperación y bienestar.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

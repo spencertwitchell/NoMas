@@ -112,7 +112,7 @@ struct TimerView: View {
             ResetTimerFlowView(selectedTab: $selectedTab)
         }
         .fullScreenCover(isPresented: $showingPanicButton) {
-            PanicButtonFlowView()
+            PanicButtonFlowView(selectedTab: $selectedTab)
         }
         .sheet(isPresented: $showingReminders) {
             RemindersManagementView(remindersManager: remindersManager)
