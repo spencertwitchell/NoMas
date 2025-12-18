@@ -27,6 +27,7 @@
 		2932FC762EF360B400D02A1A /* PanicButtonFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC752EF360B400D02A1A /* PanicButtonFlowView.swift */; };
 		2932FC782EF3618600D02A1A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2932FC772EF3618600D02A1A /* StoreKit.framework */; };
 		2932FC7A2EF3C23600D02A1A /* bg4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2932FC792EF3C23600D02A1A /* bg4.mp4 */; };
+		2932FC7C2EF3D1D700D02A1A /* MotivationalQuoteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC7B2EF3D1D700D02A1A /* MotivationalQuoteManager.swift */; };
 		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
 		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
 		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
@@ -124,6 +125,7 @@
 		2932FC752EF360B400D02A1A /* PanicButtonFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanicButtonFlowView.swift; sourceTree = "<group>"; };
 		2932FC772EF3618600D02A1A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		2932FC792EF3C23600D02A1A /* bg4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg4.mp4; sourceTree = "<group>"; };
+		2932FC7B2EF3D1D700D02A1A /* MotivationalQuoteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotivationalQuoteManager.swift; sourceTree = "<group>"; };
 		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				2932FC6F2EF35D8F00D02A1A /* MightBreakAnimationView.swift */,
 				2932FC712EF35D9500D02A1A /* MightBreakView.swift */,
 				2932FC752EF360B400D02A1A /* PanicButtonFlowView.swift */,
+				2932FC7B2EF3D1D700D02A1A /* MotivationalQuoteManager.swift */,
 			);
 			path = Timer;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				297AD17A2EE8AF3000CCE3BC /* SplashView.swift in Sources */,
 				297AD16A2EE7B51700CCE3BC /* BenefitsView.swift in Sources */,
 				297AD11A2EE76EA700CCE3BC /* OnboardingPhase.swift in Sources */,
+				2932FC7C2EF3D1D700D02A1A /* MotivationalQuoteManager.swift in Sources */,
 				297AD1FA2EF24AC600CCE3BC /* ImageCacheManager.swift in Sources */,
 				2932FC642EF3420100D02A1A /* Dailyprayerview.swift in Sources */,
 				297AD1762EE8AD8A00CCE3BC /* AuthView.swift in Sources */,

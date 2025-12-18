@@ -17,6 +17,7 @@ struct TimerView: View {
     @StateObject private var userData = UserData.shared
     @StateObject private var remindersManager = RemindersManager.shared
     @StateObject private var pledgeManager = PledgeManager.shared
+    @StateObject private var quoteManager = MotivationalQuoteManager.shared
     
     @State private var showingMightBreak = false
     @State private var showingResetTimer = false
@@ -30,10 +31,14 @@ struct TimerView: View {
         ZStack {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 24) {
+                    // Motivational Quote Box
+                    MotivationalQuoteBox(quote: quoteManager.currentQuote)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                    
                     // Animated Flame
                     AnimatedFlameView()
                         .frame(height: 180)
-                        .padding(.top, 12)
                     
                     // Timer Display
                     TimerDisplayView(userData: userData, currentTime: currentTime)
@@ -104,6 +109,16 @@ struct TimerView: View {
         .task {
             // Fetch reminders on appear
             await remindersManager.fetchReminders()
+            // Refresh quote if needed (checks 6-hour cache automatically)
+            await quoteManager.refreshQuoteIfNeeded(for: userData.currentMilestone)
+        }
+        .onChange(of: userData.currentMilestone) { oldValue, newValue in
+            // When milestone changes, fetch a new quote for the new milestone
+            if oldValue != newValue {
+                Task {
+                    await quoteManager.forceRefresh(for: newValue)
+                }
+            }
         }
         .fullScreenCover(isPresented: $showingMightBreak) {
             MightBreakFlowView(selectedTab: $selectedTab)
@@ -132,6 +147,27 @@ struct AnimatedFlameView: View {
             .frame(height: 180)
             .scaleEffect(1.4)
             .shadow(color: Color.accentGradientStart.opacity(0.5), radius: 20)
+    }
+}
+
+// MARK: - Motivational Quote Box
+
+struct MotivationalQuoteBox: View {
+    let quote: String
+    
+    var body: some View {
+        Text(quote)
+            .font(.bodySmall)
+            .foregroundColor(.white)
+            .multilineTextAlignment(.center)
+            .lineSpacing(4)
+            .padding(16)
+            .frame(maxWidth: .infinity)
+            .background(
+                LinearGradient.accent
+                    .opacity(0.3)
+            )
+            .cornerRadius(12)
     }
 }
 

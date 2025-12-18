@@ -65,6 +65,7 @@ struct SplashView: View {
     @StateObject private var authManager = AuthManager.shared
     @StateObject private var superwallManager = SuperwallManager.shared
     @StateObject private var libraryViewModel = LibraryViewModel.shared
+    @StateObject private var quoteManager = MotivationalQuoteManager.shared
     
     // Animation states
     @State private var logoScale: CGFloat = 0.5
@@ -212,6 +213,9 @@ struct SplashView: View {
             
             // Sync Superwall result to userData
             userData.hasActiveSubscription = superwallManager.hasActiveSubscription
+            
+            // Preload motivational quote (needs userData to know current milestone)
+            await quoteManager.refreshQuoteIfNeeded(for: userData.currentMilestone)
             
             // Preload article images (runs in background, may extend past splash)
             // The articles are already fetched, so we can start caching images
