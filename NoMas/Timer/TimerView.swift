@@ -143,7 +143,6 @@ struct AnimatedFlameView: View {
     var body: some View {
         LottieView(animation: .named(userData.currentMilestone.animationName))
             .playing(loopMode: .loop)
-            .animationSpeed(0.67)
             .frame(height: 180)
             .scaleEffect(1.4)
             .shadow(color: Color.accentGradientStart.opacity(0.5), radius: 20)
