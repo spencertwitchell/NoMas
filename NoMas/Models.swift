@@ -280,6 +280,21 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
         return "flame.fill"
     }
     
+    /// Lottie animation name for this milestone
+    var animationName: String {
+        switch self {
+        case .bronze: return "bronzeb"
+        case .silver: return "silverb"
+        case .gold: return "goldb"
+        case .platinum: return "platinumb"
+        case .diamond: return "diamondb"
+        case .ruby: return "rubyb"
+        case .elite: return "eliteb"
+        case .master: return "masterb"
+        case .grandmaster: return "grandmasterb"
+        }
+    }
+    
     /// Get milestone for a given day count
     static func forDays(_ days: Int) -> Milestone {
         let sorted = Milestone.allCases.sorted { $0.daysRequired > $1.daysRequired }

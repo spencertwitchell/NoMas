@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 // MARK: - Milestones Sheet View
 
@@ -81,15 +82,23 @@ struct MilestoneRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 16) {
-                // Icon placeholder (will be Lottie)
+                // Milestone Lottie Animation
                 ZStack {
+                    // Background circle for all states
                     Circle()
-                        .fill(milestone.gradient.opacity(isUnlocked ? 0.8 : 0.3))
-                        .frame(width: 44, height: 44)
+                        .fill(Color.black.opacity(isUnlocked ? 0.3 : 0.5))
+                        .frame(width: 50, height: 50)
                     
-                    Image(systemName: milestone.iconName)
-                        .font(.system(size: 20))
-                        .foregroundColor(.white.opacity(isUnlocked ? 1.0 : 0.5))
+                    LottieView(animation: .named(milestone.animationName))
+                        .playing(loopMode: .loop)
+                        .frame(width: 50, height: 50)
+                    
+                    // Lock icon overlay for locked milestones
+                    if !isUnlocked {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white.opacity(0.8))
+                    }
                 }
                 
                 // Info
