@@ -27,10 +27,9 @@ struct RootView: View {
     @StateObject private var userData = UserData.shared
     @StateObject private var authManager = AuthManager.shared
     @StateObject private var onboardingState = OnboardingState.shared
-    @StateObject private var superwallManager = SuperwallManager.shared
     
     @State private var splashComplete = false
-    @State private var isVerifyingSubscription = false
+    @State private var contentReady = false
     
     // Debug flag - set to true to skip onboarding during development
     private let skipOnboarding = false
@@ -45,29 +44,23 @@ struct RootView: View {
                 // Development mode - skip straight to main app
                 MainView()
                     .onAppear { setupTestData() }
-            } else if !splashComplete {
-                // Step 1: Always show splash first
-                SplashView(isComplete: $splashComplete)
-                    .transition(.opacity)
-            } else if isVerifyingSubscription {
-                // Verifying subscription status
-                LoadingView(message: "Checking subscription...")
-                    .transition(.opacity)
             } else {
-                // Step 2: Route based on state
-                routedView
-                    .transition(.opacity)
+                // Main content only renders once data is loaded (contentReady)
+                // This prevents flash of wrong screen before splash appears
+                if contentReady {
+                    routedView
+                        .transition(.opacity)
+                }
+                
+                // Splash overlays on top and fades out
+                if !splashComplete {
+                    SplashView(isComplete: $splashComplete, contentReady: $contentReady)
+                }
             }
         }
-        .animation(.easeInOut(duration: 0.35), value: splashComplete)
         .animation(.easeInOut(duration: 0.35), value: userData.hasCompletedOnboarding)
         .animation(.easeInOut(duration: 0.35), value: userData.hasActiveSubscription)
         .animation(.easeInOut(duration: 0.35), value: authManager.isAuthenticated)
-        .onChange(of: splashComplete) { _, complete in
-            if complete {
-                verifySubscriptionStatus()
-            }
-        }
     }
     
     // MARK: - Routing Logic
@@ -93,29 +86,6 @@ struct RootView: View {
         } else {
             // HAPPY PATH: Completed onboarding, has subscription, is authenticated
             MainView()
-        }
-    }
-    
-    // MARK: - Subscription Verification
-    
-    private func verifySubscriptionStatus() {
-        // Only verify if user has completed onboarding
-        guard userData.hasCompletedOnboarding else { return }
-        
-        isVerifyingSubscription = true
-        
-        Task {
-            // Check subscription status with Superwall/StoreKit
-            await superwallManager.checkSubscriptionStatus()
-            
-            // Sync the result
-            userData.hasActiveSubscription = superwallManager.hasActiveSubscription
-            
-            await MainActor.run {
-                isVerifyingSubscription = false
-            }
-            
-            print("✅ Subscription verified: \(userData.hasActiveSubscription)")
         }
     }
     
@@ -227,9 +197,7 @@ struct ReturningUserPaywallView: View {
         superwallManager.triggerSubscriptionRequiredPaywall { purchased in
             if purchased {
                 userData.hasActiveSubscription = true
-                // View will automatically update via published property
             }
-            // If not purchased, they stay on this screen (hard paywall)
         }
     }
     
@@ -302,7 +270,15 @@ private struct ReturningAuthContent: View {
         VStack(spacing: 0) {
             Spacer()
             
-            // Title
+            // Logo
+            Image("nomaslogo")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 80)
+            
+            Spacer()
+                .frame(height: 32)
+            
             Text("Sign In to Restore")
                 .font(.titleLarge)
                 .foregroundColor(.textPrimary)
@@ -320,6 +296,7 @@ private struct ReturningAuthContent: View {
             
             // Auth buttons
             VStack(spacing: 16) {
+                // Google Sign In
                 AuthButton(
                     title: "Continue with Google",
                     icon: "g.circle.fill",
@@ -332,11 +309,13 @@ private struct ReturningAuthContent: View {
                     }
                 )
                 
+                // Apple Sign In
                 SignInWithAppleButton(
                     onSuccess: { onComplete() },
                     onError: { _ in }
                 )
                 
+                // Email Sign In
                 AuthButton(
                     title: "Sign in with Email",
                     icon: "envelope.fill",

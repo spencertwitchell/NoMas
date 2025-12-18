@@ -51,9 +51,11 @@ extension View {
 
 struct SplashView: View {
     @Binding var isComplete: Bool
+    @Binding var contentReady: Bool
     
     @StateObject private var userData = UserData.shared
     @StateObject private var authManager = AuthManager.shared
+    @StateObject private var superwallManager = SuperwallManager.shared
     
     // Animation states
     @State private var logoScale: CGFloat = 0.5
@@ -62,12 +64,17 @@ struct SplashView: View {
     @State private var showFirstLine: Bool = false
     @State private var showSecondLine: Bool = false
     @State private var showReviews: Bool = false
+    @State private var fadeOut: Bool = false
     
     // Data loading state
     @State private var dataLoaded: Bool = false
     
     var body: some View {
         ZStack {
+            // Solid background that shows immediately (prevents flash while video loads)
+            Color.black
+                .ignoresSafeArea()
+            
             // Video background
             LoopingVideoBackground(videoName: "bg4")
             
@@ -139,6 +146,7 @@ struct SplashView: View {
                 Spacer()
             }
         }
+        .opacity(fadeOut ? 0 : 1)
         .onAppear {
             startAnimations()
             loadData()
@@ -184,16 +192,22 @@ struct SplashView: View {
     
     private func loadData() {
         Task {
-            // Load user data from Supabase
+            // Load user data from Supabase (profile, progress, quiz data)
             await userData.initializeFromSupabase()
             
             // Check auth status
             await authManager.checkAuthStatus()
             
+            // Check subscription status with Superwall/StoreKit (source of truth)
+            await superwallManager.checkSubscriptionStatus()
+            
+            // Sync Superwall result to userData
+            userData.hasActiveSubscription = superwallManager.hasActiveSubscription
+            
             await MainActor.run {
                 dataLoaded = true
-                // If animations are already done, complete immediately
-                // Otherwise, completeIfReady will be called by animation timer
+                // Signal that content can now be rendered behind splash
+                contentReady = true
             }
         }
     }
@@ -202,7 +216,12 @@ struct SplashView: View {
         // Only complete if data is loaded
         // If data isn't loaded yet, we'll wait for it
         if dataLoaded {
-            withAnimation(.easeInOut(duration: 0.3)) {
+            // Start fade out animation
+            withAnimation(.easeInOut(duration: 0.5)) {
+                fadeOut = true
+            }
+            // Complete after fade out finishes
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 isComplete = true
             }
         } else {
@@ -217,5 +236,5 @@ struct SplashView: View {
 // MARK: - Preview
 
 #Preview {
-    SplashView(isComplete: .constant(false))
+    SplashView(isComplete: .constant(false), contentReady: .constant(false))
 }
