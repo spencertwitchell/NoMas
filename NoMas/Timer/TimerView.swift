@@ -130,21 +130,21 @@ struct AnimatedFlameView: View {
             .playing(loopMode: .loop)
             .animationSpeed(0.67)
             .frame(height: 180)
-            .scaleEffect(2.0)
+            .scaleEffect(1.4)
             .shadow(color: Color.accentGradientStart.opacity(0.5), radius: 20)
     }
     
     var animationName: String {
         switch userData.currentMilestone {
-        case .bronze: return "Heart_Blue"      // Placeholder - update with actual animation
-        case .silver: return "Heart_Blue"      // Placeholder
-        case .gold: return "Heart_Blue"        // Placeholder
-        case .platinum: return "Heart_Blue"    // Placeholder
-        case .diamond: return "Heart_Blue"     // Placeholder
-        case .ruby: return "Heart_Blue"        // Placeholder
-        case .elite: return "Heart_Blue"       // Placeholder
-        case .master: return "Heart_Blue"      // Placeholder
-        case .grandmaster: return "Heart_Blue" // Placeholder
+        case .bronze: return "bronzeb"      // Placeholder - update with actual animation
+        case .silver: return "silverb"      // Placeholder
+        case .gold: return "goldb"        // Placeholder
+        case .platinum: return "platinumb"    // Placeholder
+        case .diamond: return "diamondb"     // Placeholder
+        case .ruby: return "rubyb"        // Placeholder
+        case .elite: return "eliteb"       // Placeholder
+        case .master: return "masterb"      // Placeholder
+        case .grandmaster: return "grandmasterb" // Placeholder
         }
     }
 }

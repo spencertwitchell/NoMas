@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "diamondb.json",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
