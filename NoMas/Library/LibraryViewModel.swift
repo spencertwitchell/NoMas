@@ -19,12 +19,16 @@ import Combine
 
 @MainActor
 class LibraryViewModel: ObservableObject {
+    static let shared = LibraryViewModel()
+    
     @Published var categories: [Category] = []
     @Published var articlesByCategory: [String: [Article]] = [:]
     @Published var isLoading = false
     @Published var errorMessage: String?
     
     private var hasLoadedData = false
+    
+    private init() {}
     
     func fetchData() async {
         // Only fetch if we haven't loaded data yet
@@ -72,11 +76,6 @@ class LibraryViewModel: ObservableObject {
             self.hasLoadedData = true
             
             print("✅ Library data loading complete!")
-            
-            // Preload images in background
-            Task {
-                await ImageCacheManager.shared.preloadArticleImages(articles: articlesData)
-            }
             
         } catch {
             print("❌ Error fetching library data: \(error)")

@@ -20,12 +20,7 @@ struct SwipeRevealModifier: ViewModifier {
             .mask(
                 GeometryReader { geometry in
                     LinearGradient(
-                        stops: [
-                            .init(color: .white, location: 0),
-                            .init(color: .white, location: max(0, revealProgress - 0.1)),
-                            .init(color: .clear, location: revealProgress),
-                            .init(color: .clear, location: 1)
-                        ],
+                        stops: gradientStops,
                         startPoint: .leading,
                         endPoint: .trailing
                     )
@@ -38,6 +33,19 @@ struct SwipeRevealModifier: ViewModifier {
                     }
                 }
             }
+    }
+    
+    private var gradientStops: [Gradient.Stop] {
+        // Ensure stops are always in ascending order
+        let edgeStart = max(0, revealProgress - 0.1)
+        let edgeEnd = max(edgeStart + 0.01, revealProgress) // Always slightly after edgeStart
+        
+        return [
+            .init(color: .white, location: 0),
+            .init(color: .white, location: edgeStart),
+            .init(color: .clear, location: edgeEnd),
+            .init(color: .clear, location: 1)
+        ]
     }
 }
 
@@ -56,6 +64,7 @@ struct SplashView: View {
     @StateObject private var userData = UserData.shared
     @StateObject private var authManager = AuthManager.shared
     @StateObject private var superwallManager = SuperwallManager.shared
+    @StateObject private var libraryViewModel = LibraryViewModel.shared
     
     // Animation states
     @State private var logoScale: CGFloat = 0.5
@@ -192,17 +201,26 @@ struct SplashView: View {
     
     private func loadData() {
         Task {
-            // Load user data from Supabase (profile, progress, quiz data)
-            await userData.initializeFromSupabase()
+            // Run data loading tasks in parallel for efficiency
+            async let userDataTask: () = userData.initializeFromSupabase()
+            async let authTask: () = authManager.checkAuthStatus()
+            async let subscriptionTask: () = superwallManager.checkSubscriptionStatus()
+            async let libraryTask: () = libraryViewModel.fetchData()
             
-            // Check auth status
-            await authManager.checkAuthStatus()
-            
-            // Check subscription status with Superwall/StoreKit (source of truth)
-            await superwallManager.checkSubscriptionStatus()
+            // Wait for all tasks to complete
+            _ = await (userDataTask, authTask, subscriptionTask, libraryTask)
             
             // Sync Superwall result to userData
             userData.hasActiveSubscription = superwallManager.hasActiveSubscription
+            
+            // Preload article images (runs in background, may extend past splash)
+            // The articles are already fetched, so we can start caching images
+            let allArticles = libraryViewModel.articlesByCategory.values.flatMap { $0 }
+            if !allArticles.isEmpty {
+                Task {
+                    await ImageCacheManager.shared.preloadArticleImages(articles: Array(allArticles))
+                }
+            }
             
             await MainActor.run {
                 dataLoaded = true

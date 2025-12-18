@@ -24,6 +24,9 @@ class ImageCacheManager: ObservableObject {
     private let cache: URLCache
     private let fileManager = FileManager.default
     
+    // In-memory UIImage cache for faster display (avoids re-decoding from data)
+    private var imageCache = NSCache<NSString, UIImage>()
+    
     @Published var preloadProgress: Double = 0.0
     @Published var isPreloading = false
     
@@ -39,6 +42,10 @@ class ImageCacheManager: ObservableObject {
         )
         
         URLCache.shared = cache
+        
+        // Configure in-memory image cache
+        imageCache.countLimit = 100 // Max 100 images in memory
+        imageCache.totalCostLimit = 50 * 1024 * 1024 // ~50MB
     }
     
     /// Preload all article hero images in the background
@@ -79,22 +86,60 @@ class ImageCacheManager: ObservableObject {
     private func downloadAndCacheImage(urlString: String) async {
         guard let url = URL(string: urlString) else { return }
         
-        // Check if already cached
+        let cacheKey = urlString as NSString
+        
+        // Check if already in memory cache
+        if imageCache.object(forKey: cacheKey) != nil {
+            return
+        }
+        
+        // Check if already in URL cache
         let request = URLRequest(url: url)
-        if cache.cachedResponse(for: request) != nil {
-            return // Already cached
+        if let cachedResponse = cache.cachedResponse(for: request),
+           let image = UIImage(data: cachedResponse.data) {
+            // Add to memory cache for faster access
+            imageCache.setObject(image, forKey: cacheKey)
+            return
         }
         
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
             
-            // Store in cache
+            // Store in URL cache (disk)
             let cachedResponse = CachedURLResponse(response: response, data: data)
             cache.storeCachedResponse(cachedResponse, for: request)
+            
+            // Store in memory cache
+            if let image = UIImage(data: data) {
+                imageCache.setObject(image, forKey: cacheKey)
+            }
             
         } catch {
             print("⚠️ Failed to cache image: \(url.lastPathComponent)")
         }
+    }
+    
+    /// Get cached image if available (checks memory first, then disk)
+    func getCachedImage(urlString: String) -> UIImage? {
+        let cacheKey = urlString as NSString
+        
+        // Check memory cache first (fastest)
+        if let image = imageCache.object(forKey: cacheKey) {
+            return image
+        }
+        
+        // Check URL cache (disk)
+        guard let url = URL(string: urlString) else { return nil }
+        let request = URLRequest(url: url)
+        
+        if let cachedResponse = cache.cachedResponse(for: request),
+           let image = UIImage(data: cachedResponse.data) {
+            // Promote to memory cache for next time
+            imageCache.setObject(image, forKey: cacheKey)
+            return image
+        }
+        
+        return nil
     }
     
     /// Check if an image is already cached
@@ -107,11 +152,97 @@ class ImageCacheManager: ObservableObject {
     /// Clear all cached images
     func clearCache() {
         cache.removeAllCachedResponses()
+        imageCache.removeAllObjects()
         print("🗑️ Image cache cleared")
     }
     
     /// Get cache statistics
     func getCacheStats() -> (memoryUsage: Int, diskUsage: Int) {
         return (cache.currentMemoryUsage, cache.currentDiskUsage)
+    }
+}
+
+// MARK: - CachedAsyncImage View
+
+/// A replacement for AsyncImage that uses ImageCacheManager's cache
+struct CachedAsyncImage<Content: View, Placeholder: View>: View {
+    let urlString: String
+    let content: (Image) -> Content
+    let placeholder: () -> Placeholder
+    
+    @State private var loadedImage: UIImage?
+    @State private var isLoading = false
+    
+    init(
+        urlString: String,
+        @ViewBuilder content: @escaping (Image) -> Content,
+        @ViewBuilder placeholder: @escaping () -> Placeholder
+    ) {
+        self.urlString = urlString
+        self.content = content
+        self.placeholder = placeholder
+    }
+    
+    var body: some View {
+        Group {
+            if let image = loadedImage {
+                content(Image(uiImage: image))
+            } else {
+                placeholder()
+                    .onAppear {
+                        loadImage()
+                    }
+            }
+        }
+    }
+    
+    private func loadImage() {
+        // Check cache first (synchronous, fast)
+        if let cached = ImageCacheManager.shared.getCachedImage(urlString: urlString) {
+            loadedImage = cached
+            return
+        }
+        
+        // Not cached, need to download
+        guard !isLoading else { return }
+        isLoading = true
+        
+        guard let url = URL(string: urlString) else {
+            isLoading = false
+            return
+        }
+        
+        Task {
+            do {
+                let (data, response) = try await URLSession.shared.data(from: url)
+                
+                // Cache the response
+                let request = URLRequest(url: url)
+                let cachedResponse = CachedURLResponse(response: response, data: data)
+                URLCache.shared.storeCachedResponse(cachedResponse, for: request)
+                
+                if let image = UIImage(data: data) {
+                    await MainActor.run {
+                        loadedImage = image
+                    }
+                }
+            } catch {
+                print("⚠️ Failed to load image: \(url.lastPathComponent)")
+            }
+            
+            await MainActor.run {
+                isLoading = false
+            }
+        }
+    }
+}
+
+// MARK: - Convenience initializer matching AsyncImage API
+
+extension CachedAsyncImage where Content == Image, Placeholder == ProgressView<EmptyView, EmptyView> {
+    init(urlString: String) {
+        self.urlString = urlString
+        self.content = { $0 }
+        self.placeholder = { ProgressView() }
     }
 }

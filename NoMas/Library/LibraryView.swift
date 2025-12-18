@@ -9,7 +9,7 @@ import SwiftUI
 import MarkdownUI
 
 struct LibraryView: View {
-    @StateObject private var viewModel = LibraryViewModel()
+    @ObservedObject private var viewModel = LibraryViewModel.shared
     @ObservedObject private var pledgeManager = PledgeManager.shared
     @State private var selectedArticle: Article?
     
@@ -32,6 +32,7 @@ struct LibraryView: View {
             .padding(.bottom, 100) // Extra padding for tab bar
         }
         .task {
+            // Data may already be loaded from splash, but fetch if not
             await viewModel.fetchData()
         }
         .onAppear {
@@ -303,8 +304,8 @@ struct ArticleCard: View {
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            // Background image
-            AsyncImage(url: URL(string: article.heroImageUrl)) { image in
+            // Background image - using CachedAsyncImage
+            CachedAsyncImage(urlString: article.heroImageUrl) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -356,8 +357,8 @@ struct ArticleDetailView: View {
                 } else {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 0) {
-                            // Hero Image
-                            AsyncImage(url: URL(string: article.heroImageUrl)) { image in
+                            // Hero Image - using CachedAsyncImage
+                            CachedAsyncImage(urlString: article.heroImageUrl) { image in
                                 image
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
