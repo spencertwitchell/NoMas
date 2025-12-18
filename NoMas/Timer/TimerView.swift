@@ -151,18 +151,18 @@ struct TimerDisplayView: View {
                 .font(.body)
                 .foregroundColor(.textSecondary)
             
-            Text("\(timeComponents.days) days")
+            Text("\(timeComponents.days) \(timeComponents.days == 1 ? "day" : "days")")
                 .font(.system(size: 48, weight: .bold))
                 .foregroundColor(.textPrimary)
                 .padding(.bottom, 8)
             
             HStack(spacing: 8) {
                 Text("+")
-                Text("\(timeComponents.hours) hours")
+                Text("\(timeComponents.hours) \(timeComponents.hours == 1 ? "hour" : "hours")")
                 Text("|")
-                Text("\(timeComponents.minutes) minutes")
+                Text("\(timeComponents.minutes) \(timeComponents.minutes == 1 ? "minute" : "minutes")")
                 Text("|")
-                Text("\(timeComponents.seconds) seconds")
+                Text("\(timeComponents.seconds) \(timeComponents.seconds == 1 ? "second" : "seconds")")
             }
             .font(.bodySmall)
             .foregroundColor(.textPrimary)
@@ -218,6 +218,10 @@ struct ActionButton: View {
 struct AnalyticsSection: View {
     @ObservedObject var userData: UserData
     
+    private var iconColor: Color {
+        userData.currentMilestone.gradientColors.first ?? .accentGradientEnd
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Analytics")
@@ -229,19 +233,22 @@ struct AnalyticsSection: View {
                     icon: "exclamationmark.triangle.fill",
                     value: "\(userData.timesRelapsed)",
                     unit: userData.timesRelapsed == 1 ? "time" : "times",
-                    label: "Relapsed"
+                    label: "Relapsed",
+                    iconColor: iconColor
                 )
                 AnalyticCard(
                     icon: "flame.fill",
                     value: "\(userData.daysSinceRelapse)",
                     unit: userData.daysSinceRelapse == 1 ? "day" : "days",
-                    label: "Current Streak"
+                    label: "Current Streak",
+                    iconColor: iconColor
                 )
                 AnalyticCard(
                     icon: "trophy.fill",
                     value: "\(userData.effectiveBestStreak)",
                     unit: userData.effectiveBestStreak == 1 ? "day" : "days",
-                    label: "Best Streak"
+                    label: "Best Streak",
+                    iconColor: iconColor
                 )
             }
         }
@@ -253,12 +260,13 @@ struct AnalyticCard: View {
     let value: String
     let unit: String
     let label: String
+    var iconColor: Color = .accentGradientEnd
     
     var body: some View {
         VStack(spacing: 4) {
             Image(systemName: icon)
                 .font(.system(size: 24))
-                .foregroundColor(.accentGradientEnd)
+                .foregroundColor(iconColor)
             
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(value)
@@ -309,7 +317,7 @@ struct RecoveryProgressSection: View {
                     
                     Spacer()
                     
-                    Text("\(daysRemaining) days left")
+                    Text("\(daysRemaining) \(daysRemaining == 1 ? "day" : "days") left")
                         .font(.captionSmall)
                         .foregroundColor(.textTertiary)
                 }
@@ -411,7 +419,8 @@ struct CurrentMilestoneCard: View {
                         .foregroundColor(.white.opacity(0.9))
                     
                     if let next = milestone.next {
-                        Text("\(next.daysRequired - userData.daysSinceRelapse) days until \(next.displayName)")
+                        let daysUntil = next.daysRequired - userData.daysSinceRelapse
+                        Text("\(daysUntil) \(daysUntil == 1 ? "day" : "days") until \(next.displayName)")
                             .font(.caption)
                             .foregroundColor(.white.opacity(0.8))
                     } else {

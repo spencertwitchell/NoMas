@@ -21,21 +21,68 @@ struct MilestonesSheetView: View {
                 
                 ScrollView {
                     VStack(spacing: 16) {
-                        // Header info
-                        VStack(spacing: 8) {
-                            Text("Your Progress")
-                                .font(.titleMedium)
-                                .foregroundColor(.textPrimary)
-                            
-                            Text("\(userData.daysSinceRelapse) days clean")
-                                .font(.body)
-                                .foregroundColor(.textSecondary)
-                            
-                            if let projectedDate = userData.projectedRecoveryDate {
-                                Text("Projected recovery: \(projectedDate.formatted(date: .abbreviated, time: .omitted))")
-                                    .font(.caption)
-                                    .foregroundColor(.textTertiary)
+                        // Header title
+                        Text("Your Progress")
+                            .font(.titleMedium)
+                            .foregroundColor(.textPrimary)
+                        
+                        // Header info - side by side cards
+                        HStack(spacing: 12) {
+                            // Days Clean Card
+                            VStack(spacing: 4) {
+                                Image(systemName: "flame.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(userData.currentMilestone.gradientColors.first ?? .accentGradientEnd)
+                                
+                                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                                    Text("\(userData.daysSinceRelapse)")
+                                        .font(.titleMedium)
+                                        .foregroundColor(.textPrimary)
+                                    
+                                    Text(userData.daysSinceRelapse == 1 ? "day" : "days")
+                                        .font(.bodySmall)
+                                        .foregroundColor(.textPrimary)
+                                }
+                                
+                                Text("Clean")
+                                    .font(.captionSmall)
+                                    .foregroundColor(.textSecondary)
                             }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                LinearGradient.accent
+                                    .opacity(0.3)
+                            )
+                            .cornerRadius(12)
+                            
+                            // Projected Recovery Card
+                            VStack(spacing: 4) {
+                                Image(systemName: "calendar.badge.checkmark")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(userData.currentMilestone.gradientColors.first ?? .accentGradientEnd)
+                                
+                                if let projectedDate = userData.projectedRecoveryDate {
+                                    Text(projectedDate.formatted(.dateTime.month(.abbreviated).day()))
+                                        .font(.titleMedium)
+                                        .foregroundColor(.textPrimary)
+                                } else {
+                                    Text("—")
+                                        .font(.titleMedium)
+                                        .foregroundColor(.textPrimary)
+                                }
+                                
+                                Text("Projected Recovery")
+                                    .font(.captionSmall)
+                                    .foregroundColor(.textSecondary)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                LinearGradient.accent
+                                    .opacity(0.3)
+                            )
+                            .cornerRadius(12)
                         }
                         .padding(.bottom, 8)
                         

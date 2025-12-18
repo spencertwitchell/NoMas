@@ -26,6 +26,7 @@
 		2932FC742EF35FA500D02A1A /* bg8.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2932FC732EF35FA500D02A1A /* bg8.mp4 */; };
 		2932FC762EF360B400D02A1A /* PanicButtonFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC752EF360B400D02A1A /* PanicButtonFlowView.swift */; };
 		2932FC782EF3618600D02A1A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2932FC772EF3618600D02A1A /* StoreKit.framework */; };
+		2932FC7A2EF3C23600D02A1A /* bg4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2932FC792EF3C23600D02A1A /* bg4.mp4 */; };
 		297AD0F92EE7683400CCE3BC /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0F82EE7683400CCE3BC /* Auth */; };
 		297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FA2EE7683400CCE3BC /* Functions */; };
 		297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 297AD0FC2EE7683400CCE3BC /* PostgREST */; };
@@ -122,6 +123,7 @@
 		2932FC732EF35FA500D02A1A /* bg8.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg8.mp4; sourceTree = "<group>"; };
 		2932FC752EF360B400D02A1A /* PanicButtonFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanicButtonFlowView.swift; sourceTree = "<group>"; };
 		2932FC772EF3618600D02A1A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		2932FC792EF3C23600D02A1A /* bg4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg4.mp4; sourceTree = "<group>"; };
 		297AD0D62EE7646800CCE3BC /* NoMas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297AD1062EE76D7500CCE3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297AD1082EE76D7500CCE3BC /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				297AD17D2EE8F46200CCE3BC /* NoMas.entitlements */,
 				297AD1062EE76D7500CCE3BC /* Assets.xcassets */,
 				2932FC732EF35FA500D02A1A /* bg8.mp4 */,
+				2932FC792EF3C23600D02A1A /* bg4.mp4 */,
 				297AD1652EE7B46B00CCE3BC /* bg flow.mp4 */,
 				297AD10B2EE76D7500CCE3BC /* NoMasApp.swift */,
 				297AD1792EE8AF3000CCE3BC /* SplashView.swift */,
@@ -449,6 +452,7 @@
 				2932FC742EF35FA500D02A1A /* bg8.mp4 in Resources */,
 				297AD1132EE76D7500CCE3BC /* Assets.xcassets in Resources */,
 				297AD1662EE7B46B00CCE3BC /* bg flow.mp4 in Resources */,
+				2932FC7A2EF3C23600D02A1A /* bg4.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
