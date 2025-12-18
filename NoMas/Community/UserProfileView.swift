@@ -150,14 +150,14 @@ struct UserProfileView: View {
                 .value
             
             guard let profileData = profileResponse.first else {
-                print("âŒ Profile not found")
+                print("❌ Profile not found")
                 isLoading = false
                 return
             }
             
             // Only show profile if it's public
             guard profileData.is_profile_public == true else {
-                print("âŒ Profile is private")
+                print("❌ Profile is private")
                 isLoading = false
                 return
             }
@@ -181,10 +181,10 @@ struct UserProfileView: View {
             
             userPosts = postsResponse.compactMap { $0.toPost() }
             
-            print("âœ… Loaded profile and \(userPosts.count) posts")
+            print("✅ Loaded profile and \(userPosts.count) posts")
             isLoading = false
         } catch {
-            print("âŒ Failed to load profile: \(error)")
+            print("❌ Failed to load profile: \(error)")
             isLoading = false
         }
     }
@@ -230,19 +230,24 @@ struct ProfileCardView: View {
                     }
                 } label: {
                     HStack(spacing: 8) {
-                        Image(systemName: "link")
-                            .font(.system(size: 14))
+                        Image("IG Logo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 16, height: 16)
                         Text("@\(instagram)")
                             .font(.bodySmall)
                     }
-                    .foregroundColor(.accentGradientStart)
+                    .foregroundColor(.white)
                 }
             }
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 24)
         .padding(.horizontal, 20)
-        .background(Color.surfaceBackground)
+        .background(
+            LinearGradient.accent
+                .opacity(0.3)
+        )
         .cornerRadius(16)
         .padding(.horizontal, 20)
     }

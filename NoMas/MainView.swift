@@ -10,6 +10,7 @@
 import SwiftUI
 import Supabase
 import Combine
+import Lottie
 
 // MARK: - Main View
 
@@ -247,66 +248,18 @@ struct ProfileView: View {
                 
                 ScrollView {
                     VStack(spacing: 24) {
-                        // Profile Header
-                        VStack(spacing: 16) {
-                            ProfilePictureView(
-                                userName: userData.displayName,
-                                profilePictureURL: userData.profilePictureURL,
-                                isPublic: userData.isProfilePublic,
-                                size: 100
-                            )
-                            
-                            VStack(spacing: 4) {
-                                Text(userData.displayName)
-                                    .font(.titleMedium)
-                                    .foregroundColor(.textPrimary)
-                                
-                                if let bio = userData.bio, !bio.isEmpty {
-                                    Text(bio)
-                                        .font(.bodySmall)
-                                        .foregroundColor(.textSecondary)
-                                        .multilineTextAlignment(.center)
-                                        .padding(.horizontal, 40)
-                                }
-                                
-                                if let instagram = userData.instagramHandle, !instagram.isEmpty {
-                                    Text("@\(instagram)")
-                                        .font(.captionSmall)
-                                        .foregroundColor(.accentGradientStart)
-                                }
-                            }
-                        }
+                        // Profile Card (matching UserProfileView styling)
+                        ProfileCardView(
+                            userName: userData.displayName,
+                            bio: userData.bio,
+                            instagramHandle: userData.instagramHandle,
+                            profilePictureURL: userData.profilePictureURL
+                        )
                         .padding(.top, 20)
                         
-                        // Stats Grid
-                        HStack(spacing: 16) {
-                            StatBox(value: "\(userData.daysSinceRelapse)", label: "Day Streak")
-                            StatBox(value: "\(userData.effectiveBestStreak)", label: "Best Streak")
-                            StatBox(value: userData.currentMilestone.displayName, label: "Rank")
-                        }
-                        .padding(.horizontal, 20)
-                        
-                        // Recovery Stats
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text("Recovery Stats")
-                                .font(.titleSmall)
-                                .foregroundColor(.textPrimary)
-                            
-                            VStack(spacing: 12) {
-                                StatRow(label: "Days in App", value: "\(userData.daysInApp)")
-                                StatRow(label: "Current Streak", value: "\(userData.daysSinceRelapse) days")
-                                StatRow(label: "Best Streak", value: "\(userData.effectiveBestStreak) days")
-                                StatRow(label: "Times Relapsed", value: "\(userData.timesRelapsed)")
-                                StatRow(label: "Dependency Score", value: "\(Int(userData.dependencyScore))%")
-                                if let projectedDate = userData.projectedRecoveryDate {
-                                    StatRow(label: "Projected Recovery", value: projectedDate.formatted(date: .abbreviated, time: .omitted))
-                                }
-                            }
-                        }
-                        .padding(20)
-                        .background(Color.surfaceBackground)
-                        .cornerRadius(16)
-                        .padding(.horizontal, 20)
+                        // Recovery Stats with Milestone Styling
+                        RecoveryStatsCard(userData: userData)
+                            .padding(.horizontal, 20)
                         
                         // Your Posts Section
                         VStack(alignment: .leading, spacing: 16) {
@@ -425,6 +378,105 @@ struct ProfileView: View {
     }
 }
 
+// MARK: - Recovery Stats Card (with Milestone Styling)
+
+struct RecoveryStatsCard: View {
+    @ObservedObject var userData: UserData
+    
+    private var milestone: Milestone {
+        userData.currentMilestone
+    }
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Rank Section: Animation on left, text on right
+            HStack(spacing: 16) {
+                // Lottie Animation
+                LottieView(animation: .named(milestone.animationName))
+                    .playing(loopMode: .loop)
+                    .animationSpeed(0.67)
+                    .frame(width: 70, height: 70)
+                    .scaleEffect(1.2)
+                
+                // Current Rank Text
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Current Rank")
+                        .font(.caption)
+                        .foregroundColor(.white.opacity(0.7))
+                    
+                    Text(milestone.displayName)
+                        .font(.titleMedium)
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                    
+                    Text(milestone.title)
+                        .font(.caption)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+                
+                Spacer()
+            }
+            
+            // Divider
+            Rectangle()
+                .fill(Color.white.opacity(0.2))
+                .frame(height: 1)
+                .padding(.horizontal, 8)
+            
+            // Stats Rows
+            VStack(spacing: 12) {
+                RecoveryStatRow(label: "Days in App", value: "\(userData.daysInApp)")
+                RecoveryStatRow(label: "Current Streak", value: "\(userData.daysSinceRelapse) days")
+                RecoveryStatRow(label: "Best Streak", value: "\(userData.effectiveBestStreak) days")
+                RecoveryStatRow(label: "Times Relapsed", value: "\(userData.timesRelapsed)")
+                RecoveryStatRow(label: "Dependency Score", value: "\(Int(userData.dependencyScore))%")
+                if let projectedDate = userData.projectedRecoveryDate {
+                    RecoveryStatRow(label: "Projected Recovery", value: projectedDate.formatted(date: .abbreviated, time: .omitted))
+                }
+            }
+        }
+        .padding(20)
+        .background(
+            ZStack {
+                // Gradient layer
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(milestone.gradient)
+                
+                // Dark overlay for readability
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.black.opacity(0.35))
+            }
+        )
+        .overlay(
+            // 3pt gradient border
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(milestone.gradient, lineWidth: 3)
+        )
+    }
+}
+
+// MARK: - Recovery Stat Row
+
+struct RecoveryStatRow: View {
+    let label: String
+    let value: String
+    
+    var body: some View {
+        HStack {
+            Text(label)
+                .font(.body)
+                .foregroundColor(.white.opacity(0.8))
+            
+            Spacer()
+            
+            Text(value)
+                .font(.body)
+                .foregroundColor(.white)
+                .fontWeight(.medium)
+        }
+    }
+}
+
 // MARK: - Profile Post Card (for ProfileView)
 
 struct ProfilePostCardView: View {
@@ -477,7 +529,7 @@ struct ProfilePostCardView: View {
     }
 }
 
-// MARK: - Stat Components
+// MARK: - Stat Components (kept for backwards compatibility)
 
 struct StatRow: View {
     let label: String
