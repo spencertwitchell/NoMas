@@ -220,7 +220,7 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
     var description: String {
         switch self {
         case .bronze:
-            return "Every journey begins with a single step. You've made the commitment to change — that takes real courage."
+            return "Every journey begins with a single step. You've made the commitment to change â€” that takes real courage."
         case .silver:
             return "Three days of dedication. Your brain is already beginning to recognize new patterns. Keep pushing forward."
         case .gold:
@@ -228,15 +228,15 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
         case .platinum:
             return "Ten days of progress. The initial challenges are behind you, and you're building real momentum now."
         case .diamond:
-            return "Two weeks of commitment. Your resolve is hardening like a diamond — unbreakable and brilliant."
+            return "Two weeks of commitment. Your resolve is hardening like a diamond â€” unbreakable and brilliant."
         case .ruby:
             return "A full month of recovery. This is a major achievement that shows your dedication to lasting change."
         case .elite:
-            return "45 days of transformation. You've entered elite territory — few make it this far. Be proud."
+            return "45 days of transformation. You've entered elite territory â€” few make it this far. Be proud."
         case .master:
             return "Two months of mastery. You've developed new habits and your brain is rewiring itself for success."
         case .grandmaster:
-            return "90 days of freedom. You've achieved grandmaster status — a complete recovery cycle. You are transformed."
+            return "90 days of freedom. You've achieved grandmaster status â€” a complete recovery cycle. You are transformed."
         }
     }
     
@@ -399,6 +399,7 @@ struct SupabaseUserProgress: Codable {
     let appJoinDate: Date?
     let streakStartDate: Date?
     let currentMilestone: String?
+    let lastCelebratedMilestone: String?
     let projectedRecoveryDate: Date?
     let totalRecoveryDays: Int?
     let bestStreak: Int?
@@ -415,6 +416,7 @@ struct SupabaseUserProgress: Codable {
         case appJoinDate = "app_join_date"
         case streakStartDate = "streak_start_date"
         case currentMilestone = "current_milestone"
+        case lastCelebratedMilestone = "last_celebrated_milestone"
         case projectedRecoveryDate = "projected_recovery_date"
         case totalRecoveryDays = "total_recovery_days"
         case bestStreak = "best_streak"

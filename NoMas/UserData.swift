@@ -128,6 +128,18 @@ class UserData: ObservableObject {
         didSet { saveProgressToSupabase() }
     }
     
+    /// The last milestone that was celebrated with the popup
+    /// Used to ensure each milestone is only celebrated once
+    @Published var lastCelebratedMilestone: Milestone = .bronze {
+        didSet { saveProgressToSupabase() }
+    }
+    
+    /// Controls whether the milestone celebration popup is shown
+    @Published var showMilestoneCelebration: Bool = false
+    
+    /// The milestone to celebrate in the popup
+    @Published var milestoneToCelebrate: Milestone? = nil
+    
     @Published var projectedRecoveryDate: Date? = nil
     
     @Published var totalRecoveryDays: Int = 90 {
@@ -213,6 +225,7 @@ class UserData: ObservableObject {
         
         // 4. Reset milestone to bronze (day 0)
         currentMilestone = .bronze
+        lastCelebratedMilestone = .bronze
         
         // 5. Recalculate projected recovery date
         // New date = resetDate + totalRecoveryDays
@@ -314,9 +327,42 @@ class UserData: ObservableObject {
     func updateMilestone() {
         let days = daysSinceRelapse
         let newMilestone = Milestone.forDays(days)
+        
         if newMilestone != currentMilestone {
             currentMilestone = newMilestone
         }
+        
+        // Check if we need to show a celebration
+        // Only celebrate if the new milestone is higher than the last celebrated one
+        if shouldCelebrateMilestone(newMilestone) {
+            milestoneToCelebrate = newMilestone
+            showMilestoneCelebration = true
+        }
+    }
+    
+    /// Determines if a milestone should be celebrated
+    /// Returns true if the milestone is higher than the last celebrated milestone
+    private func shouldCelebrateMilestone(_ milestone: Milestone) -> Bool {
+        // Don't celebrate bronze (starting milestone)
+        guard milestone != .bronze else { return false }
+        
+        // Get the index of milestones to compare
+        guard let currentIndex = Milestone.allCases.firstIndex(of: milestone),
+              let lastCelebratedIndex = Milestone.allCases.firstIndex(of: lastCelebratedMilestone) else {
+            return false
+        }
+        
+        // Celebrate if current milestone is higher than last celebrated
+        return currentIndex > lastCelebratedIndex
+    }
+    
+    /// Call this when the celebration popup is dismissed
+    func markMilestoneCelebrated() {
+        if let milestone = milestoneToCelebrate {
+            lastCelebratedMilestone = milestone
+        }
+        showMilestoneCelebration = false
+        milestoneToCelebrate = nil
     }
     
     // MARK: - Supabase Operations
@@ -382,6 +428,7 @@ class UserData: ObservableObject {
             appJoinDate = progress.appJoinDate ?? Date()
             streakStartDate = progress.streakStartDate ?? Date()
             currentMilestone = progress.currentMilestone.flatMap { Milestone(rawValue: $0) } ?? .bronze
+            lastCelebratedMilestone = progress.lastCelebratedMilestone.flatMap { Milestone(rawValue: $0) } ?? .bronze
             projectedRecoveryDate = progress.projectedRecoveryDate
             totalRecoveryDays = progress.totalRecoveryDays ?? 90
             bestStreak = progress.bestStreak ?? 0
@@ -468,6 +515,7 @@ class UserData: ObservableObject {
                 appJoinDate: appJoinDate,
                 streakStartDate: streakStartDate,
                 currentMilestone: currentMilestone,
+                lastCelebratedMilestone: lastCelebratedMilestone,
                 projectedRecoveryDate: projectedRecoveryDate,
                 totalRecoveryDays: totalRecoveryDays,
                 bestStreak: bestStreak,
@@ -514,6 +562,7 @@ class UserData: ObservableObject {
         defaults.set(appJoinDate, forKey: "appJoinDate")
         defaults.set(streakStartDate, forKey: "streakStartDate")
         defaults.set(currentMilestone.rawValue, forKey: "currentMilestone")
+        defaults.set(lastCelebratedMilestone.rawValue, forKey: "lastCelebratedMilestone")
         defaults.set(totalRecoveryDays, forKey: "totalRecoveryDays")
         defaults.set(bestStreak, forKey: "bestStreak")
         defaults.set(timesRelapsed, forKey: "timesRelapsed")
@@ -547,6 +596,7 @@ class UserData: ObservableObject {
         appJoinDate = defaults.object(forKey: "appJoinDate") as? Date ?? Date()
         streakStartDate = defaults.object(forKey: "streakStartDate") as? Date ?? Date()
         currentMilestone = defaults.string(forKey: "currentMilestone").flatMap { Milestone(rawValue: $0) } ?? .bronze
+        lastCelebratedMilestone = defaults.string(forKey: "lastCelebratedMilestone").flatMap { Milestone(rawValue: $0) } ?? .bronze
         totalRecoveryDays = defaults.object(forKey: "totalRecoveryDays") as? Int ?? 90
         bestStreak = defaults.integer(forKey: "bestStreak")
         timesRelapsed = defaults.integer(forKey: "timesRelapsed")
@@ -581,6 +631,7 @@ class UserData: ObservableObject {
         appJoinDate = Date()
         streakStartDate = Date()
         currentMilestone = .bronze
+        lastCelebratedMilestone = .bronze
         projectedRecoveryDate = nil
         totalRecoveryDays = 90
         bestStreak = 0
@@ -644,6 +695,7 @@ class UserData: ObservableObject {
         appJoinDate = Date()
         streakStartDate = Date()
         currentMilestone = .bronze
+        lastCelebratedMilestone = .bronze
         projectedRecoveryDate = nil
         totalRecoveryDays = 90
         bestStreak = 0

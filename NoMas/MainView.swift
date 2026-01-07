@@ -56,6 +56,18 @@ struct MainView: View {
                 // Custom Tab Bar
                 CustomTabBar(selectedTab: $selectedTab)
             }
+            
+            // Milestone celebration overlay
+            if userData.showMilestoneCelebration, let milestone = userData.milestoneToCelebrate {
+                MilestoneCelebrationView(
+                    milestone: milestone,
+                    onDismiss: {
+                        userData.markMilestoneCelebrated()
+                    }
+                )
+                .transition(.opacity)
+                .zIndex(100)
+            }
         }
     }
     
@@ -353,7 +365,7 @@ struct ProfileView: View {
     
     private func loadUserPosts() async {
         guard let userId = userData.supabaseUserId else {
-            print("❌ No user ID for loading posts")
+            print("âŒ No user ID for loading posts")
             return
         }
         
@@ -369,10 +381,10 @@ struct ProfileView: View {
                 .value
             
             userPosts = response.compactMap { $0.toPost() }
-            print("✅ Loaded \(userPosts.count) user posts")
+            print("âœ… Loaded \(userPosts.count) user posts")
             isLoadingPosts = false
         } catch {
-            print("❌ Failed to load user posts: \(error)")
+            print("âŒ Failed to load user posts: \(error)")
             isLoadingPosts = false
         }
     }

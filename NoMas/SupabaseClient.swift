@@ -170,6 +170,7 @@ struct ProgressUpdate: Encodable {
     var appJoinDate: String?
     var streakStartDate: String?
     var currentMilestone: String?
+    var lastCelebratedMilestone: String?
     var projectedRecoveryDate: String?
     var totalRecoveryDays: Int?
     var bestStreak: Int?
@@ -181,6 +182,7 @@ struct ProgressUpdate: Encodable {
         case appJoinDate = "app_join_date"
         case streakStartDate = "streak_start_date"
         case currentMilestone = "current_milestone"
+        case lastCelebratedMilestone = "last_celebrated_milestone"
         case projectedRecoveryDate = "projected_recovery_date"
         case totalRecoveryDays = "total_recovery_days"
         case bestStreak = "best_streak"
@@ -266,10 +268,10 @@ class DatabaseService {
                     .from("user_quiz_data")
                     .insert(QuizDataInsert(userId: userId.uuidString))
                     .execute()
-                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created missing quiz_data record")
+                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Created missing quiz_data record")
             }
         } catch {
-            print("ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Failed to ensure quiz_data exists: \(error)")
+            print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Failed to ensure quiz_data exists: \(error)")
         }
         
         // Check and create progress if missing
@@ -286,10 +288,10 @@ class DatabaseService {
                     .from("user_progress")
                     .insert(ProgressInsert(userId: userId.uuidString))
                     .execute()
-                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Created missing progress record")
+                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Created missing progress record")
             }
         } catch {
-            print("ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Failed to ensure progress exists: \(error)")
+            print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Failed to ensure progress exists: \(error)")
         }
     }
     
@@ -408,6 +410,9 @@ class DatabaseService {
         if let currentMilestone = progress.currentMilestone {
             update.currentMilestone = currentMilestone.rawValue
         }
+        if let lastCelebratedMilestone = progress.lastCelebratedMilestone {
+            update.lastCelebratedMilestone = lastCelebratedMilestone.rawValue
+        }
         if let projectedRecoveryDate = progress.projectedRecoveryDate {
             update.projectedRecoveryDate = dateFormatter.string(from: projectedRecoveryDate)
         }
@@ -483,6 +488,7 @@ struct ProgressInput {
     var appJoinDate: Date?
     var streakStartDate: Date?
     var currentMilestone: Milestone?
+    var lastCelebratedMilestone: Milestone?
     var projectedRecoveryDate: Date?
     var totalRecoveryDays: Int?
     var bestStreak: Int?
