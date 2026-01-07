@@ -107,6 +107,8 @@ struct TimerView: View {
             userData.updateBestStreakIfNeeded()
         }
         .task {
+            // Update milestone based on current streak (in case days have passed)
+            userData.updateMilestone()
             // Fetch reminders on appear
             await remindersManager.fetchReminders()
             // Refresh quote if needed (checks 6-hour cache automatically)
@@ -626,7 +628,7 @@ struct ToDoSection: View {
             // Update Your Profile (checkbox manually tappable)
             ToDoCard(
                 title: "Update Your Profile",
-                description: "Make your space feel like yours — add a photo, write a bio, or stay anonymous if you prefer.",
+                description: "Make your space feel like yours â€” add a photo, write a bio, or stay anonymous if you prefer.",
                 isChecked: $profileChecked,
                 allowManualCheckbox: true,
                 action: {

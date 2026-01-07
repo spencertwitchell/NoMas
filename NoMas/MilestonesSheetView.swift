@@ -67,7 +67,7 @@ struct MilestonesSheetView: View {
                                         .font(.titleMedium)
                                         .foregroundColor(.textPrimary)
                                 } else {
-                                    Text("—")
+                                    Text("â€”")
                                         .font(.titleMedium)
                                         .foregroundColor(.textPrimary)
                                 }
@@ -107,6 +107,10 @@ struct MilestonesSheetView: View {
                     }
                     .foregroundColor(.accentGradientStart)
                 }
+            }
+            .onAppear {
+                // Recalculate milestone based on current streak
+                userData.updateMilestone()
             }
         }
     }

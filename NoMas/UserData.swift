@@ -221,7 +221,7 @@ class UserData: ObservableObject {
         // 6. Save to Supabase
         saveProgressToSupabase()
         
-        print("ðŸ”„ Timer reset to: \(resetDate)")
+        print("Ã°Å¸â€â€ž Timer reset to: \(resetDate)")
         print("   New projected recovery: \(projectedRecoveryDate?.description ?? "nil")")
         print("   Times relapsed: \(timesRelapsed)")
         print("   Best streak preserved: \(bestStreak)")
@@ -337,14 +337,18 @@ class UserData: ObservableObject {
                 populateFromSupabase(user: allData.user, quiz: allData.quiz, progress: allData.progress)
             }
             
-            print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ UserData initialized from Supabase")
+            print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ UserData initialized from Supabase")
         } catch {
-            print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to initialize from Supabase: \(error)")
+            print("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Failed to initialize from Supabase: \(error)")
             loadError = error.localizedDescription
         }
         
         isInitializing = false  // Allow saves now
         isLoading = false
+        
+        // Recalculate milestone based on actual days since relapse
+        // This ensures milestone is always current, even if stored value is stale
+        updateMilestone()
     }
     
     /// Populate local properties from Supabase data
@@ -410,9 +414,9 @@ class UserData: ObservableObject {
                     profilePictureUrl: profilePictureURL,
                     isProfilePublic: isProfilePublic
                 )
-                print("Ã¢Å“â€¦ User data saved to Supabase")
+                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ User data saved to Supabase")
             } catch {
-                print("Ã¢ÂÅ’ Failed to save user: \(error)")
+                print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to save user: \(error)")
             }
         }
         
@@ -442,9 +446,9 @@ class UserData: ObservableObject {
             
             do {
                 try await database.saveQuizData(userId: userId, quizData: input)
-                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Quiz data saved to Supabase")
+                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Quiz data saved to Supabase")
             } catch {
-                print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to save quiz: \(error)")
+                print("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Failed to save quiz: \(error)")
             }
         }
         
@@ -473,9 +477,9 @@ class UserData: ObservableObject {
             
             do {
                 try await database.updateProgress(userId: userId, progress: input)
-                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Progress saved to Supabase")
+                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Progress saved to Supabase")
             } catch {
-                print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to save progress: \(error)")
+                print("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Failed to save progress: \(error)")
             }
         }
         
@@ -589,7 +593,7 @@ class UserData: ObservableObject {
         defaults.removePersistentDomain(forName: domain)
         defaults.synchronize()
         
-        print("Ã°Å¸â€”â€˜Ã¯Â¸Â UserDefaults cleared")
+        print("ÃƒÂ°Ã…Â¸Ã¢â‚¬â€Ã¢â‚¬ËœÃƒÂ¯Ã‚Â¸Ã‚Â UserDefaults cleared")
     }
     #endif
     
@@ -599,22 +603,22 @@ class UserData: ObservableObject {
     /// Clears: UserDefaults, Keychain, Supabase session
     /// Available in all builds (hidden behind 7-tap activation in Settings)
     func nukeEverything() async {
-        print("Ã¢ËœÂ¢Ã¯Â¸Â NUKING EVERYTHING...")
+        print("ÃƒÂ¢Ã‹Å“Ã‚Â¢ÃƒÂ¯Ã‚Â¸Ã‚Â NUKING EVERYTHING...")
         
         // 1. Sign out of Supabase (this clears Supabase's keychain tokens)
         await AuthManager.shared.signOut()
-        print("Ã¢Å“â€¦ Signed out of Supabase")
+        print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Signed out of Supabase")
         
         // 2. Delete ALL keychain items for this app
         clearAllKeychainItems()
-        print("Ã¢Å“â€¦ Keychain wiped")
+        print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Keychain wiped")
         
         // 3. Clear all UserDefaults
         if let bundleId = Bundle.main.bundleIdentifier {
             defaults.removePersistentDomain(forName: bundleId)
             defaults.synchronize()
         }
-        print("Ã¢Å“â€¦ UserDefaults wiped")
+        print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ UserDefaults wiped")
         
         // 4. Reset in-memory state
         hasCompletedOnboarding = false
@@ -647,7 +651,7 @@ class UserData: ObservableObject {
         subscriptionStatus = false
         supabaseUserId = nil
         
-        print("Ã¢ËœÂ¢Ã¯Â¸Â NUKE COMPLETE - Restart the app!")
+        print("ÃƒÂ¢Ã‹Å“Ã‚Â¢ÃƒÂ¯Ã‚Â¸Ã‚Â NUKE COMPLETE - Restart the app!")
     }
     
     /// Deletes all keychain items for this app
@@ -668,7 +672,7 @@ class UserData: ObservableObject {
             } else if status == errSecItemNotFound {
                 // No items of this class - that's fine
             } else {
-                print("   Ã¢Å¡Â Ã¯Â¸Â Failed to delete keychain class \(secClass): \(status)")
+                print("   ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Failed to delete keychain class \(secClass): \(status)")
             }
         }
     }
