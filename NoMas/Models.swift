@@ -182,7 +182,7 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
         case .ruby: return 30
         case .elite: return 45
         case .master: return 60
-        case .grandmaster: return 90
+        case .grandmaster: return UserData.shared.totalRecoveryDays
         }
     }
     
