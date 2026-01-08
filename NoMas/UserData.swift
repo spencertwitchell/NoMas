@@ -43,6 +43,14 @@ class UserData: ObservableObject {
         didSet { saveToUserDefaults() }
     }
     
+    /// Tracks when user last completed the daily check-in (for 4am local reset)
+    @Published var lastCheckInDate: Date? = nil {
+        didSet { saveToUserDefaults() }
+    }
+    
+    /// Flag to trigger opening reflection journal from daily check-in
+    @Published var shouldOpenReflectionJournal: Bool = false
+    
     /// Tracks if user has an active subscription (verified with StoreKit)
     @Published var hasActiveSubscription: Bool = false {
         didSet {
@@ -202,6 +210,43 @@ class UserData: ObservableObject {
     /// Effective best streak - max of stored best and current streak (for real-time display)
     var effectiveBestStreak: Int {
         max(bestStreak, daysSinceRelapse)
+    }
+    
+    /// Determines if daily check-in should be shown
+    /// Resets at 4am local time each day
+    var shouldShowDailyCheckIn: Bool {
+        // Must have completed onboarding and seen camera prompt first
+        guard hasCompletedOnboarding && hasSeenCameraPrompt else { return false }
+        
+        // If never checked in, show it
+        guard let lastCheckIn = lastCheckInDate else { return true }
+        
+        // Get 4am today in local timezone
+        let calendar = Calendar.current
+        let now = Date()
+        
+        // Start of today
+        let startOfToday = calendar.startOfDay(for: now)
+        
+        // 4am today
+        guard let fourAMToday = calendar.date(byAdding: .hour, value: 4, to: startOfToday) else {
+            return true
+        }
+        
+        // Determine the reset boundary
+        // If it's currently before 4am, the reset boundary was 4am yesterday
+        // If it's currently 4am or after, the reset boundary is 4am today
+        let resetBoundary: Date
+        if now < fourAMToday {
+            // Before 4am today, so boundary is 4am yesterday
+            resetBoundary = calendar.date(byAdding: .day, value: -1, to: fourAMToday) ?? fourAMToday
+        } else {
+            // 4am or after, so boundary is 4am today
+            resetBoundary = fourAMToday
+        }
+        
+        // Show check-in if last check-in was before the reset boundary
+        return lastCheckIn < resetBoundary
     }
     
     /// Update best streak if current streak exceeds it (call periodically)
@@ -547,6 +592,7 @@ class UserData: ObservableObject {
         defaults.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
         defaults.set(skippedEarlyAuth, forKey: "skippedEarlyAuth")
         defaults.set(hasSeenCameraPrompt, forKey: "hasSeenCameraPrompt")
+        defaults.set(lastCheckInDate, forKey: "lastCheckInDate")
         defaults.set(hasActiveSubscription, forKey: "hasActiveSubscription")
         defaults.set(displayName, forKey: "displayName")
         defaults.set(age, forKey: "age")
@@ -582,6 +628,7 @@ class UserData: ObservableObject {
         hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
         skippedEarlyAuth = defaults.bool(forKey: "skippedEarlyAuth")
         hasSeenCameraPrompt = defaults.bool(forKey: "hasSeenCameraPrompt")
+        lastCheckInDate = defaults.object(forKey: "lastCheckInDate") as? Date
         hasActiveSubscription = defaults.bool(forKey: "hasActiveSubscription")
         displayName = defaults.string(forKey: "displayName") ?? ""
         age = defaults.object(forKey: "age") as? Int
@@ -618,6 +665,7 @@ class UserData: ObservableObject {
         hasCompletedOnboarding = false
         skippedEarlyAuth = false
         hasSeenCameraPrompt = false
+        lastCheckInDate = nil
         hasActiveSubscription = false
         displayName = ""
         age = nil
@@ -683,6 +731,7 @@ class UserData: ObservableObject {
         hasCompletedOnboarding = false
         skippedEarlyAuth = false
         hasSeenCameraPrompt = false
+        lastCheckInDate = nil
         hasActiveSubscription = false
         displayName = ""
         age = nil

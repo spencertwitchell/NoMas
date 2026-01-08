@@ -466,6 +466,84 @@ class DatabaseService {
         
         return (user, quiz, progress)
     }
+    
+    // MARK: - Daily Check-In Stats Operations
+    
+    /// Fetch today's check-in stats (or create with defaults if doesn't exist)
+    func fetchDailyCheckInStats() async throws -> DailyCheckInStats {
+        let today = utcDateString()
+        
+        // Try to fetch existing stats for today
+        let existingStats: [DailyCheckInStatsRow] = try await supabase
+            .from("daily_checkin_stats")
+            .select()
+            .eq("date", value: today)
+            .execute()
+            .value
+        
+        if let stats = existingStats.first {
+            return DailyCheckInStats(
+                stillStrongCount: stats.stillStrongCount,
+                happyCount: stats.feelingHappyCount,
+                neutralCount: stats.feelingNeutralCount,
+                downCount: stats.feelingDownCount
+            )
+        }
+        
+        // Create new row with defaults for today
+        let newRow = DailyCheckInStatsInsert(date: today)
+        try await supabase
+            .from("daily_checkin_stats")
+            .insert(newRow)
+            .execute()
+        
+        // Return defaults
+        return DailyCheckInStats(
+            stillStrongCount: 720,
+            happyCount: 347,
+            neutralCount: 233,
+            downCount: 140
+        )
+    }
+    
+    /// Increment the "still going strong" count for today
+    func incrementStillStrongCount() async throws {
+        let today = utcDateString()
+        
+        // Use Postgres RPC to atomically increment
+        try await supabase.rpc(
+            "increment_still_strong",
+            params: ["target_date": today]
+        ).execute()
+    }
+    
+    /// Increment a feeling count for today
+    func incrementFeelingCount(feeling: CheckInFeeling) async throws {
+        let today = utcDateString()
+        
+        let rpcName: String
+        switch feeling {
+        case .happy:
+            rpcName = "increment_feeling_happy"
+        case .neutral:
+            rpcName = "increment_feeling_neutral"
+        case .down:
+            rpcName = "increment_feeling_down"
+        }
+        
+        try await supabase.rpc(
+            rpcName,
+            params: ["target_date": today]
+        ).execute()
+    }
+    
+    /// Get today's date in UTC as a string (YYYY-MM-DD)
+    private func utcDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        return formatter.string(from: Date())
+    }
 }
 
 // MARK: - Input Structs (for type-safe function parameters)
@@ -494,4 +572,33 @@ struct ProgressInput {
     var bestStreak: Int?
     var timesRelapsed: Int?
     var subscriptionStatus: Bool?
+}
+
+// MARK: - Daily Check-In Stats Structs
+
+struct DailyCheckInStatsRow: Codable {
+    let date: String
+    let stillStrongCount: Int
+    let feelingHappyCount: Int
+    let feelingNeutralCount: Int
+    let feelingDownCount: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case date
+        case stillStrongCount = "still_strong_count"
+        case feelingHappyCount = "feeling_happy_count"
+        case feelingNeutralCount = "feeling_neutral_count"
+        case feelingDownCount = "feeling_down_count"
+    }
+}
+
+struct DailyCheckInStatsInsert: Encodable {
+    let date: String
+}
+
+struct DailyCheckInStats {
+    let stillStrongCount: Int
+    let happyCount: Int
+    let neutralCount: Int
+    let downCount: Int
 }

@@ -104,6 +104,7 @@
 		297AD2042EF25BB100CCE3BC /* RelaxationAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD2032EF25BB100CCE3BC /* RelaxationAudioManager.swift */; };
 		29F600DC2F0F1E3000A63F5D /* MilestoneCelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */; };
 		29F600DE2F0F2DE300A63F5D /* CameraSoftPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */; };
+		29F600E02F0F34FB00A63F5D /* Dailycheckinview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DF2F0F34FB00A63F5D /* Dailycheckinview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -198,6 +199,7 @@
 		297AD2032EF25BB100CCE3BC /* RelaxationAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelaxationAudioManager.swift; sourceTree = "<group>"; };
 		29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneCelebrationView.swift; sourceTree = "<group>"; };
 		29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSoftPromptView.swift; sourceTree = "<group>"; };
+		29F600DF2F0F34FB00A63F5D /* Dailycheckinview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dailycheckinview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,6 +264,7 @@
 				297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */,
 				29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */,
 				29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */,
+				29F600DF2F0F34FB00A63F5D /* Dailycheckinview.swift */,
 				297AD1982EEBB7C800CCE3BC /* Settings Profile */,
 				297AD1092EE76D7500CCE3BC /* Info.plist */,
 				297AD1B92EED2CB100CCE3BC /* Timer */,
@@ -516,6 +519,7 @@
 				297AD1C82EEE0EF100CCE3BC /* CommunityView.swift in Sources */,
 				297AD1782EE8ADB700CCE3BC /* OnboardingCompleteView.swift in Sources */,
 				2932FC602EF3390800D02A1A /* PastEntriesView.swift in Sources */,
+				29F600E02F0F34FB00A63F5D /* Dailycheckinview.swift in Sources */,
 				297AD11C2EE76F0F00CCE3BC /* QuizStep.swift in Sources */,
 				297AD17A2EE8AF3000CCE3BC /* SplashView.swift in Sources */,
 				297AD16A2EE7B51700CCE3BC /* BenefitsView.swift in Sources */,

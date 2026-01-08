@@ -17,6 +17,8 @@ import Lottie
 struct MainView: View {
     @State private var selectedTab = 0
     @State private var showCameraPrompt = false
+    @State private var showDailyCheckIn = false
+    @State private var showResetTimerFromCheckIn = false
     @StateObject private var userData = UserData.shared
     @StateObject private var authManager = AuthManager.shared
     @StateObject private var nomiViewModel = NomiViewModel() // Added for Nomi chat
@@ -71,19 +73,53 @@ struct MainView: View {
             }
         }
         .onAppear {
-            // Show camera prompt for new users who haven't seen it yet
-            if userData.hasCompletedOnboarding && !userData.hasSeenCameraPrompt {
-                // Small delay to let the view settle
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    showCameraPrompt = true
-                }
-            }
+            checkAndShowPrompts()
         }
         .fullScreenCover(isPresented: $showCameraPrompt) {
             CameraSoftPromptView()
                 .onDisappear {
                     userData.hasSeenCameraPrompt = true
+                    // After camera prompt dismisses, check if we should show daily check-in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        if userData.shouldShowDailyCheckIn {
+                            showDailyCheckIn = true
+                        }
+                    }
                 }
+        }
+        .sheet(isPresented: $showDailyCheckIn) {
+            DailyCheckInView(
+                selectedTab: $selectedTab,
+                onOpenResetTimer: {
+                    // Delay to let sheet dismiss first
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        showResetTimerFromCheckIn = true
+                    }
+                }
+            )
+            .presentationDetents([.fraction(0.67)])
+            .presentationDragIndicator(.hidden)
+            .presentationBackground(.clear)
+        }
+        .fullScreenCover(isPresented: $showResetTimerFromCheckIn) {
+            ResetTimerFlowView(selectedTab: $selectedTab)
+        }
+    }
+    
+    private func checkAndShowPrompts() {
+        // Priority 1: Camera prompt (one-time, for new users)
+        if userData.hasCompletedOnboarding && !userData.hasSeenCameraPrompt {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                showCameraPrompt = true
+            }
+            return
+        }
+        
+        // Priority 2: Daily check-in (if camera prompt already seen)
+        if userData.shouldShowDailyCheckIn {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                showDailyCheckIn = true
+            }
         }
     }
     

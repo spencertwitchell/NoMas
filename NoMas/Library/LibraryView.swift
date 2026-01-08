@@ -11,6 +11,7 @@ import MarkdownUI
 struct LibraryView: View {
     @ObservedObject private var viewModel = LibraryViewModel.shared
     @ObservedObject private var pledgeManager = PledgeManager.shared
+    @ObservedObject private var userData = UserData.shared
     @State private var selectedArticle: Article?
     
     // Self Care tool sheet states
@@ -37,6 +38,15 @@ struct LibraryView: View {
         }
         .onAppear {
             pledgeManager.refreshState()
+            
+            // Check if we should auto-open reflection journal
+            if userData.shouldOpenReflectionJournal {
+                userData.shouldOpenReflectionJournal = false
+                // Small delay to let view settle
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    showingJournal = true
+                }
+            }
         }
         .fullScreenCover(item: $selectedArticle) { article in
             ArticleDetailView(article: article)
