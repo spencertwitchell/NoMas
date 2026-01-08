@@ -78,7 +78,6 @@ struct MainView: View {
         .fullScreenCover(isPresented: $showCameraPrompt) {
             CameraSoftPromptView()
                 .onDisappear {
-                    userData.hasSeenCameraPrompt = true
                     // After camera prompt dismisses, check if we should show daily check-in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         if userData.shouldShowDailyCheckIn {

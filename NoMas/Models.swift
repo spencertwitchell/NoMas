@@ -400,6 +400,8 @@ struct SupabaseUserProgress: Codable {
     let streakStartDate: Date?
     let currentMilestone: String?
     let lastCelebratedMilestone: String?
+    let hasSeenCameraPrompt: Bool?
+    let lastCheckInDate: Date?
     let projectedRecoveryDate: Date?
     let totalRecoveryDays: Int?
     let bestStreak: Int?
@@ -417,6 +419,8 @@ struct SupabaseUserProgress: Codable {
         case streakStartDate = "streak_start_date"
         case currentMilestone = "current_milestone"
         case lastCelebratedMilestone = "last_celebrated_milestone"
+        case hasSeenCameraPrompt = "has_seen_camera_prompt"
+        case lastCheckInDate = "last_check_in_date"
         case projectedRecoveryDate = "projected_recovery_date"
         case totalRecoveryDays = "total_recovery_days"
         case bestStreak = "best_streak"

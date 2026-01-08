@@ -171,6 +171,8 @@ struct ProgressUpdate: Encodable {
     var streakStartDate: String?
     var currentMilestone: String?
     var lastCelebratedMilestone: String?
+    var hasSeenCameraPrompt: Bool?
+    var lastCheckInDate: String?
     var projectedRecoveryDate: String?
     var totalRecoveryDays: Int?
     var bestStreak: Int?
@@ -183,6 +185,8 @@ struct ProgressUpdate: Encodable {
         case streakStartDate = "streak_start_date"
         case currentMilestone = "current_milestone"
         case lastCelebratedMilestone = "last_celebrated_milestone"
+        case hasSeenCameraPrompt = "has_seen_camera_prompt"
+        case lastCheckInDate = "last_check_in_date"
         case projectedRecoveryDate = "projected_recovery_date"
         case totalRecoveryDays = "total_recovery_days"
         case bestStreak = "best_streak"
@@ -413,6 +417,12 @@ class DatabaseService {
         if let lastCelebratedMilestone = progress.lastCelebratedMilestone {
             update.lastCelebratedMilestone = lastCelebratedMilestone.rawValue
         }
+        if let hasSeenCameraPrompt = progress.hasSeenCameraPrompt {
+            update.hasSeenCameraPrompt = hasSeenCameraPrompt
+        }
+        if let lastCheckInDate = progress.lastCheckInDate {
+            update.lastCheckInDate = dateFormatter.string(from: lastCheckInDate)
+        }
         if let projectedRecoveryDate = progress.projectedRecoveryDate {
             update.projectedRecoveryDate = dateFormatter.string(from: projectedRecoveryDate)
         }
@@ -567,6 +577,8 @@ struct ProgressInput {
     var streakStartDate: Date?
     var currentMilestone: Milestone?
     var lastCelebratedMilestone: Milestone?
+    var hasSeenCameraPrompt: Bool?
+    var lastCheckInDate: Date?
     var projectedRecoveryDate: Date?
     var totalRecoveryDays: Int?
     var bestStreak: Int?

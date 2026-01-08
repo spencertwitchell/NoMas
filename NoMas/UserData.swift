@@ -40,12 +40,12 @@ class UserData: ObservableObject {
     
     /// Tracks if user has seen the camera permission prompt (one-time only)
     @Published var hasSeenCameraPrompt: Bool = false {
-        didSet { saveToUserDefaults() }
+        didSet { saveProgressToSupabase() }
     }
     
     /// Tracks when user last completed the daily check-in (for 4am local reset)
     @Published var lastCheckInDate: Date? = nil {
-        didSet { saveToUserDefaults() }
+        didSet { saveProgressToSupabase() }
     }
     
     /// Flag to trigger opening reflection journal from daily check-in
@@ -479,6 +479,8 @@ class UserData: ObservableObject {
             streakStartDate = progress.streakStartDate ?? Date()
             currentMilestone = progress.currentMilestone.flatMap { Milestone(rawValue: $0) } ?? .bronze
             lastCelebratedMilestone = progress.lastCelebratedMilestone.flatMap { Milestone(rawValue: $0) } ?? .bronze
+            hasSeenCameraPrompt = progress.hasSeenCameraPrompt ?? false
+            lastCheckInDate = progress.lastCheckInDate
             projectedRecoveryDate = progress.projectedRecoveryDate
             totalRecoveryDays = progress.totalRecoveryDays ?? 90
             bestStreak = progress.bestStreak ?? 0
@@ -566,6 +568,8 @@ class UserData: ObservableObject {
                 streakStartDate: streakStartDate,
                 currentMilestone: currentMilestone,
                 lastCelebratedMilestone: lastCelebratedMilestone,
+                hasSeenCameraPrompt: hasSeenCameraPrompt,
+                lastCheckInDate: lastCheckInDate,
                 projectedRecoveryDate: projectedRecoveryDate,
                 totalRecoveryDays: totalRecoveryDays,
                 bestStreak: bestStreak,

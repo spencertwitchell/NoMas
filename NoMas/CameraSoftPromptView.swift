@@ -2,14 +2,6 @@
 //  CameraSoftPromptView.swift
 //  NoMas
 //
-//  Created by Spencer Twitchell on 1/7/26.
-//
-
-
-//
-//  CameraSoftPromptView.swift
-//  NoMas
-//
 //  Created by Claude on 1/7/26.
 //
 
@@ -19,6 +11,7 @@ import AVFoundation
 
 struct CameraSoftPromptView: View {
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var userData = UserData.shared
     
     var body: some View {
         ZStack {
@@ -49,6 +42,8 @@ struct CameraSoftPromptView: View {
                 
                 // Continue button
                 Button {
+                    // Set flag IMMEDIATELY before any async work
+                    userData.hasSeenCameraPrompt = true
                     requestCameraPermission()
                 } label: {
                     Text("Continue")
