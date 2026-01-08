@@ -38,6 +38,11 @@ class UserData: ObservableObject {
         didSet { saveToUserDefaults() }
     }
     
+    /// Tracks if user has seen the camera permission prompt (one-time only)
+    @Published var hasSeenCameraPrompt: Bool = false {
+        didSet { saveToUserDefaults() }
+    }
+    
     /// Tracks if user has an active subscription (verified with StoreKit)
     @Published var hasActiveSubscription: Bool = false {
         didSet {
@@ -541,6 +546,7 @@ class UserData: ObservableObject {
     private func saveToUserDefaults() {
         defaults.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding")
         defaults.set(skippedEarlyAuth, forKey: "skippedEarlyAuth")
+        defaults.set(hasSeenCameraPrompt, forKey: "hasSeenCameraPrompt")
         defaults.set(hasActiveSubscription, forKey: "hasActiveSubscription")
         defaults.set(displayName, forKey: "displayName")
         defaults.set(age, forKey: "age")
@@ -575,6 +581,7 @@ class UserData: ObservableObject {
     private func loadFromUserDefaults() {
         hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
         skippedEarlyAuth = defaults.bool(forKey: "skippedEarlyAuth")
+        hasSeenCameraPrompt = defaults.bool(forKey: "hasSeenCameraPrompt")
         hasActiveSubscription = defaults.bool(forKey: "hasActiveSubscription")
         displayName = defaults.string(forKey: "displayName") ?? ""
         age = defaults.object(forKey: "age") as? Int
@@ -610,6 +617,7 @@ class UserData: ObservableObject {
     func resetAllData() {
         hasCompletedOnboarding = false
         skippedEarlyAuth = false
+        hasSeenCameraPrompt = false
         hasActiveSubscription = false
         displayName = ""
         age = nil
@@ -674,6 +682,7 @@ class UserData: ObservableObject {
         // 4. Reset in-memory state
         hasCompletedOnboarding = false
         skippedEarlyAuth = false
+        hasSeenCameraPrompt = false
         hasActiveSubscription = false
         displayName = ""
         age = nil

@@ -16,6 +16,7 @@ import Lottie
 
 struct MainView: View {
     @State private var selectedTab = 0
+    @State private var showCameraPrompt = false
     @StateObject private var userData = UserData.shared
     @StateObject private var authManager = AuthManager.shared
     @StateObject private var nomiViewModel = NomiViewModel() // Added for Nomi chat
@@ -68,6 +69,21 @@ struct MainView: View {
                 .transition(.opacity)
                 .zIndex(100)
             }
+        }
+        .onAppear {
+            // Show camera prompt for new users who haven't seen it yet
+            if userData.hasCompletedOnboarding && !userData.hasSeenCameraPrompt {
+                // Small delay to let the view settle
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    showCameraPrompt = true
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $showCameraPrompt) {
+            CameraSoftPromptView()
+                .onDisappear {
+                    userData.hasSeenCameraPrompt = true
+                }
         }
     }
     

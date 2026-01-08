@@ -103,6 +103,7 @@
 		297AD2022EF25BA700CCE3BC /* RelaxationSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD2012EF25BA700CCE3BC /* RelaxationSound.swift */; };
 		297AD2042EF25BB100CCE3BC /* RelaxationAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD2032EF25BB100CCE3BC /* RelaxationAudioManager.swift */; };
 		29F600DC2F0F1E3000A63F5D /* MilestoneCelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */; };
+		29F600DE2F0F2DE300A63F5D /* CameraSoftPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -196,6 +197,7 @@
 		297AD2012EF25BA700CCE3BC /* RelaxationSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelaxationSound.swift; sourceTree = "<group>"; };
 		297AD2032EF25BB100CCE3BC /* RelaxationAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelaxationAudioManager.swift; sourceTree = "<group>"; };
 		29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneCelebrationView.swift; sourceTree = "<group>"; };
+		29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSoftPromptView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +261,7 @@
 				297AD1962EEB96A800CCE3BC /* MainView.swift */,
 				297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */,
 				29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */,
+				29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */,
 				297AD1982EEBB7C800CCE3BC /* Settings Profile */,
 				297AD1092EE76D7500CCE3BC /* Info.plist */,
 				297AD1B92EED2CB100CCE3BC /* Timer */,
@@ -502,6 +505,7 @@
 				297AD2002EF25B9E00CCE3BC /* SoundPlayerView.swift in Sources */,
 				297AD1682EE7B51100CCE3BC /* ScienceView.swift in Sources */,
 				2932FC562EF32CBA00D02A1A /* WebsiteBlockerManager.swift in Sources */,
+				29F600DE2F0F2DE300A63F5D /* CameraSoftPromptView.swift in Sources */,
 				2932FC6C2EF357F700D02A1A /* Remindersmanager.swift in Sources */,
 				297AD1602EE7B34000CCE3BC /* SymptomsView.swift in Sources */,
 				297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */,

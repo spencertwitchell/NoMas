@@ -1,0 +1,83 @@
+//
+//  CameraSoftPromptView.swift
+//  NoMas
+//
+//  Created by Spencer Twitchell on 1/7/26.
+//
+
+
+//
+//  CameraSoftPromptView.swift
+//  NoMas
+//
+//  Created by Claude on 1/7/26.
+//
+
+import SwiftUI
+import Lottie
+import AVFoundation
+
+struct CameraSoftPromptView: View {
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        ZStack {
+            AppBackground()
+            
+            VStack(spacing: 24) {
+                Spacer()
+                
+                // Lottie animation
+                LottieView(animation: .named("cameraperms"))
+                    .playing(loopMode: .loop)
+                    .frame(width: 200, height: 200)
+                
+                // Header
+                Text("Enable Camera Access")
+                    .font(.titleLarge)
+                    .foregroundColor(.textPrimary)
+                    .multilineTextAlignment(.center)
+                
+                // Description
+                Text("We use your camera for optional features to improve your NoMás experience. You can enable it now or later in Settings. (Optional)")
+                    .font(.body)
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+                
+                Spacer()
+                
+                // Continue button
+                Button {
+                    requestCameraPermission()
+                } label: {
+                    Text("Continue")
+                        .font(.titleSmall)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(LinearGradient.accent)
+                        .cornerRadius(12)
+                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 40)
+            }
+        }
+    }
+    
+    private func requestCameraPermission() {
+        AVCaptureDevice.requestAccess(for: .video) { _ in
+            // Dismiss on main thread regardless of user's choice
+            DispatchQueue.main.async {
+                dismiss()
+            }
+        }
+    }
+}
+
+// MARK: - Preview
+
+#Preview {
+    CameraSoftPromptView()
+}
