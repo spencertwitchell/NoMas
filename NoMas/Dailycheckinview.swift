@@ -95,13 +95,17 @@ struct DailyCheckInView: View {
         }
         .padding(.horizontal, 24)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            LinearGradient(
-                colors: [Color.backgroundGradientStart, Color.backgroundGradientEnd],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .background {
+            GeometryReader { geometry in
+                Image("bg1")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .overlay(Color.black.opacity(0.4))
+            }
+            .ignoresSafeArea()
+        }
         .task {
             await fetchStats()
         }
