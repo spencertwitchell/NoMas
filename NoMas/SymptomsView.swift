@@ -96,7 +96,7 @@ struct SymptomsView: View {
     var body: some View {
         ZStack {
             // Video background
-            LoopingVideoBackground(videoName: "bg flow")
+            LoopingVideoBackground(videoName: "bg4")
             
             // Dark overlay
             Color.black.opacity(0.3)
@@ -108,14 +108,10 @@ struct SymptomsView: View {
                     showBackButton: true,
                     onBack: { onboardingState.goBack() }
                 )
+                .padding(.bottom, 12)
                 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 24) {
-                        // Lottie animation
-                        LottieView(animation: .named("Heart_Blue"))
-                            .playing(loopMode: .loop)
-                            .frame(maxWidth: 200, maxHeight: 150)
-                        
                         // Title
                         Text("Your Symptoms")
                             .font(.titleLarge)
@@ -183,9 +179,9 @@ struct SymptomRow: View {
             // Icon
             Image(systemName: symptom.icon)
                 .font(.titleMedium)
-                .foregroundColor(.accentGradientStart)
+                .foregroundColor(.white)
                 .frame(width: 44, height: 44)
-                .background(Color.surfaceBackground)
+                .background(Color.accentGradientStart.opacity(0.7))
                 .cornerRadius(12)
             
             // Text
