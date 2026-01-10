@@ -140,7 +140,7 @@ struct QuizDataUpdate: Encodable {
     var copingEmotional: String?
     var stressResponse: String?
     var boredomResponse: String?
-    var spentMoney: Bool?
+    var monthlySpending: String?
     var dependencyScore: Double?
     
     enum CodingKeys: String, CodingKey {
@@ -152,7 +152,7 @@ struct QuizDataUpdate: Encodable {
         case copingEmotional = "coping_emotional"
         case stressResponse = "stress_response"
         case boredomResponse = "boredom_response"
-        case spentMoney = "spent_money"
+        case monthlySpending = "monthly_spending"
         case dependencyScore = "dependency_score"
     }
 }
@@ -272,10 +272,10 @@ class DatabaseService {
                     .from("user_quiz_data")
                     .insert(QuizDataInsert(userId: userId.uuidString))
                     .execute()
-                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Created missing quiz_data record")
+                print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ Created missing quiz_data record")
             }
         } catch {
-            print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Failed to ensure quiz_data exists: \(error)")
+            print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Failed to ensure quiz_data exists: \(error)")
         }
         
         // Check and create progress if missing
@@ -292,10 +292,10 @@ class DatabaseService {
                     .from("user_progress")
                     .insert(ProgressInsert(userId: userId.uuidString))
                     .execute()
-                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Created missing progress record")
+                print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ Created missing progress record")
             }
         } catch {
-            print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Failed to ensure progress exists: \(error)")
+            print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Failed to ensure progress exists: \(error)")
         }
     }
     
@@ -370,8 +370,8 @@ class DatabaseService {
         if let boredomResponse = quizData.boredomResponse {
             update.boredomResponse = boredomResponse.rawValue
         }
-        if let spentMoney = quizData.spentMoney {
-            update.spentMoney = spentMoney
+        if let monthlySpending = quizData.monthlySpending {
+            update.monthlySpending = monthlySpending.rawValue
         }
         if let dependencyScore = quizData.dependencyScore {
             update.dependencyScore = dependencyScore
@@ -567,7 +567,7 @@ struct QuizDataInput {
     var copingEmotional: FrequencyResponse?
     var stressResponse: FrequencyResponse?
     var boredomResponse: FrequencyResponse?
-    var spentMoney: Bool?
+    var monthlySpending: MonthlySpending?
     var dependencyScore: Double?
 }
 

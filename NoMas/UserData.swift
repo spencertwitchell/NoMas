@@ -123,7 +123,7 @@ class UserData: ObservableObject {
         didSet { saveQuizToSupabase() }
     }
     
-    @Published var spentMoney: Bool? = nil {
+    @Published var monthlySpending: MonthlySpending? = nil {
         didSet { saveQuizToSupabase() }
     }
     
@@ -284,7 +284,7 @@ class UserData: ObservableObject {
         // 6. Save to Supabase
         saveProgressToSupabase()
         
-        print("Ã°Å¸â€â€ž Timer reset to: \(resetDate)")
+        print("ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ Timer reset to: \(resetDate)")
         print("   New projected recovery: \(projectedRecoveryDate?.description ?? "nil")")
         print("   Times relapsed: \(timesRelapsed)")
         print("   Best streak preserved: \(bestStreak)")
@@ -330,9 +330,9 @@ class UserData: ObservableObject {
             score += boredom.scoreWeight(for: .boredomResponse)
         }
         
-        // Spent money (0 or 4 points)
-        if let money = spentMoney, money {
-            score += QuizScoringConfig.spentMoneyYesWeight
+        // Monthly spending (0-6 points)
+        if let spending = monthlySpending {
+            score += spending.scoreWeight
         }
         
         return min(score, QuizScoringConfig.maxScore) // Cap at 94
@@ -433,9 +433,9 @@ class UserData: ObservableObject {
                 populateFromSupabase(user: allData.user, quiz: allData.quiz, progress: allData.progress)
             }
             
-            print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ UserData initialized from Supabase")
+            print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ UserData initialized from Supabase")
         } catch {
-            print("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Failed to initialize from Supabase: \(error)")
+            print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Failed to initialize from Supabase: \(error)")
             loadError = error.localizedDescription
         }
         
@@ -468,7 +468,7 @@ class UserData: ObservableObject {
             copingEmotional = quiz.copingEmotional.flatMap { FrequencyResponse(rawValue: $0) }
             stressResponse = quiz.stressResponse.flatMap { FrequencyResponse(rawValue: $0) }
             boredomResponse = quiz.boredomResponse.flatMap { FrequencyResponse(rawValue: $0) }
-            spentMoney = quiz.spentMoney
+            monthlySpending = quiz.monthlySpending.flatMap { MonthlySpending(rawValue: $0) }
             dependencyScore = quiz.dependencyScore ?? 0.0
         }
         
@@ -513,9 +513,9 @@ class UserData: ObservableObject {
                     profilePictureUrl: profilePictureURL,
                     isProfilePublic: isProfilePublic
                 )
-                print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ User data saved to Supabase")
+                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ User data saved to Supabase")
             } catch {
-                print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to save user: \(error)")
+                print("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Failed to save user: \(error)")
             }
         }
         
@@ -539,15 +539,15 @@ class UserData: ObservableObject {
                 copingEmotional: copingEmotional,
                 stressResponse: stressResponse,
                 boredomResponse: boredomResponse,
-                spentMoney: spentMoney,
+                monthlySpending: monthlySpending,
                 dependencyScore: dependencyScore
             )
             
             do {
                 try await database.saveQuizData(userId: userId, quizData: input)
-                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Quiz data saved to Supabase")
+                print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ Quiz data saved to Supabase")
             } catch {
-                print("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Failed to save quiz: \(error)")
+                print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Failed to save quiz: \(error)")
             }
         }
         
@@ -579,9 +579,9 @@ class UserData: ObservableObject {
             
             do {
                 try await database.updateProgress(userId: userId, progress: input)
-                print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Progress saved to Supabase")
+                print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ Progress saved to Supabase")
             } catch {
-                print("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Failed to save progress: \(error)")
+                print("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Failed to save progress: \(error)")
             }
         }
         
@@ -613,7 +613,7 @@ class UserData: ObservableObject {
         defaults.set(copingEmotional?.rawValue, forKey: "copingEmotional")
         defaults.set(stressResponse?.rawValue, forKey: "stressResponse")
         defaults.set(boredomResponse?.rawValue, forKey: "boredomResponse")
-        defaults.set(spentMoney, forKey: "spentMoney")
+        defaults.set(monthlySpending?.rawValue, forKey: "monthlySpending")
         defaults.set(dependencyScore, forKey: "dependencyScore")
         defaults.set(appJoinDate, forKey: "appJoinDate")
         defaults.set(streakStartDate, forKey: "streakStartDate")
@@ -649,7 +649,7 @@ class UserData: ObservableObject {
         copingEmotional = defaults.string(forKey: "copingEmotional").flatMap { FrequencyResponse(rawValue: $0) }
         stressResponse = defaults.string(forKey: "stressResponse").flatMap { FrequencyResponse(rawValue: $0) }
         boredomResponse = defaults.string(forKey: "boredomResponse").flatMap { FrequencyResponse(rawValue: $0) }
-        spentMoney = defaults.object(forKey: "spentMoney") as? Bool
+        monthlySpending = defaults.string(forKey: "monthlySpending").flatMap { MonthlySpending(rawValue: $0) }
         dependencyScore = defaults.double(forKey: "dependencyScore")
         appJoinDate = defaults.object(forKey: "appJoinDate") as? Date ?? Date()
         streakStartDate = defaults.object(forKey: "streakStartDate") as? Date ?? Date()
@@ -686,7 +686,7 @@ class UserData: ObservableObject {
         copingEmotional = nil
         stressResponse = nil
         boredomResponse = nil
-        spentMoney = nil
+        monthlySpending = nil
         dependencyScore = 0.0
         appJoinDate = Date()
         streakStartDate = Date()
@@ -704,7 +704,7 @@ class UserData: ObservableObject {
         defaults.removePersistentDomain(forName: domain)
         defaults.synchronize()
         
-        print("ÃƒÂ°Ã…Â¸Ã¢â‚¬â€Ã¢â‚¬ËœÃƒÂ¯Ã‚Â¸Ã‚Â UserDefaults cleared")
+        print("ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â UserDefaults cleared")
     }
     #endif
     
@@ -714,22 +714,22 @@ class UserData: ObservableObject {
     /// Clears: UserDefaults, Keychain, Supabase session
     /// Available in all builds (hidden behind 7-tap activation in Settings)
     func nukeEverything() async {
-        print("ÃƒÂ¢Ã‹Å“Ã‚Â¢ÃƒÂ¯Ã‚Â¸Ã‚Â NUKING EVERYTHING...")
+        print("ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â NUKING EVERYTHING...")
         
         // 1. Sign out of Supabase (this clears Supabase's keychain tokens)
         await AuthManager.shared.signOut()
-        print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Signed out of Supabase")
+        print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Signed out of Supabase")
         
         // 2. Delete ALL keychain items for this app
         clearAllKeychainItems()
-        print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Keychain wiped")
+        print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Keychain wiped")
         
         // 3. Clear all UserDefaults
         if let bundleId = Bundle.main.bundleIdentifier {
             defaults.removePersistentDomain(forName: bundleId)
             defaults.synchronize()
         }
-        print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ UserDefaults wiped")
+        print("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ UserDefaults wiped")
         
         // 4. Reset in-memory state
         hasCompletedOnboarding = false
@@ -752,7 +752,7 @@ class UserData: ObservableObject {
         copingEmotional = nil
         stressResponse = nil
         boredomResponse = nil
-        spentMoney = nil
+        monthlySpending = nil
         dependencyScore = 0.0
         appJoinDate = Date()
         streakStartDate = Date()
@@ -765,7 +765,7 @@ class UserData: ObservableObject {
         subscriptionStatus = false
         supabaseUserId = nil
         
-        print("ÃƒÂ¢Ã‹Å“Ã‚Â¢ÃƒÂ¯Ã‚Â¸Ã‚Â NUKE COMPLETE - Restart the app!")
+        print("ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â NUKE COMPLETE - Restart the app!")
     }
     
     /// Deletes all keychain items for this app
@@ -786,7 +786,7 @@ class UserData: ObservableObject {
             } else if status == errSecItemNotFound {
                 // No items of this class - that's fine
             } else {
-                print("   ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Failed to delete keychain class \(secClass): \(status)")
+                print("   ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Failed to delete keychain class \(secClass): \(status)")
             }
         }
     }

@@ -401,6 +401,122 @@ struct QuizContinueButton: View {
     }
 }
 
+// MARK: - Monthly Spending Slider
+
+struct QuizMonthlySpendingSlider: View {
+    @Binding var selection: MonthlySpending?
+    let onSelect: (MonthlySpending) -> Void
+    
+    @State private var sliderValue: Double = 0
+    
+    private let stops = MonthlySpending.allCases
+    private let stopCount = MonthlySpending.allCases.count
+    
+    var body: some View {
+        VStack(spacing: 24) {
+            // Current value display
+            Text(currentDisplayValue)
+                .font(.system(size: 48, weight: .bold))
+                .foregroundColor(.white)
+                .contentTransition(.numericText())
+                .animation(.easeInOut(duration: 0.15), value: sliderValue)
+            
+            // Slider
+            VStack(spacing: 12) {
+                // Custom slider track with snap points
+                GeometryReader { geometry in
+                    let trackWidth = geometry.size.width
+                    let stepWidth = trackWidth / CGFloat(stopCount - 1)
+                    
+                    ZStack(alignment: .leading) {
+                        // Background track
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.white.opacity(0.2))
+                            .frame(height: 8)
+                        
+                        // Filled portion
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.accentGradientStart, Color.accentGradientEnd]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(width: CGFloat(sliderValue) * stepWidth, height: 8)
+                        
+                        // Stop markers
+                        HStack(spacing: 0) {
+                            ForEach(0..<stopCount, id: \.self) { index in
+                                Circle()
+                                    .fill(index <= Int(sliderValue.rounded()) ? Color.accentGradientEnd : Color.white.opacity(0.4))
+                                    .frame(width: 12, height: 12)
+                                if index < stopCount - 1 {
+                                    Spacer()
+                                }
+                            }
+                        }
+                        
+                        // Draggable thumb
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.accentGradientStart, Color.accentGradientEnd]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 28, height: 28)
+                            .shadow(color: Color.accentGradientStart.opacity(0.5), radius: 8, x: 0, y: 4)
+                            .offset(x: CGFloat(sliderValue) * stepWidth - 14)
+                            .gesture(
+                                DragGesture(minimumDistance: 0)
+                                    .onChanged { value in
+                                        let newValue = value.location.x / stepWidth
+                                        sliderValue = min(max(0, newValue), Double(stopCount - 1))
+                                    }
+                                    .onEnded { _ in
+                                        // Snap to nearest stop
+                                        let snappedIndex = Int(sliderValue.rounded())
+                                        withAnimation(.easeOut(duration: 0.15)) {
+                                            sliderValue = Double(snappedIndex)
+                                        }
+                                        let spending = MonthlySpending.fromSliderIndex(snappedIndex)
+                                        onSelect(spending)
+                                    }
+                            )
+                    }
+                }
+                .frame(height: 28)
+                .padding(.horizontal, 14) // Account for thumb width
+                
+                // Labels
+                HStack {
+                    ForEach(0..<stopCount, id: \.self) { index in
+                        Text(stops[index].displayName)
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(index == Int(sliderValue.rounded()) ? .white : .white.opacity(0.5))
+                        if index < stopCount - 1 {
+                            Spacer()
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 8)
+        }
+        .onAppear {
+            if let selection = selection {
+                sliderValue = Double(selection.sliderIndex)
+            }
+        }
+    }
+    
+    private var currentDisplayValue: String {
+        let index = Int(sliderValue.rounded())
+        return MonthlySpending.fromSliderIndex(index).displayName
+    }
+}
+
 // MARK: - Date Picker Style
 
 struct QuizDatePicker: View {
@@ -540,4 +656,17 @@ struct QuizBackground: View {
         onContinue: {},
         onBack: {}
     )
+}
+
+#Preview("Monthly Spending Slider") {
+    ZStack {
+        Color.black.ignoresSafeArea()
+        VStack {
+            QuizMonthlySpendingSlider(
+                selection: .constant(.thirty),
+                onSelect: { _ in }
+            )
+            .padding()
+        }
+    }
 }

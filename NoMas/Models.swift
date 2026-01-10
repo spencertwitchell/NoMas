@@ -156,6 +156,74 @@ enum YesNoResponse: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+// MARK: - Monthly Spending
+
+enum MonthlySpending: String, Codable, CaseIterable, Identifiable {
+    case zero = "0"
+    case five = "5"
+    case fifteen = "15"
+    case thirty = "30"
+    case sixty = "60"
+    case hundred = "100"
+    case twoHundredPlus = "200_plus"
+    
+    var id: String { rawValue }
+    
+    /// Display text for the slider
+    var displayName: String {
+        switch self {
+        case .zero: return "$0"
+        case .five: return "$5"
+        case .fifteen: return "$15"
+        case .thirty: return "$30"
+        case .sixty: return "$60"
+        case .hundred: return "$100"
+        case .twoHundredPlus: return "$200+"
+        }
+    }
+    
+    /// Index for slider position (0-6)
+    var sliderIndex: Int {
+        switch self {
+        case .zero: return 0
+        case .five: return 1
+        case .fifteen: return 2
+        case .thirty: return 3
+        case .sixty: return 4
+        case .hundred: return 5
+        case .twoHundredPlus: return 6
+        }
+    }
+    
+    /// Create from slider index
+    static func fromSliderIndex(_ index: Int) -> MonthlySpending {
+        switch index {
+        case 0: return .zero
+        case 1: return .five
+        case 2: return .fifteen
+        case 3: return .thirty
+        case 4: return .sixty
+        case 5: return .hundred
+        case 6: return .twoHundredPlus
+        default: return .zero
+        }
+    }
+    
+    /// Score weight for dependency calculation
+    /// Higher spending = stronger indicator of compulsive behavior
+    var scoreWeight: Double {
+        switch self {
+        case .zero: return 0
+        case .five: return 1
+        case .fifteen: return 2
+        case .thirty: return 3
+        case .sixty: return 4
+        case .hundred: return 5
+        case .twoHundredPlus: return 6
+        }
+    }
+}
+
 // MARK: - Milestones (Streak Progress)
 
 enum Milestone: String, Codable, CaseIterable, Identifiable {
@@ -220,7 +288,7 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
     var description: String {
         switch self {
         case .bronze:
-            return "Every journey begins with a single step. You've made the commitment to change â€” that takes real courage."
+            return "Every journey begins with a single step. You've made the commitment to change Ã¢â‚¬â€ that takes real courage."
         case .silver:
             return "Three days of dedication. Your brain is already beginning to recognize new patterns. Keep pushing forward."
         case .gold:
@@ -228,15 +296,15 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
         case .platinum:
             return "Ten days of progress. The initial challenges are behind you, and you're building real momentum now."
         case .diamond:
-            return "Two weeks of commitment. Your resolve is hardening like a diamond â€” unbreakable and brilliant."
+            return "Two weeks of commitment. Your resolve is hardening like a diamond Ã¢â‚¬â€ unbreakable and brilliant."
         case .ruby:
             return "A full month of recovery. This is a major achievement that shows your dedication to lasting change."
         case .elite:
-            return "45 days of transformation. You've entered elite territory â€” few make it this far. Be proud."
+            return "45 days of transformation. You've entered elite territory Ã¢â‚¬â€ few make it this far. Be proud."
         case .master:
             return "Two months of mastery. You've developed new habits and your brain is rewiring itself for success."
         case .grandmaster:
-            return "90 days of freedom. You've achieved grandmaster status â€” a complete recovery cycle. You are transformed."
+            return "90 days of freedom. You've achieved grandmaster status Ã¢â‚¬â€ a complete recovery cycle. You are transformed."
         }
     }
     
@@ -323,7 +391,7 @@ struct QuizScoringConfig {
     
     // Binary question weights
     static let escalationYesWeight: Double = 5.0
-    static let spentMoneyYesWeight: Double = 4.0
+    // Note: monthlySpending now uses MonthlySpending.scoreWeight (0-6 points)
 }
 
 // MARK: - Supabase Table Models (for decoding)
@@ -369,7 +437,7 @@ struct SupabaseQuizData: Codable {
     let copingEmotional: String?
     let stressResponse: String?
     let boredomResponse: String?
-    let spentMoney: Bool?
+    let monthlySpending: String?
     let dependencyScore: Double?
     let createdAt: Date?
     let updatedAt: Date?
@@ -385,7 +453,7 @@ struct SupabaseQuizData: Codable {
         case copingEmotional = "coping_emotional"
         case stressResponse = "stress_response"
         case boredomResponse = "boredom_response"
-        case spentMoney = "spent_money"
+        case monthlySpending = "monthly_spending"
         case dependencyScore = "dependency_score"
         case createdAt = "created_at"
         case updatedAt = "updated_at"

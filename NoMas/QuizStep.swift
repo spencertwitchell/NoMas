@@ -165,7 +165,7 @@ enum QuizStep: Int, CaseIterable {
         case .boredomResponse:
             return "Do you watch pornography out of boredom?"
         case .spentMoney:
-            return "Have you ever spent money on accessing explicit content?"
+            return "About how much do you currently spend per month on explicit content?"
         case .personalInfo:
             return "Lastly, a little more about you"
         }
@@ -363,7 +363,7 @@ class QuizState: ObservableObject {
         case .boredomResponse:
             return userData.boredomResponse != nil
         case .spentMoney:
-            return userData.spentMoney != nil
+            return userData.monthlySpending != nil
         case .personalInfo:
             // Age is required, display name is optional
             return userData.age != nil
@@ -405,7 +405,7 @@ extension QuizState {
             copingEmotional: userData.copingEmotional,
             stressResponse: userData.stressResponse,
             boredomResponse: userData.boredomResponse,
-            spentMoney: userData.spentMoney,
+            monthlySpending: userData.monthlySpending,
             dependencyScore: userData.dependencyScore
         )
     }
@@ -424,7 +424,7 @@ struct QuizAnswerSummary {
     let copingEmotional: FrequencyResponse?
     let stressResponse: FrequencyResponse?
     let boredomResponse: FrequencyResponse?
-    let spentMoney: Bool?
+    let monthlySpending: MonthlySpending?
     let dependencyScore: Double
     
     /// Text description of the score severity

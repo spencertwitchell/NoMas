@@ -85,7 +85,7 @@ struct OnboardingQuizFlow: View {
         case .boredomResponse:
             return userData.boredomResponse != nil
         case .spentMoney:
-            return userData.spentMoney != nil
+            return userData.monthlySpending != nil
         case .personalInfo:
             // Age is required, display name is optional
             return userData.age != nil
@@ -358,27 +358,31 @@ struct BoredomResponseQuestion: View {
     }
 }
 
-// MARK: - Question 10: Spent Money
+// MARK: - Question 10: Monthly Spending
 
 struct SpentMoneyQuestion: View {
     @ObservedObject var quizState: QuizState
     private var userData: UserData { UserData.shared }
     
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: 40) {
             QuizQuestionTitle(
                 title: QuizStep.spentMoney.questionTitle
             )
             
-            QuizYesNoButtons(
-                selection: userData.spentMoney,
-                onSelect: { value in
-                    userData.spentMoney = value
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            QuizMonthlySpendingSlider(
+                selection: Binding(
+                    get: { userData.monthlySpending },
+                    set: { userData.monthlySpending = $0 }
+                ),
+                onSelect: { spending in
+                    userData.monthlySpending = spending
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         quizState.advance()
                     }
                 }
             )
+            .padding(.horizontal, 8)
         }
     }
 }
