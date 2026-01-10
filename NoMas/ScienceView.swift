@@ -5,30 +5,7 @@
 //  Created by Spencer Twitchell on 12/8/25.
 //
 
-
-//
-//  ScienceView.swift
-//  NoMas
-//
-//  Created by Spencer Twitchell on 12/8/25.
-//
-
 import SwiftUI
-
-// MARK: - Positive/Hope Colors (for light-themed screens)
-
-extension Color {
-    static let hopeGradientStart = Color(hex: "E8D5F2")  // Light purple
-    static let hopeGradientEnd = Color(hex: "D4C4E0")    // Slightly darker purple
-}
-
-extension LinearGradient {
-    static let hope = LinearGradient(
-        gradient: Gradient(colors: [Color.hopeGradientStart, Color.hopeGradientEnd]),
-        startPoint: .top,
-        endPoint: .bottom
-    )
-}
 
 // MARK: - Science View
 
@@ -47,111 +24,110 @@ struct ScienceView: View {
             let largeBarHeight: CGFloat = 180
             
             ZStack {
-                // Light gradient background
-                LinearGradient.hope
-                    .ignoresSafeArea()
+                // Standard app background
+                AppBackground()
                 
                 VStack(spacing: 0) {
                     // Header
-                    OnboardingHeaderDark(
+                    OnboardingHeader(
                         showBackButton: true,
                         onBack: { onboardingState.goBack() }
                     )
                     
                     Spacer()
                     
-                    // Title
-                    Text("It's Not A Trend—\nIt's Proven By Science")
-                        .font(.titleLarge)
-                        .foregroundColor(.accentGradientStart)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 32)
-                    
-                    Spacer()
-                        .frame(minHeight: 16)
-                    
-                    // Description
-                    Text("Studies show people who commit to quitting pornography recover substantially faster than those who try to moderate.")
-                        .font(.body)
-                        .foregroundColor(.accentGradientEnd)
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(4)
-                        .padding(.horizontal, 40)
-                    
-                    Spacer()
-                        .frame(minHeight: 24)
-                    
-                    // Chart Title
-                    Text("Recovery Timeframe")
-                        .font(.titleSmall)
-                        .foregroundColor(.accentGradientStart)
-                        .padding(.bottom, 8)
-                    
-                    // Animated Chart
-                    VStack(spacing: 0) {
-                        HStack(alignment: .bottom, spacing: barSpacing) {
-                            // Moderation bar (short)
-                            VStack(spacing: 8) {
-                                ZStack(alignment: .bottom) {
-                                    Rectangle()
-                                        .fill(Color.gray.opacity(0.5))
-                                        .frame(width: barWidth, height: smallBarHeight)
-                                        .cornerRadius(8)
-                                        .offset(y: barOffset1)
-                                }
-                                .frame(height: smallBarHeight)
-                                .clipped()
-                            }
-                            
-                            // Full quit bar (tall)
-                            VStack(spacing: 8) {
-                                ZStack(alignment: .bottom) {
-                                    Rectangle()
-                                        .fill(LinearGradient.accentVertical)
-                                        .frame(width: barWidth, height: largeBarHeight)
-                                        .cornerRadius(8)
-                                        .offset(y: barOffset2)
-                                }
-                                .frame(height: largeBarHeight)
-                                .clipped()
-                            }
-                        }
-                        .padding(.leading, 30)
-                        .overlay(
-                            GeometryReader { geo in
-                                let yAxisX: CGFloat = 20
-                                let axisBottom: CGFloat = largeBarHeight + 8
-                                let xAxisEnd = 30 + barWidth + barSpacing + barWidth + 5
-                                
-                                Path { path in
-                                    // Y axis
-                                    path.move(to: CGPoint(x: yAxisX, y: 8))
-                                    path.addLine(to: CGPoint(x: yAxisX, y: axisBottom))
-                                    
-                                    // X axis
-                                    path.move(to: CGPoint(x: yAxisX, y: axisBottom))
-                                    path.addLine(to: CGPoint(x: xAxisEnd, y: axisBottom))
-                                }
-                                .stroke(Color.accentGradientStart.opacity(0.4), lineWidth: 2)
-                            }
-                        )
+                    // Content group (title, description, chart)
+                    VStack(spacing: 24) {
+                        // Title
+                        Text("It's Not A Trend—\nIt's Proven By Science")
+                            .font(.titleLarge)
+                            .foregroundColor(.textPrimary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 32)
                         
-                        // X-axis labels
-                        HStack(alignment: .top, spacing: barSpacing) {
-                            Text("Moderation")
-                                .font(.caption)
-                                .foregroundColor(.accentGradientStart)
-                                .frame(width: barWidth)
+                        // Description
+                        Text("Studies show people who commit to quitting pornography recover substantially faster than those who try to moderate.")
+                            .font(.body)
+                            .foregroundColor(.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(4)
+                            .padding(.horizontal, 40)
+                        
+                        // Chart section
+                        VStack(spacing: 0) {
+                            // Chart Title
+                            Text("Recovery Timeframe")
+                                .font(.titleSmall)
+                                .foregroundColor(.textPrimary)
+                                .padding(.bottom, 12)
                             
-                            Text("Full Quit")
-                                .font(.caption)
-                                .foregroundColor(.accentGradientStart)
-                                .frame(width: barWidth)
+                            // Animated Chart
+                            VStack(spacing: 0) {
+                                HStack(alignment: .bottom, spacing: barSpacing) {
+                                    // Moderation bar (short)
+                                    VStack(spacing: 8) {
+                                        ZStack(alignment: .bottom) {
+                                            Rectangle()
+                                                .fill(Color.white.opacity(0.3))
+                                                .frame(width: barWidth, height: smallBarHeight)
+                                                .cornerRadius(8)
+                                                .offset(y: barOffset1)
+                                        }
+                                        .frame(height: smallBarHeight)
+                                        .clipped()
+                                    }
+                                    
+                                    // Full quit bar (tall)
+                                    VStack(spacing: 8) {
+                                        ZStack(alignment: .bottom) {
+                                            Rectangle()
+                                                .fill(LinearGradient.accentVertical)
+                                                .frame(width: barWidth, height: largeBarHeight)
+                                                .cornerRadius(8)
+                                                .offset(y: barOffset2)
+                                        }
+                                        .frame(height: largeBarHeight)
+                                        .clipped()
+                                    }
+                                }
+                                .padding(.leading, 30)
+                                .overlay(
+                                    GeometryReader { geo in
+                                        let yAxisX: CGFloat = 20
+                                        let axisBottom: CGFloat = largeBarHeight + 8
+                                        let xAxisEnd = 30 + barWidth + barSpacing + barWidth + 5
+                                        
+                                        Path { path in
+                                            // Y axis
+                                            path.move(to: CGPoint(x: yAxisX, y: 8))
+                                            path.addLine(to: CGPoint(x: yAxisX, y: axisBottom))
+                                            
+                                            // X axis
+                                            path.move(to: CGPoint(x: yAxisX, y: axisBottom))
+                                            path.addLine(to: CGPoint(x: xAxisEnd, y: axisBottom))
+                                        }
+                                        .stroke(Color.white.opacity(0.3), lineWidth: 2)
+                                    }
+                                )
+                                
+                                // X-axis labels
+                                HStack(alignment: .top, spacing: barSpacing) {
+                                    Text("Moderation")
+                                        .font(.caption)
+                                        .foregroundColor(.textSecondary)
+                                        .frame(width: barWidth)
+                                    
+                                    Text("Full Quit")
+                                        .font(.caption)
+                                        .foregroundColor(.textSecondary)
+                                        .frame(width: barWidth)
+                                }
+                                .padding(.leading, 30)
+                                .padding(.top, 12)
+                            }
+                            .frame(maxWidth: .infinity)
                         }
-                        .padding(.leading, 30)
-                        .padding(.top, 12)
                     }
-                    .frame(maxWidth: .infinity)
                     
                     Spacer()
                     
@@ -182,44 +158,6 @@ struct ScienceView: View {
                 }
             }
         }
-    }
-}
-
-// MARK: - Dark Header (for light backgrounds)
-
-struct OnboardingHeaderDark: View {
-    var showBackButton: Bool = true
-    var onBack: (() -> Void)? = nil
-    
-    var body: some View {
-        HStack {
-            if showBackButton, let onBack = onBack {
-                Button(action: onBack) {
-                    Image(systemName: "chevron.left")
-                        .font(.titleSmall)
-                        .foregroundColor(.accentGradientStart)
-                        .frame(width: 44, height: 44)
-                }
-            } else {
-                Spacer()
-                    .frame(width: 44)
-            }
-            
-            Spacer()
-            
-            // Dark logo variant (you may need to add this asset)
-            Image("nomaslogo")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxHeight: 40)
-            
-            Spacer()
-            
-            Spacer()
-                .frame(width: 44)
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 16)
     }
 }
 

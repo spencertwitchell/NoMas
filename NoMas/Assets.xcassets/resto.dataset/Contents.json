@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "resto.json",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
