@@ -434,7 +434,12 @@ struct PersonalInfoQuestion: View {
             age = userData.age
         }
         .onChange(of: displayName) { _, newValue in
-            userData.displayName = newValue
+            // Filter out spaces to keep display name as one word
+            let filtered = newValue.replacingOccurrences(of: " ", with: "")
+            if filtered != newValue {
+                displayName = filtered
+            }
+            userData.displayName = filtered
         }
         .onChange(of: age) { _, newValue in
             userData.age = newValue
