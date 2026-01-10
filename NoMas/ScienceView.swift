@@ -16,16 +16,23 @@ struct ScienceView: View {
     @State private var barOffset2: CGFloat = 180
     
     var body: some View {
-        GeometryReader { geometry in
-            let screenWidth = geometry.size.width
-            let barWidth = screenWidth * 0.18
-            let barSpacing = screenWidth * 0.08
-            let smallBarHeight: CGFloat = 50
-            let largeBarHeight: CGFloat = 180
+        ZStack {
+            // Background image
+            Image("bg67")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .ignoresSafeArea()
             
-            ZStack {
-                // Standard app background
-                AppBackground()
+            // Dark overlay
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+            
+            GeometryReader { geometry in
+                let screenWidth = geometry.size.width
+                let barWidth = screenWidth * 0.18
+                let barSpacing = screenWidth * 0.08
+                let smallBarHeight: CGFloat = 50
+                let largeBarHeight: CGFloat = 180
                 
                 VStack(spacing: 0) {
                     // Header
@@ -36,24 +43,9 @@ struct ScienceView: View {
                     
                     Spacer()
                     
-                    // Content group (title, description, chart)
+                    // Content group (chart, title, description)
                     VStack(spacing: 24) {
-                        // Title
-                        Text("It's Not A Trend—\nIt's Proven By Science")
-                            .font(.titleLarge)
-                            .foregroundColor(.textPrimary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 32)
-                        
-                        // Description
-                        Text("Studies show people who commit to quitting pornography recover substantially faster than those who try to moderate.")
-                            .font(.body)
-                            .foregroundColor(.textSecondary)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(4)
-                            .padding(.horizontal, 40)
-                        
-                        // Chart section
+                        // Chart section (now first)
                         VStack(spacing: 0) {
                             // Chart Title
                             Text("Recovery Timeframe")
@@ -127,6 +119,21 @@ struct ScienceView: View {
                             }
                             .frame(maxWidth: .infinity)
                         }
+                        
+                        // Title
+                        Text("It's Not A Trend—\nIt's Proven By Science")
+                            .font(.titleLarge)
+                            .foregroundColor(.textPrimary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 32)
+                        
+                        // Description
+                        Text("Studies show people who commit to quitting pornography recover substantially faster than those who try to moderate.")
+                            .font(.body)
+                            .foregroundColor(.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(4)
+                            .padding(.horizontal, 40)
                     }
                     
                     Spacer()
@@ -147,14 +154,14 @@ struct ScienceView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .onAppear {
-                withAnimation(.easeOut(duration: 1.2)) {
-                    barOffset1 = 0
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    withAnimation(.easeOut(duration: 1.0)) {
-                        barOffset2 = 0
-                    }
+        }
+        .onAppear {
+            withAnimation(.easeOut(duration: 1.2)) {
+                barOffset1 = 0
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation(.easeOut(duration: 1.0)) {
+                    barOffset2 = 0
                 }
             }
         }
