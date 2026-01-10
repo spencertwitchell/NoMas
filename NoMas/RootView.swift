@@ -13,9 +13,9 @@ import SwiftUI
 ///
 /// ROUTING LOGIC:
 /// 1. Show splash first (always)
-/// 2. If !hasCompletedOnboarding → Onboarding flow
-/// 3. If hasCompletedOnboarding but !hasActiveSubscription → Paywall (subscription_required)
-/// 4. If hasCompletedOnboarding and hasActiveSubscription → Main app
+/// 2. If !hasCompletedOnboarding â†’ Onboarding flow
+/// 3. If hasCompletedOnboarding but !hasActiveSubscription â†’ Paywall (subscription_required)
+/// 4. If hasCompletedOnboarding and hasActiveSubscription â†’ Main app
 ///
 /// This ensures:
 /// - New users complete full onboarding
@@ -42,7 +42,7 @@ struct RootView: View {
             // Determine what to show
             if skipOnboarding {
                 // Development mode - skip straight to main app
-                MainView()
+                MainView(splashComplete: .constant(true))
                     .onAppear { setupTestData() }
             } else {
                 // Main content only renders once data is loaded (contentReady)
@@ -72,7 +72,7 @@ struct RootView: View {
         
         if !userData.hasCompletedOnboarding {
             // NEW USER: Show full onboarding flow
-            // OnboardingFlowView handles: welcome → optionalAuth → quiz → ... → paywall → complete
+            // OnboardingFlowView handles: welcome â†’ optionalAuth â†’ quiz â†’ ... â†’ paywall â†’ complete
             OnboardingFlowView()
         } else if !userData.hasActiveSubscription {
             // RETURNING USER WITHOUT SUBSCRIPTION:
@@ -85,7 +85,7 @@ struct RootView: View {
             ReturningUserAuthView()
         } else {
             // HAPPY PATH: Completed onboarding, has subscription, is authenticated
-            MainView()
+            MainView(splashComplete: $splashComplete)
         }
     }
     
@@ -93,7 +93,7 @@ struct RootView: View {
     
     private func debugPrintState() {
         #if DEBUG
-        print("🔍 RootView State:")
+        print("ðŸ” RootView State:")
         print("   splashComplete: \(splashComplete)")
         print("   hasCompletedOnboarding: \(userData.hasCompletedOnboarding)")
         print("   hasActiveSubscription: \(userData.hasActiveSubscription)")
@@ -512,10 +512,10 @@ struct MainAppPlaceholder: View {
                     
                     // Debug state info
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Auth: \(authManager.isAuthenticated ? "✅" : "❌") \(authManager.currentUserEmail ?? "not signed in")")
-                        Text("Subscription: \(userData.hasActiveSubscription ? "✅" : "❌")")
-                        Text("Completed Onboarding: \(userData.hasCompletedOnboarding ? "✅" : "❌")")
-                        Text("Skipped Early Auth: \(userData.skippedEarlyAuth ? "✅" : "❌")")
+                        Text("Auth: \(authManager.isAuthenticated ? "âœ…" : "âŒ") \(authManager.currentUserEmail ?? "not signed in")")
+                        Text("Subscription: \(userData.hasActiveSubscription ? "âœ…" : "âŒ")")
+                        Text("Completed Onboarding: \(userData.hasCompletedOnboarding ? "âœ…" : "âŒ")")
+                        Text("Skipped Early Auth: \(userData.skippedEarlyAuth ? "âœ…" : "âŒ")")
                         Text("Device ID: \(String(userData.deviceId.prefix(8)))...")
                     }
                     .font(.system(size: 10, design: .monospaced))
@@ -546,7 +546,7 @@ struct MainAppPlaceholder: View {
                             await userData.nukeEverything()
                         }
                     }) {
-                        Text("☢️ Nuke Everything (Fresh Install)")
+                        Text("â˜¢ï¸ Nuke Everything (Fresh Install)")
                             .font(.caption)
                             .foregroundColor(.red.opacity(0.9))
                             .padding(.horizontal, 16)

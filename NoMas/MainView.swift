@@ -15,10 +15,14 @@ import Lottie
 // MARK: - Main View
 
 struct MainView: View {
+    // Binding to know when splash has fully completed
+    @Binding var splashComplete: Bool
+    
     @State private var selectedTab = 0
     @State private var showCameraPrompt = false
     @State private var showDailyCheckIn = false
     @State private var showResetTimerFromCheckIn = false
+    @State private var hasShownPrompts = false // Prevent multiple triggers
     @StateObject private var userData = UserData.shared
     @StateObject private var authManager = AuthManager.shared
     @StateObject private var nomiViewModel = NomiViewModel() // Added for Nomi chat
@@ -72,8 +76,12 @@ struct MainView: View {
                 .zIndex(100)
             }
         }
-        .onAppear {
-            checkAndShowPrompts()
+        // Only show prompts once splash has fully completed
+        .onChange(of: splashComplete) { _, isComplete in
+            if isComplete && !hasShownPrompts {
+                hasShownPrompts = true
+                checkAndShowPrompts()
+            }
         }
         .fullScreenCover(isPresented: $showCameraPrompt) {
             CameraSoftPromptView()
@@ -416,7 +424,7 @@ struct ProfileView: View {
     
     private func loadUserPosts() async {
         guard let userId = userData.supabaseUserId else {
-            print("âŒ No user ID for loading posts")
+            print("Ã¢ÂÅ’ No user ID for loading posts")
             return
         }
         
@@ -432,10 +440,10 @@ struct ProfileView: View {
                 .value
             
             userPosts = response.compactMap { $0.toPost() }
-            print("âœ… Loaded \(userPosts.count) user posts")
+            print("Ã¢Å“â€¦ Loaded \(userPosts.count) user posts")
             isLoadingPosts = false
         } catch {
-            print("âŒ Failed to load user posts: \(error)")
+            print("Ã¢ÂÅ’ Failed to load user posts: \(error)")
             isLoadingPosts = false
         }
     }
@@ -637,5 +645,5 @@ struct StatBox: View {
 // MARK: - Preview
 
 #Preview {
-    MainView()
+    MainView(splashComplete: .constant(true))
 }
