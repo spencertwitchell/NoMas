@@ -8,41 +8,56 @@ struct OnboardingQuizFlow: View {
     
     var body: some View {
         ZStack {
-            // Background
-            AppBackground()
-            
-            // Content
-            VStack(spacing: 0) {
-                // Header with progress bar and back button
-                QuizHeader(quizState: quizState)
-                
-                // Question content (slides left/right)
-                ScrollView(showsIndicators: false) {
-                    questionContent
-                        .padding(.horizontal, 24)
-                        .padding(.top, 24)
-                        .padding(.bottom, 100) // Space for continue button
-                }
-                .id(quizState.currentStep) // Force refresh on step change
+            // Show interstitial if active, otherwise show quiz
+            if let interstitial = quizState.currentInterstitial {
+                QuizInterstitialView(
+                    interstitial: interstitial,
+                    onContinue: { quizState.advance() },
+                    onBack: { quizState.goBack() }
+                )
                 .transition(quizState.slideTransition)
-                .animation(.easeInOut(duration: 0.30), value: quizState.currentStep)
-            }
-            
-            // Continue button (fixed at bottom for non-auto-advance questions)
-            if quizState.currentStep.showsContinueButton {
-                VStack {
-                    Spacer()
+            } else {
+                // Regular quiz content
+                ZStack {
+                    // Background
+                    AppBackground()
                     
-                    QuizContinueButton(
-                        title: "Continue",
-                        isEnabled: canContinue,  // Use local computed property that reads from userData
-                        action: { quizState.advance() }
-                    )
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 24)
+                    // Content
+                    VStack(spacing: 0) {
+                        // Header with progress bar and back button
+                        QuizHeader(quizState: quizState)
+                        
+                        // Question content (slides left/right)
+                        ScrollView(showsIndicators: false) {
+                            questionContent
+                                .padding(.horizontal, 24)
+                                .padding(.top, 24)
+                                .padding(.bottom, 100) // Space for continue button
+                        }
+                        .id(quizState.currentStep) // Force refresh on step change
+                        .transition(quizState.slideTransition)
+                        .animation(.easeInOut(duration: 0.30), value: quizState.currentStep)
+                    }
+                    
+                    // Continue button (fixed at bottom for non-auto-advance questions)
+                    if quizState.currentStep.showsContinueButton {
+                        VStack {
+                            Spacer()
+                            
+                            QuizContinueButton(
+                                title: "Continue",
+                                isEnabled: canContinue,  // Use local computed property that reads from userData
+                                action: { quizState.advance() }
+                            )
+                            .padding(.horizontal, 24)
+                            .padding(.bottom, 24)
+                        }
+                    }
                 }
+                .transition(quizState.slideTransition)
             }
         }
+        .animation(.easeInOut(duration: 0.30), value: quizState.isShowingInterstitial)
     }
     
     // MARK: - Validation (reads directly from observed userData)
@@ -57,10 +72,10 @@ struct OnboardingQuizFlow: View {
             return true // Date picker always has a value
         case .viewingFrequency:
             return userData.viewingFrequency != nil
-        case .escalationToExtreme:
-            return userData.escalationToExtreme != nil
         case .ageFirstExposure:
             return userData.ageFirstExposure != nil
+        case .escalationToExtreme:
+            return userData.escalationToExtreme != nil
         case .arousalDifficulty:
             return userData.arousalDifficulty != nil
         case .copingEmotional:

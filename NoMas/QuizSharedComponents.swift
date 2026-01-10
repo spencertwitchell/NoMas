@@ -1,5 +1,86 @@
 import SwiftUI
 
+// MARK: - Quiz Interstitial View
+
+struct QuizInterstitialView: View {
+    let interstitial: QuizInterstitial
+    let onContinue: () -> Void
+    let onBack: () -> Void
+    
+    var body: some View {
+        ZStack {
+            // Background image with dark overlay
+            GeometryReader { geometry in
+                Image("bg67")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .overlay(Color.black.opacity(0.6))
+            }
+            .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                // Back button at top
+                HStack {
+                    Button(action: onBack) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(.white)
+                            .padding(12)
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal, 12)
+                .padding(.top, 8)
+                
+                Spacer()
+                
+                // Content
+                VStack(spacing: 24) {
+                    // Caption
+                    Text(interstitial.caption)
+                        .font(.body)
+                        .foregroundColor(.textSecondary)
+                    
+                    // Header text
+                    Text(interstitial.headerText)
+                        .font(.titleMedium)
+                        .foregroundColor(.textPrimary)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(6)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    // Source logo
+                    Image(interstitial.sourceLogoImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 60)
+                        .padding(.top, 16)
+                    
+                    // Source text
+                    Text(interstitial.sourceText)
+                        .font(.bodySmall)
+                        .foregroundColor(.textSecondary)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.horizontal, 32)
+                
+                Spacer()
+                
+                // Continue button
+                QuizContinueButton(
+                    title: "Continue",
+                    isEnabled: true,
+                    action: onContinue
+                )
+                .padding(.horizontal, 24)
+                .padding(.bottom, 40)
+            }
+        }
+    }
+}
+
 // MARK: - Quiz Header (Progress Bar + Back Button)
 
 struct QuizHeader: View {
@@ -451,4 +532,12 @@ struct QuizBackground: View {
         }
         .padding()
     }
+}
+
+#Preview("Interstitial") {
+    QuizInterstitialView(
+        interstitial: .adolescentBrain,
+        onContinue: {},
+        onBack: {}
+    )
 }

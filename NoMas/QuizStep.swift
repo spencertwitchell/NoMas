@@ -2,14 +2,88 @@ import Foundation
 import SwiftUI
 import Combine
 
+// MARK: - Quiz Interstitial
+
+/// Informational pages shown between certain quiz questions
+enum QuizInterstitial: String, CaseIterable {
+    case adolescentBrain
+    case boredomTrigger
+    case financialImpact
+    
+    /// Which question this interstitial appears AFTER
+    var appearsAfter: QuizStep {
+        switch self {
+        case .adolescentBrain:
+            return .ageFirstExposure
+        case .boredomTrigger:
+            return .boredomResponse
+        case .financialImpact:
+            return .spentMoney
+        }
+    }
+    
+    /// Caption text (small text above header)
+    var caption: String {
+        switch self {
+        case .adolescentBrain:
+            return "Did you know?"
+        case .boredomTrigger:
+            return "Did you know?"
+        case .financialImpact:
+            return "Did you know?"
+        }
+    }
+    
+    /// Main header text
+    var headerText: String {
+        switch self {
+        case .adolescentBrain:
+            return "Early exposure to pornography has been associated with lasting effects on brain development and impulse control."
+        case .boredomTrigger:
+            return "Psychological research shows that pornography is often used as a coping mechanism for stress, boredom, loneliness, or emotional discomfort — not just sexual desire."
+        case .financialImpact:
+            return "Research shows that paying for pornography is linked to loss of control and increased difficulty stopping — a key marker of addictive behavior."
+        }
+    }
+    
+    /// Image asset name for source logo
+    var sourceLogoImage: String {
+        switch self {
+        case .adolescentBrain:
+            return "harvard logo"
+        case .boredomTrigger:
+            return "APAlogo" // Update with actual source
+        case .financialImpact:
+            return "whologo" // Update with actual source
+        }
+    }
+    
+    /// Source attribution text
+    var sourceText: String {
+        switch self {
+        case .adolescentBrain:
+            return "Source: Harvard Health Publishing – \"How pornography affects the adolescent brain\""
+        case .boredomTrigger:
+            return "Source: American Psychological Association – \"Stress, coping, and compulsive sexual behaviors\""
+        case .financialImpact:
+            return "Source: World Health Organization (WHO) – \"Compulsive Sexual Behavior Disorder\""
+        }
+    }
+    
+    /// Get interstitial that should appear after a given step (if any)
+    static func interstitial(after step: QuizStep) -> QuizInterstitial? {
+        return allCases.first { $0.appearsAfter == step }
+    }
+}
+
 // MARK: - Quiz Step Enum
 
 enum QuizStep: Int, CaseIterable {
     case gender = 0
     case lastRelapseDate
     case viewingFrequency
-    case escalationToExtreme
     case ageFirstExposure
+    case escalationToExtreme
     case arousalDifficulty
     case copingEmotional
     case stressResponse
@@ -50,8 +124,8 @@ enum QuizStep: Int, CaseIterable {
         switch self {
         case .gender,
              .viewingFrequency,
-             .escalationToExtreme,
              .ageFirstExposure,
+             .escalationToExtreme,
              .arousalDifficulty,
              .copingEmotional,
              .stressResponse,
@@ -78,10 +152,10 @@ enum QuizStep: Int, CaseIterable {
             return "When did you last view pornography?"
         case .viewingFrequency:
             return "How often do you typically view pornography?"
-        case .escalationToExtreme:
-            return "Have you noticed a shift towards more extreme or graphic material?"
         case .ageFirstExposure:
             return "At what age did you first come across explicit content?"
+        case .escalationToExtreme:
+            return "Have you noticed a shift towards more extreme or graphic material?"
         case .arousalDifficulty:
             return "Do you find it difficult to achieve sexual arousal without pornography or fantasy?"
         case .copingEmotional:
@@ -119,9 +193,12 @@ class QuizState: ObservableObject {
     
     @Published private(set) var currentStep: QuizStep = .gender {
         didSet {
-            print("❓ Quiz step: \(oldValue.questionNumber) → \(currentStep.questionNumber)")
+            print("Quiz step: \(oldValue.questionNumber) -> \(currentStep.questionNumber)")
         }
     }
+    
+    /// Currently showing interstitial (nil if showing a question)
+    @Published private(set) var currentInterstitial: QuizInterstitial? = nil
     
     @Published private(set) var isTransitioning: Bool = false
     @Published var navigationDirection: NavigationDirection = .forward
@@ -136,41 +213,102 @@ class QuizState: ObservableObject {
     private var userData: UserData { UserData.shared }
     private var onboardingState: OnboardingState { OnboardingState.shared }
     
+    // MARK: - Computed Properties
+    
+    /// Whether currently showing an interstitial
+    var isShowingInterstitial: Bool {
+        currentInterstitial != nil
+    }
+    
     // MARK: - Init
     
     init() {}
     
     // MARK: - Navigation
     
-    /// Advance to the next question
+    /// Advance to the next question (or interstitial)
     func advance() {
         guard !isTransitioning else { return }
         
+        // If currently on an interstitial, move to next question
+        if currentInterstitial != nil {
+            navigationDirection = .forward
+            moveToNextQuestion()
+            return
+        }
+        
+        // Check if there's an interstitial after current step
+        if let interstitial = QuizInterstitial.interstitial(after: currentStep) {
+            navigationDirection = .forward
+            transitionToInterstitial(interstitial)
+            return
+        }
+        
+        // Normal advance to next question
         if let next = currentStep.next {
-            // More questions remaining
             navigationDirection = .forward
             transitionTo(next)
         } else {
-            // Quiz complete - move to calculating screen
+            // Quiz complete
             completeQuiz()
         }
     }
     
-    /// Go back to the previous question
+    /// Go back to the previous question (or interstitial)
     func goBack() {
         guard !isTransitioning else { return }
-        guard let prev = currentStep.previous else { return }
         
         navigationDirection = .back
+        
+        // If currently on an interstitial, go back to the question before it
+        if let interstitial = currentInterstitial {
+            transitionTo(interstitial.appearsAfter)
+            return
+        }
+        
+        // Check if there's an interstitial before current step
+        if let prev = currentStep.previous,
+           let interstitial = QuizInterstitial.interstitial(after: prev) {
+            transitionToInterstitial(interstitial)
+            return
+        }
+        
+        // Normal go back
+        guard let prev = currentStep.previous else { return }
         transitionTo(prev)
     }
     
-    /// Internal transition with animation lock
+    /// Move to the question after current interstitial
+    private func moveToNextQuestion() {
+        guard let interstitial = currentInterstitial else { return }
+        
+        if let nextStep = interstitial.appearsAfter.next {
+            transitionTo(nextStep)
+        } else {
+            completeQuiz()
+        }
+    }
+    
+    /// Internal transition to a question
     private func transitionTo(_ step: QuizStep) {
         isTransitioning = true
         
         withAnimation(.easeInOut(duration: 0.30)) {
+            currentInterstitial = nil
             currentStep = step
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.30) {
+            self.isTransitioning = false
+        }
+    }
+    
+    /// Internal transition to an interstitial
+    private func transitionToInterstitial(_ interstitial: QuizInterstitial) {
+        isTransitioning = true
+        
+        withAnimation(.easeInOut(duration: 0.30)) {
+            currentInterstitial = interstitial
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.30) {
@@ -180,7 +318,8 @@ class QuizState: ObservableObject {
     
     /// Can go back from current step
     var canGoBack: Bool {
-        currentStep.rawValue > 0
+        // Can go back if on interstitial or if not on first question
+        currentInterstitial != nil || currentStep.rawValue > 0
     }
     
     // MARK: - Quiz Completion
@@ -196,6 +335,7 @@ class QuizState: ObservableObject {
     /// Reset quiz to start (for retaking)
     func reset() {
         currentStep = .gender
+        currentInterstitial = nil
         navigationDirection = .forward
     }
     
@@ -210,10 +350,10 @@ class QuizState: ObservableObject {
             return true // Date picker always has a value
         case .viewingFrequency:
             return userData.viewingFrequency != nil
-        case .escalationToExtreme:
-            return userData.escalationToExtreme != nil
         case .ageFirstExposure:
             return userData.ageFirstExposure != nil
+        case .escalationToExtreme:
+            return userData.escalationToExtreme != nil
         case .arousalDifficulty:
             return userData.arousalDifficulty != nil
         case .copingEmotional:
