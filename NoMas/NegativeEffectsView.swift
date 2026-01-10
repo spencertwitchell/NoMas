@@ -11,8 +11,8 @@ import Lottie
 // MARK: - Warning Colors (for negative content screens)
 
 extension Color {
-    static let warningGradientStart = Color(hex: "991717")
-    static let warningGradientEnd = Color(hex: "D32121")
+    static let warningGradientStart = Color(hex: "4A0A0A")
+    static let warningGradientEnd = Color(hex: "7A1515")
 }
 
 extension LinearGradient {
@@ -34,28 +34,28 @@ struct NegativeEffectsView: View {
         NegativeEffectCard(
             title: "Pornography Rewires Your Brain",
             description: "Repeated exposure hijacks your brain's reward system, creating neural pathways that demand increasingly extreme content to feel the same dopamine rush.",
-            lottieName: "Heart_Blue"
+            lottieName: "Brain"
         ),
         NegativeEffectCard(
             title: "It Damages Real Intimacy",
             description: "Pornography creates unrealistic expectations and desensitizes you to real human connection, making genuine intimacy feel less satisfying over time.",
-            lottieName: "Heart_Blue"
+            lottieName: "intimac"
         ),
         NegativeEffectCard(
             title: "Each Relapse Deepens the Rut",
             description: "Every time you give in, you strengthen the addictive pathways in your brain. It's not about willpower—it's about breaking the cycle before it breaks you.",
-            lottieName: "Heart_Blue"
+            lottieName: "rut"
         ),
         NegativeEffectCard(
             title: "Recovery Requires Distance",
             description: "Just like any addiction, healing requires complete abstinence. Your brain needs time without stimulation to rebuild healthy neural connections.",
-            lottieName: "Heart_Blue"
+            lottieName: "recovery"
         )
     ]
     
     var body: some View {
         ZStack {
-            // Warning gradient background
+            // Warning gradient background (deeper red)
             LinearGradient.warning
                 .ignoresSafeArea()
             
@@ -84,7 +84,7 @@ struct NegativeEffectsView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
                 
-                // Carousel
+                // Carousel (lottie, title, description) - positioned higher
                 TabView(selection: $currentPage) {
                     ForEach(0..<cards.count, id: \.self) { index in
                         NegativeEffectCardView(card: cards[index])
@@ -92,18 +92,21 @@ struct NegativeEffectsView: View {
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: 520)
+                
+                Spacer()
                 
                 // Page dots
                 HStack(spacing: 8) {
                     ForEach(0..<cards.count, id: \.self) { index in
                         Circle()
-                            .fill(currentPage == index ? Color.textPrimary : Color.textPrimary.opacity(0.5))
+                            .fill(currentPage == index ? Color.textPrimary : Color.textPrimary.opacity(0.4))
                             .frame(width: 8, height: 8)
                     }
                 }
-                .padding(.vertical, 20)
+                .padding(.bottom, 24)
                 
-                // Continue button
+                // Continue button (stays at bottom)
                 Button(action: {
                     if currentPage < cards.count - 1 {
                         withAnimation {
@@ -142,16 +145,11 @@ struct NegativeEffectCardView: View {
     let card: NegativeEffectCard
     
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            
-            // Lottie animation
+        VStack(spacing: 24) {
+            // Lottie animation (doubled size)
             LottieView(animation: .named(card.lottieName))
                 .playing(loopMode: .loop)
-                .frame(maxWidth: 250, maxHeight: 180)
-            
-            Spacer()
-                .frame(minHeight: 32)
+                .frame(width: 280, height: 280)
             
             // Title
             Text(card.title)
@@ -161,19 +159,14 @@ struct NegativeEffectCardView: View {
                 .padding(.horizontal, 32)
                 .fixedSize(horizontal: false, vertical: true)
             
-            Spacer()
-                .frame(minHeight: 20)
-            
             // Description
             Text(card.description)
                 .font(.body)
-                .foregroundColor(.textPrimary.opacity(0.95))
+                .foregroundColor(.textPrimary.opacity(0.9))
                 .multilineTextAlignment(.center)
                 .lineSpacing(6)
                 .padding(.horizontal, 32)
                 .fixedSize(horizontal: false, vertical: true)
-            
-            Spacer()
         }
     }
 }
