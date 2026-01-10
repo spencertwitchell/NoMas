@@ -46,8 +46,15 @@ struct ReviewsView: View {
     
     var body: some View {
         ZStack {
-            // Background
-            AppBackground()
+            // Background image
+            Image("bg67")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .ignoresSafeArea()
+            
+            // Dark overlay
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
             
             VStack(spacing: 0) {
                 // Header
@@ -55,6 +62,7 @@ struct ReviewsView: View {
                     showBackButton: true,
                     onBack: { onboardingState.goBack() }
                 )
+                .padding(.bottom, 12)
                 
                 // Scrollable content
                 ScrollView(showsIndicators: false) {
@@ -71,14 +79,11 @@ struct ReviewsView: View {
                         Spacer()
                             .frame(minHeight: 16)
                         
-                        // Stars icon
-                        HStack(spacing: 4) {
-                            ForEach(0..<5, id: \.self) { _ in
-                                Image(systemName: "star.fill")
-                                    .font(.title)
-                                    .foregroundStyle(LinearGradient.accent)
-                            }
-                        }
+                        // Reviews image
+                        Image("nomasreviews")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 200)
                         
                         Spacer()
                             .frame(minHeight: 16)
@@ -107,7 +112,7 @@ struct ReviewsView: View {
                                 AppReviewCard(review: review)
                             }
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, 32)
                         
                         // Bottom padding for floating button
                         Spacer()

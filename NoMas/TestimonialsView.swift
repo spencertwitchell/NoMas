@@ -5,14 +5,6 @@
 //  Created by Spencer Twitchell on 12/8/25.
 //
 
-
-//
-//  TestimonialsView.swift
-//  NoMas
-//
-//  Created by Spencer Twitchell on 12/8/25.
-//
-
 import SwiftUI
 
 // MARK: - Testimonials View
@@ -20,43 +12,36 @@ import SwiftUI
 struct TestimonialsView: View {
     private var onboardingState: OnboardingState { OnboardingState.shared }
     
-    @State private var currentPage = 0
-    
     private let testimonials = [
         Testimonial(
             name: "Michael R.",
-            age: 28,
-            streakDays: 90,
             quote: "I tried quitting dozens of times before finding this app. The structure and daily accountability made all the difference. 90 days clean and I finally feel like myself again.",
-            imageName: "person.circle.fill"
+            imageName: "testimonial1"
         ),
         Testimonial(
             name: "David K.",
-            age: 34,
-            streakDays: 180,
             quote: "My relationship was falling apart because of my addiction. Six months into recovery, my wife says I'm a completely different person. More present, more connected. This app saved my marriage.",
-            imageName: "person.circle.fill"
+            imageName: "testimonial2"
         ),
         Testimonial(
             name: "James L.",
-            age: 22,
-            streakDays: 45,
             quote: "As a college student, I thought everyone watched porn. Learning the science behind addiction opened my eyes. I'm only 45 days in but my focus and confidence are already transforming.",
-            imageName: "person.circle.fill"
+            imageName: "testimonial3"
         ),
         Testimonial(
             name: "Anonymous",
-            age: 41,
-            streakDays: 365,
             quote: "One year free. I never thought I'd say that. The urges still come sometimes, but they're whispers now, not screams. If I can do it, anyone can.",
-            imageName: "person.circle.fill"
+            imageName: "testimonial4"
         )
     ]
     
     var body: some View {
         ZStack {
-            // Video background
-            LoopingVideoBackground(videoName: "bg flow")
+            // Background image
+            Image("bg67")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .ignoresSafeArea()
             
             // Dark overlay
             Color.black.opacity(0.4)
@@ -68,44 +53,47 @@ struct TestimonialsView: View {
                     showBackButton: true,
                     onBack: { onboardingState.goBack() }
                 )
+                .padding(.bottom, 12)
                 
-                Spacer()
-                    .frame(minHeight: 16)
-                
-                // Title
-                Text("Real Stories of\nRecovery")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                    .multilineTextAlignment(.center)
-                
-                // Carousel
-                TabView(selection: $currentPage) {
-                    ForEach(0..<testimonials.count, id: \.self) { index in
-                        TestimonialCardView(testimonial: testimonials[index])
-                            .tag(index)
-                    }
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                
-                // Page dots
-                HStack(spacing: 8) {
-                    ForEach(0..<testimonials.count, id: \.self) { index in
-                        Circle()
-                            .fill(currentPage == index ? Color.accentGradientStart : Color.textPrimary.opacity(0.4))
-                            .frame(width: 8, height: 8)
-                    }
-                }
-                .padding(.vertical, 20)
-                
-                // Continue button
-                Button(action: {
-                    if currentPage < testimonials.count - 1 {
-                        withAnimation {
-                            currentPage += 1
+                // Scrollable content
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 24) {
+                        // Title
+                        Text("What Others Are Saying")
+                            .font(.titleLarge)
+                            .foregroundColor(.textPrimary)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 24)
+                        
+                        // Subtitle
+                        Text("Millions of people have found healing by committing to quit pornography – because it actually enables healing.")
+                            .font(.body)
+                            .foregroundColor(.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(4)
+                            .padding(.horizontal, 32)
+                        
+                        // Testimonials list
+                        VStack(spacing: 16) {
+                            ForEach(testimonials, id: \.name) { testimonial in
+                                TestimonialCardView(testimonial: testimonial)
+                            }
                         }
-                    } else {
-                        onboardingState.advance()
+                        .padding(.horizontal, 32)
+                        .padding(.top, 8)
+                        .padding(.bottom, 120) // Space for button
                     }
+                }
+                
+                Spacer(minLength: 0)
+            }
+            
+            // Continue button (fixed at bottom)
+            VStack {
+                Spacer()
+                
+                Button(action: {
+                    onboardingState.advance()
                 }) {
                     Text("Continue")
                         .font(.button)
@@ -126,20 +114,8 @@ struct TestimonialsView: View {
 
 struct Testimonial {
     let name: String
-    let age: Int
-    let streakDays: Int
     let quote: String
     let imageName: String
-    
-    var streakText: String {
-        if streakDays >= 365 {
-            return "\(streakDays / 365) year\(streakDays >= 730 ? "s" : "") clean"
-        } else if streakDays >= 30 {
-            return "\(streakDays / 30) month\(streakDays >= 60 ? "s" : "") clean"
-        } else {
-            return "\(streakDays) days clean"
-        }
-    }
 }
 
 // MARK: - Testimonial Card View
@@ -148,44 +124,33 @@ struct TestimonialCardView: View {
     let testimonial: Testimonial
     
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            
-            // Profile section
-            VStack(spacing: 12) {
-                // Avatar
-                Image(systemName: testimonial.imageName)
-                    .font(.system(size: 60))
-                    .foregroundColor(.accentGradientStart)
+        VStack(alignment: .leading, spacing: 12) {
+            // Profile row
+            HStack(spacing: 12) {
+                // Profile image
+                Image(testimonial.imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 44, height: 44)
+                    .clipShape(Circle())
                 
-                // Name and age
-                Text("\(testimonial.name), \(testimonial.age)")
-                    .font(.titleSmall)
+                // Name
+                Text(testimonial.name)
+                    .font(.system(size: 17, weight: .semibold))
                     .foregroundColor(.textPrimary)
                 
-                // Streak badge
-                Text(testimonial.streakText)
-                    .font(.caption)
-                    .foregroundColor(.textPrimary)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(LinearGradient.accent)
-                    .cornerRadius(20)
+                Spacer()
             }
             
-            Spacer()
-                .frame(minHeight: 24)
-            
-            // Quote
+            // Quote card
             Text("\"\(testimonial.quote)\"")
                 .font(.body)
-                .foregroundColor(.textSecondary)
-                .multilineTextAlignment(.center)
-                .lineSpacing(6)
-                .padding(.horizontal, 32)
-                .fixedSize(horizontal: false, vertical: true)
-            
-            Spacer()
+                .foregroundColor(.textPrimary.opacity(0.95))
+                .lineSpacing(5)
+                .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.white.opacity(0.12))
+                .cornerRadius(16)
         }
     }
 }
