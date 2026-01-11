@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 // MARK: - Motivation View
 
@@ -23,6 +24,7 @@ struct MotivationView: View {
     @State private var currentLineIndex = 0
     @State private var revealedCharacterCount = 0
     @State private var finalSnapshot: [DisplayLine]? = nil
+    @State private var showPlanCard = false
     
     // MARK: - Personalized Name
     
@@ -83,21 +85,58 @@ struct MotivationView: View {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
             
-            VStack(spacing: 8) {
-                ForEach(displayedLines) { line in
-                    Text(line.text)
-                        .font(.titleCustom(size: 28))
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
+            VStack(spacing: 0) {
+                // Animated text at top
+                VStack(spacing: 8) {
+                    ForEach(displayedLines) { line in
+                        Text(line.text)
+                            .font(.titleCustom(size: 28))
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal, 32)
+                .padding(.top, 100)
+                
+                Spacer()
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.horizontal, 32)
-            .padding(.top, 100)
-            .frame(maxHeight: .infinity, alignment: .top)
+            
+            // Custom Plan Card - positioned independently
+            VStack {
+                Spacer()
+                
+                if showPlanCard {
+                    CustomPlanCard(
+                        displayName: displayName,
+                        milestone: userData.currentMilestone,
+                        daysInApp: userData.daysInApp,
+                        dependencyScore: userData.dependencyScore,
+                        projectedRecoveryDate: userData.projectedRecoveryDate,
+                        joinDate: userData.appJoinDate
+                    )
+                    .padding(.horizontal, 24)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .bottom).combined(with: .opacity),
+                        removal: .opacity
+                    ))
+                }
+                
+                Spacer()
+            }
         }
         .onAppear {
             startTypingAnimation()
+        }
+        .onChange(of: currentGroupIndex) { oldValue, newValue in
+            // Trigger card animation when 3rd group starts
+            if newValue == 2 && !showPlanCard {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                        showPlanCard = true
+                    }
+                }
+            }
         }
     }
     
@@ -175,6 +214,149 @@ struct MotivationView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 onboardingState.advance()
             }
+        }
+    }
+}
+
+// MARK: - Custom Plan Card
+
+struct CustomPlanCard: View {
+    let displayName: String
+    let milestone: Milestone
+    let daysInApp: Int
+    let dependencyScore: Double
+    let projectedRecoveryDate: Date?
+    let joinDate: Date
+    
+    private var formattedJoinDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M/d/yy"
+        return formatter.string(from: joinDate)
+    }
+    
+    private var formattedRecoveryDate: String {
+        guard let date = projectedRecoveryDate else { return "TBD" }
+        return date.formatted(date: .abbreviated, time: .omitted)
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Main card content
+            VStack(spacing: 16) {
+                // Rank Section: Animation on left, text on right
+                HStack(spacing: 16) {
+                    // Lottie Animation
+                    LottieView(animation: .named(milestone.animationName))
+                        .playing(loopMode: .loop)
+                        .animationSpeed(0.67)
+                        .frame(width: 70, height: 70)
+                        .scaleEffect(1.2)
+                    
+                    // Current Rank Text
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Current Rank")
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.7))
+                        
+                        Text(milestone.displayName)
+                            .font(.titleMedium)
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                        
+                        Text(milestone.title)
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.8))
+                    }
+                    
+                    Spacer()
+                }
+                
+                // Divider
+                Rectangle()
+                    .fill(Color.white.opacity(0.2))
+                    .frame(height: 1)
+                    .padding(.horizontal, 8)
+                
+                // Stats Rows
+                VStack(spacing: 12) {
+                    PlanStatRow(label: "Days in App", value: "\(daysInApp)")
+                    PlanStatRow(label: "Dependency Score", value: "\(Int(dependencyScore))%")
+                    if projectedRecoveryDate != nil {
+                        PlanStatRow(label: "Projected Recovery", value: formattedRecoveryDate)
+                    }
+                }
+            }
+            .padding(20)
+            
+            // Footer Section (overlay on top of gradient)
+            HStack {
+                // Name on left
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Name")
+                        .font(.captionSmall)
+                        .foregroundColor(.white.opacity(0.7))
+                    Text(displayName)
+                        .font(.bodySmall)
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                }
+                
+                Spacer()
+                
+                // Free Since on right
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Free Since")
+                        .font(.captionSmall)
+                        .foregroundColor(.white.opacity(0.7))
+                    Text(formattedJoinDate)
+                        .font(.bodySmall)
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 14)
+            .background(Color.black.opacity(0.25))
+        }
+        .background(
+            ZStack {
+                // Gradient layer (extends full height)
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(milestone.gradient)
+                
+                // Dark overlay for readability
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.black.opacity(0.35))
+            }
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            // 3pt gradient border
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(milestone.gradient, lineWidth: 3)
+        )
+        .shadow(color: Color.accentGradientStart.opacity(0.5), radius: 20, x: 0, y: 10)
+    }
+}
+
+// MARK: - Plan Stat Row
+
+struct PlanStatRow: View {
+    let label: String
+    let value: String
+    
+    var body: some View {
+        HStack {
+            Text(label)
+                .font(.body)
+                .foregroundColor(.white.opacity(0.8))
+            
+            Spacer()
+            
+            Text(value)
+                .font(.body)
+                .foregroundColor(.white)
+                .fontWeight(.medium)
         }
     }
 }
