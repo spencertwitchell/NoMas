@@ -5,14 +5,6 @@
 //  Created by Spencer Twitchell on 12/8/25.
 //
 
-
-//
-//  OnboardingWelcomeView.swift
-//  NoMas
-//
-//  Created by Spencer Twitchell on 12/8/25.
-//
-
 import SwiftUI
 
 // MARK: - Onboarding Welcome View
@@ -22,17 +14,25 @@ struct OnboardingWelcomeView: View {
     
     var body: some View {
         ZStack {
-            // Background
-            AppBackground()
+            // Background image
+            Image("bg7")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .ignoresSafeArea()
+            
+            // Dark overlay
+            Color.black.opacity(0.25)
+                .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                Spacer()
-                
-                // Logo
+                // Logo - smaller and higher
                 Image("nomaslogo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 80)
+                    .frame(height: 60)
+                    .padding(.top, 80)
+                
+                Spacer()
                 
                 // Title & Description
                 VStack(spacing: 16) {
@@ -51,12 +51,11 @@ struct OnboardingWelcomeView: View {
                         .lineSpacing(4)
                         .padding(.horizontal, 32)
                 }
-                .padding(.top, 40)
                 
                 Spacer()
-                Spacer()
+                    .frame(height: 32)
                 
-                // Start Quiz Button
+                // Start Quiz Button - right below paragraph
                 Button(action: {
                     onboardingState.advance()
                 }) {
@@ -74,8 +73,10 @@ struct OnboardingWelcomeView: View {
                     .cornerRadius(16)
                     .shadow(color: Color.accentGradientStart.opacity(0.4), radius: 12, x: 0, y: 6)
                 }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 40)
+                .padding(.horizontal, 48)
+                
+                Spacer()
+                Spacer()
             }
         }
     }
