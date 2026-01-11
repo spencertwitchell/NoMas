@@ -83,6 +83,13 @@ struct MainView: View {
                 checkAndShowPrompts()
             }
         }
+        // Also check on appear (for new users who complete onboarding after splash)
+        .onAppear {
+            if splashComplete && !hasShownPrompts {
+                hasShownPrompts = true
+                checkAndShowPrompts()
+            }
+        }
         .fullScreenCover(isPresented: $showCameraPrompt) {
             CameraSoftPromptView()
                 .onDisappear {
@@ -424,7 +431,7 @@ struct ProfileView: View {
     
     private func loadUserPosts() async {
         guard let userId = userData.supabaseUserId else {
-            print("Ã¢ÂÅ’ No user ID for loading posts")
+            print("ÃƒÂ¢Ã‚ÂÃ…â€™ No user ID for loading posts")
             return
         }
         
@@ -440,10 +447,10 @@ struct ProfileView: View {
                 .value
             
             userPosts = response.compactMap { $0.toPost() }
-            print("Ã¢Å“â€¦ Loaded \(userPosts.count) user posts")
+            print("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Loaded \(userPosts.count) user posts")
             isLoadingPosts = false
         } catch {
-            print("Ã¢ÂÅ’ Failed to load user posts: \(error)")
+            print("ÃƒÂ¢Ã‚ÂÃ…â€™ Failed to load user posts: \(error)")
             isLoadingPosts = false
         }
     }
