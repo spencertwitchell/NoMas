@@ -5,14 +5,6 @@
 //  Created by Spencer Twitchell on 12/9/25.
 //
 
-
-//
-//  MotivationView.swift
-//  NoMas
-//
-//  Created by Spencer Twitchell on 12/8/25.
-//
-
 import SwiftUI
 
 // MARK: - Motivation View
@@ -32,37 +24,21 @@ struct MotivationView: View {
     @State private var revealedCharacterCount = 0
     @State private var finalSnapshot: [DisplayLine]? = nil
     
-    // MARK: - Personalized Date
+    // MARK: - Personalized Name
     
-    private var personalizedDate: String {
-        guard let date = userData.projectedRecoveryDate else {
-            return "a few months"
-        }
-        let calendar = Calendar.current
-        let day = calendar.component(.day, from: date)
-        let suffix: String
-        switch day {
-        case 1, 21, 31: suffix = "st"
-        case 2, 22: suffix = "nd"
-        case 3, 23: suffix = "rd"
-        default: suffix = "th"
-        }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM d"
-        let base = formatter.string(from: date)
-        let year = calendar.component(.year, from: date)
-        return "\(base)\(suffix), \(year)"
+    private var displayName: String {
+        userData.displayName.isEmpty ? "Friend" : userData.displayName
     }
     
     // MARK: - Line Groups
     
     private var lineGroups: [[String]] {
         [
-            ["Based on your answers,", "we've designed a", "personalized recovery", "plan just for you..."],
-            ["Urges will come.", "With the right tools", "and accountability,", "you'll stay strong..."],
-            ["If you commit,", "you could be free by:", personalizedDate],
-            ["NoMas isn't just", "about quitting porn.", "It's about reclaiming", "your life..."],
-            ["Now it's time to", "invest in yourself..."]
+            ["Hey \(displayName)"],
+            ["Welcome to NoMas,", "your path to freedom."],
+            ["Based on your answers,", "we've created a plan", "just for you."],
+            ["It's designed to help you", "quit porn forever."],
+            ["Now it's time to", "invest in yourself."]
         ]
     }
     
@@ -71,7 +47,6 @@ struct MotivationView: View {
     struct DisplayLine: Identifiable, Equatable {
         let id = UUID()
         let text: String
-        let isChip: Bool
     }
     
     // MARK: - Displayed Lines
@@ -85,7 +60,7 @@ struct MotivationView: View {
         // Completed lines in current group
         for i in 0..<currentLineIndex {
             let full = lineGroups[currentGroupIndex][i]
-            out.append(DisplayLine(text: full, isChip: (full == personalizedDate)))
+            out.append(DisplayLine(text: full))
         }
         
         // Partially revealed current line
@@ -93,7 +68,7 @@ struct MotivationView: View {
             let target = lineGroups[currentGroupIndex][currentLineIndex]
             let endIndex = target.index(target.startIndex, offsetBy: min(revealedCharacterCount, target.count))
             let partial = String(target[..<endIndex])
-            out.append(DisplayLine(text: partial, isChip: (target == personalizedDate)))
+            out.append(DisplayLine(text: partial))
         }
         
         return out
@@ -102,41 +77,24 @@ struct MotivationView: View {
     var body: some View {
         ZStack {
             // Video background
-            LoopingVideoBackground(videoName: "bg flow")
+            LoopingVideoBackground(videoName: "bg4")
             
-            // Light overlay
-            Color.black.opacity(0.15)
+            // Dark overlay for text readability
+            Color.black.opacity(0.4)
                 .ignoresSafeArea()
             
-            VStack(alignment: .leading, spacing: 0) {
-                Spacer()
-                    .frame(minHeight: 120)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(displayedLines) { line in
-                        if line.isChip {
-                            // Date chip with gradient background
-                            if !line.text.isEmpty {
-                                Text(line.text)
-                                    .font(.titleMedium)
-                                    .foregroundColor(.textPrimary)
-                                    .padding(.vertical, 8)
-                                    .padding(.horizontal, 16)
-                                    .background(LinearGradient.accent)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                            }
-                        } else {
-                            Text(line.text)
-                                .font(.titleMedium)
-                                .foregroundColor(.accentGradientStart)
-                        }
-                    }
+            VStack(spacing: 8) {
+                ForEach(displayedLines) { line in
+                    Text(line.text)
+                        .font(.titleCustom(size: 28))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 32)
-                
-                Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.horizontal, 32)
+            .padding(.top, 100)
+            .frame(maxHeight: .infinity, alignment: .top)
         }
         .onAppear {
             startTypingAnimation()
@@ -193,11 +151,11 @@ struct MotivationView: View {
     private func lastFullScreenSnapshot() -> [DisplayLine] {
         if currentGroupIndex < lineGroups.count {
             return lineGroups[currentGroupIndex].map {
-                DisplayLine(text: $0, isChip: ($0 == personalizedDate))
+                DisplayLine(text: $0)
             }
         } else if let last = lineGroups.last {
             return last.map {
-                DisplayLine(text: $0, isChip: ($0 == personalizedDate))
+                DisplayLine(text: $0)
             }
         } else {
             return []
