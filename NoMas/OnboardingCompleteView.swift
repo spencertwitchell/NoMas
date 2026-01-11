@@ -5,26 +5,26 @@
 //  Created by Spencer Twitchell on 12/9/25.
 //
 
-
-//
-//  OnboardingCompleteView.swift
-//  NoMas
-//
-//  Created by Spencer Twitchell on 12/8/25.
-//
-
 import SwiftUI
-import Lottie
 
 // MARK: - Onboarding Complete View
+
+/// "You're All Set!" celebration screen shown after paywall.
+/// User taps Continue to proceed to bindAuth (if needed) or main app.
 
 struct OnboardingCompleteView: View {
     private var onboardingState: OnboardingState { OnboardingState.shared }
     private var userData: UserData { UserData.shared }
+    @StateObject private var authManager = AuthManager.shared
     
     @State private var showCheckmark = false
     @State private var showText = false
     @State private var isTransitioning = false
+    
+    /// Check if user needs to bind their account
+    private var needsBindAuth: Bool {
+        userData.skippedEarlyAuth && !authManager.isAuthenticated
+    }
     
     var body: some View {
         ZStack {
@@ -117,10 +117,10 @@ struct OnboardingCompleteView: View {
                 Button(action: {
                     if !isTransitioning {
                         isTransitioning = true
-                        completeOnboarding()
+                        advanceToNextStep()
                     }
                 }) {
-                    Text("Start My Journey")
+                    Text("Continue")
                         .font(.button)
                         .foregroundColor(.textPrimary)
                         .frame(maxWidth: .infinity)
@@ -135,27 +135,39 @@ struct OnboardingCompleteView: View {
             }
         }
         .onAppear {
-            // Trigger animations
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                showCheckmark = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                showText = true
-            }
-            
-            // Haptic feedback
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            startAnimations()
         }
     }
     
-    private func completeOnboarding() {
+    // MARK: - Animations
+    
+    private func startAnimations() {
+        // Trigger animations
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            showCheckmark = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            showText = true
+        }
+        
+        // Haptic feedback
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    }
+    
+    // MARK: - Navigation
+    
+    private func advanceToNextStep() {
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
         
-        // Mark onboarding as complete
-        onboardingState.completeOnboarding()
-        
-        // This will trigger the app to show MainView
-        // The transition is handled by the root view checking hasCompletedOnboarding
+        if needsBindAuth {
+            // User skipped early auth - need to bind account
+            print("➡️ Advancing to bindAuth (user skipped early auth)")
+            onboardingState.advance()
+        } else {
+            // User already authenticated - complete onboarding
+            print("✅ User already authenticated - completing onboarding")
+            onboardingState.completeOnboarding()
+        }
     }
 }
 

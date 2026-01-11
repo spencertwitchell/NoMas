@@ -13,7 +13,7 @@ import Combine
 
 /// Represents each phase of the onboarding flow.
 ///
-/// Flow: welcome → optionalAuth → quiz → ... → paywall → complete
+/// Flow: welcome â†’ optionalAuth â†’ quiz â†’ ... â†’ paywall â†’ complete
 ///
 /// Note:
 /// - Splash is NOT included here (runs on every app launch)
@@ -34,8 +34,9 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
     case reviews
     case commitment
     case motivation
-    case paywall           // Handles: paywall display + forced auth if skipped earlier
-    case complete
+    case paywall           // Handles: paywall display only
+    case complete          // "You're all set!" celebration screen
+    case bindAuth          // Required auth for users who skipped early auth
     
     // MARK: - Navigation
     
@@ -53,7 +54,7 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
     /// Phases that allow going back
     var canGoBack: Bool {
         switch self {
-        case .welcome, .optionalAuth, .quizCalculating, .quizResults, .paywall, .complete:
+        case .welcome, .optionalAuth, .quizCalculating, .quizResults, .paywall, .complete, .bindAuth:
             return false
         default:
             return true
@@ -63,7 +64,7 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
     /// Phases that show in progress indicator
     var isVisibleStep: Bool {
         switch self {
-        case .optionalAuth, .quizCalculating, .paywall, .complete:
+        case .optionalAuth, .quizCalculating, .paywall, .complete, .bindAuth:
             return false
         default:
             return true
@@ -107,6 +108,7 @@ enum OnboardingPhase: Int, CaseIterable, Codable {
         case .motivation: return "Motivation"
         case .paywall: return "Paywall"
         case .complete: return "Complete"
+        case .bindAuth: return "Bind Auth"
         }
     }
 }
@@ -125,7 +127,7 @@ class OnboardingState: ObservableObject {
     @Published private(set) var currentPhase: OnboardingPhase = .welcome {
         didSet {
             persistPhase()
-            print("ðŸ“ Onboarding phase: \(oldValue.displayName) â†’ \(currentPhase.displayName)")
+            print("Ã°Å¸â€œÂ Onboarding phase: \(oldValue.displayName) Ã¢â€ â€™ \(currentPhase.displayName)")
         }
     }
     
@@ -154,7 +156,7 @@ class OnboardingState: ObservableObject {
     func advance() {
         guard !isTransitioning else { return }
         guard let next = currentPhase.next else {
-            print("âš ï¸ No next phase after \(currentPhase.displayName)")
+            print("Ã¢Å¡Â Ã¯Â¸Â No next phase after \(currentPhase.displayName)")
             return
         }
         
@@ -166,7 +168,7 @@ class OnboardingState: ObservableObject {
     func goBack() {
         guard !isTransitioning else { return }
         guard currentPhase.canGoBack else {
-            print("âš ï¸ Cannot go back from \(currentPhase.displayName)")
+            print("Ã¢Å¡Â Ã¯Â¸Â Cannot go back from \(currentPhase.displayName)")
             return
         }
         guard let prev = currentPhase.previous else { return }
@@ -204,7 +206,7 @@ class OnboardingState: ObservableObject {
         userData.hasCompletedOnboarding = true
         currentPhase = .complete
         clearPersistedPhase()
-        print("âœ… Onboarding completed!")
+        print("Ã¢Å“â€¦ Onboarding completed!")
     }
     
     /// Reset onboarding (for testing or re-onboarding)
@@ -214,7 +216,7 @@ class OnboardingState: ObservableObject {
         userData.hasActiveSubscription = false
         currentPhase = .welcome
         clearPersistedPhase()
-        print("ðŸ”„ Onboarding reset")
+        print("Ã°Å¸â€â€ž Onboarding reset")
     }
     
     // MARK: - Persistence
@@ -238,7 +240,7 @@ class OnboardingState: ObservableObject {
         if let savedRaw = UserDefaults.standard.object(forKey: phaseKey) as? Int,
            let savedPhase = OnboardingPhase(rawValue: savedRaw) {
             currentPhase = savedPhase
-            print("ðŸ“ Restored onboarding phase: \(savedPhase.displayName)")
+            print("Ã°Å¸â€œÂ Restored onboarding phase: \(savedPhase.displayName)")
         }
     }
     

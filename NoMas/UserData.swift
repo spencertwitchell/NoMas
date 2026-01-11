@@ -663,7 +663,7 @@ class UserData: ObservableObject {
     
     // MARK: - Reset (for testing)
     
-    #if DEBUG
+
     /// Resets all local data (UserDefaults only) - DEBUG ONLY
     func resetAllData() {
         hasCompletedOnboarding = false
@@ -706,7 +706,6 @@ class UserData: ObservableObject {
         
         print("ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â UserDefaults cleared")
     }
-    #endif
     
     // MARK: - Full App Reset (Developer Tool)
     

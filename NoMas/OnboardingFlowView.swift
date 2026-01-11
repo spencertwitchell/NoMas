@@ -87,6 +87,9 @@ struct OnboardingFlowView: View {
             
         case .complete:
             OnboardingCompleteView()
+            
+        case .bindAuth:
+            BindAccountView()
         }
     }
 }

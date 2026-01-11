@@ -105,6 +105,7 @@
 		29F600DC2F0F1E3000A63F5D /* MilestoneCelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */; };
 		29F600DE2F0F2DE300A63F5D /* CameraSoftPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */; };
 		29F600E02F0F34FB00A63F5D /* Dailycheckinview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DF2F0F34FB00A63F5D /* Dailycheckinview.swift */; };
+		29F600E22F13392E00A63F5D /* BindAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600E12F13392E00A63F5D /* BindAccountView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -200,6 +201,7 @@
 		29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneCelebrationView.swift; sourceTree = "<group>"; };
 		29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSoftPromptView.swift; sourceTree = "<group>"; };
 		29F600DF2F0F34FB00A63F5D /* Dailycheckinview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dailycheckinview.swift; sourceTree = "<group>"; };
+		29F600E12F13392E00A63F5D /* BindAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +302,7 @@
 				297AD1732EE8AD6F00CCE3BC /* PaywallView.swift */,
 				297AD1752EE8AD8A00CCE3BC /* AuthView.swift */,
 				297AD1772EE8ADB700CCE3BC /* OnboardingCompleteView.swift */,
+				29F600E12F13392E00A63F5D /* BindAccountView.swift */,
 			);
 			path = NoMas;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				297AD2042EF25BB100CCE3BC /* RelaxationAudioManager.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
 				297AD1222EE781C300CCE3BC /* OnboardingQuizFlow.swift in Sources */,
+				29F600E22F13392E00A63F5D /* BindAccountView.swift in Sources */,
 				2932FC5E2EF3390000D02A1A /* ReflectionJournalView.swift in Sources */,
 				297AD1562EE7B14C00CCE3BC /* QuizCalculatingView.swift in Sources */,
 				297AD1B82EED245F00CCE3BC /* MilestonesSheetView.swift in Sources */,
