@@ -1,59 +1,66 @@
 //
-//  OptionalAuthView.swift
+//  ReturningUserLoginView.swift
 //  NoMas
 //
-//  Created by Claude on 12/11/25.
+//  Created by Spencer Twitchell on 1/10/26.
+//
+
+
+//
+//  ReturningUserLoginView.swift
+//  NoMas
+//
+//  Auth Screen #2: For returning users who need to sign in.
+//  Shown when hasCompletedOnboarding but not authenticated.
 //
 
 import SwiftUI
 
-// MARK: - Optional Auth View
+// MARK: - Returning User Login View
 
-/// Early authentication screen shown before the quiz.
-/// Users can sign in OR skip (and will be forced to auth after paywall).
+/// "Welcome Back" login screen for returning users.
+/// After successful login, RootView routing handles destination automatically.
 
-struct OptionalAuthView: View {
-    private var onboardingState: OnboardingState { OnboardingState.shared }
-    private var userData: UserData { UserData.shared }
+struct ReturningUserLoginView: View {
     @StateObject private var authManager = AuthManager.shared
     
-    @State private var showingEmailSignUp = false
     @State private var showingEmailLogin = false
+    @State private var showingEmailSignUp = false
     
     var body: some View {
         ZStack {
-            // Image background
-            Image("bg7")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
+            // Video background
+            LoopingVideoBackground(videoName: "bg flow")
             
             // Dark overlay
             Color.black.opacity(0.25)
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Logo at top
+                Spacer()
+                
+                // Logo
                 Image("nomaslogo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(height: 60)
-                    .padding(.vertical, 80)
+                    .frame(height: 80)
                 
-                // Title
-                Text("Save Your Progress")
+                Spacer()
+                    .frame(height: 32)
+                
+                // Welcome back message
+                Text("Welcome Back")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 12)
                 
-                // Subtitle - directly under header
-                Text("Sign in to sync your data across devices\nand never lose your progress.")
+                Spacer()
+                    .frame(height: 12)
+                
+                Text("Sign in to continue your\nrecovery journey")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
-                    .padding(.horizontal, 40)
                 
                 Spacer()
                 
@@ -89,56 +96,40 @@ struct OptionalAuthView: View {
                     // Apple Sign In
                     SignInWithAppleButton(
                         onSuccess: {
-                            handleAuthSuccess()
+                            // Auth state change handled by RootView routing
                         },
                         onError: { error in
                             print("Apple Sign In error: \(error)")
                         }
                     )
                     
-                    // Email Sign Up
+                    // Email Login
                     AuthButton(
-                        title: "Sign up with Email",
+                        title: "Sign in with Email",
                         icon: "envelope.fill",
                         style: .accent,
                         isLoading: authManager.isLoading,
                         action: {
-                            showingEmailSignUp = true
+                            showingEmailLogin = true
                         }
                     )
                 }
-                .padding(.horizontal, 48)
+                .padding(.horizontal, 32)
                 .opacity(authManager.isLoading ? 0.6 : 1.0)
                 
                 Spacer()
+                    .frame(height: 24)
                 
-                // Skip button - more visible
-                Button(action: handleSkip) {
-                    HStack(spacing: 6) {
-                        Text("Or skip for now")
-                            .font(.body)
-                            .fontWeight(.medium)
-                            .underline()
-                        Image(systemName: "arrow.right")
-                            .font(.body)
-                    }
-                    .foregroundColor(.white)
-                }
-                .disabled(authManager.isLoading)
-                
-                Spacer()
-
-                
-                // Login link
+                // Sign up link
                 HStack(spacing: 4) {
-                    Text("Already have an account?")
+                    Text("Don't have an account?")
                         .font(.bodySmall)
                         .foregroundColor(.textSecondary)
                     
                     Button(action: {
-                        showingEmailLogin = true
+                        showingEmailSignUp = true
                     }) {
-                        Text("Login here")
+                        Text("Sign up")
                             .font(.bodySmall)
                             .fontWeight(.semibold)
                             .foregroundColor(.textPrimary)
@@ -150,23 +141,11 @@ struct OptionalAuthView: View {
                     .frame(height: 40)
             }
         }
-        .fullScreenCover(isPresented: $showingEmailSignUp) {
-            EmailSignUpView(
-                onComplete: {
-                    showingEmailSignUp = false
-                    handleAuthSuccess()
-                },
-                onShowLogin: {
-                    showingEmailSignUp = false
-                    showingEmailLogin = true
-                }
-            )
-        }
         .fullScreenCover(isPresented: $showingEmailLogin) {
             EmailLoginView(
                 onComplete: {
                     showingEmailLogin = false
-                    handleAuthSuccess()
+                    // Auth state change handled by RootView routing
                 },
                 onShowSignUp: {
                     showingEmailLogin = false
@@ -174,35 +153,23 @@ struct OptionalAuthView: View {
                 }
             )
         }
-        // Listen for auth state changes (for OAuth callbacks like Google)
-        .onChange(of: authManager.isAuthenticated) { _, isAuthenticated in
-            if isAuthenticated {
-                handleAuthSuccess()
-            }
+        .fullScreenCover(isPresented: $showingEmailSignUp) {
+            EmailSignUpView(
+                onComplete: {
+                    showingEmailSignUp = false
+                    // Auth state change handled by RootView routing
+                },
+                onShowLogin: {
+                    showingEmailSignUp = false
+                    showingEmailLogin = true
+                }
+            )
         }
-    }
-    
-    // MARK: - Actions
-    
-    private func handleSkip() {
-        // Mark that user skipped early auth
-        userData.skippedEarlyAuth = true
-        print("⭕️ User skipped early auth - skippedEarlyAuth set to: \(userData.skippedEarlyAuth)")
-        onboardingState.advance()
-    }
-    
-    private func handleAuthSuccess() {
-        // User authenticated early - clear the skip flag
-        userData.skippedEarlyAuth = false
-        print("✅ User authenticated early - skippedEarlyAuth set to: \(userData.skippedEarlyAuth)")
-        print("   isAuthenticated: \(authManager.isAuthenticated)")
-        print("   email: \(authManager.currentUserEmail ?? "nil")")
-        onboardingState.advance()
     }
 }
 
 // MARK: - Preview
 
 #Preview {
-    OptionalAuthView()
+    ReturningUserLoginView()
 }

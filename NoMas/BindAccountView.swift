@@ -2,14 +2,6 @@
 //  BindAccountView.swift
 //  NoMas
 //
-//  Created by Spencer Twitchell on 1/10/26.
-//
-
-
-//
-//  BindAccountView.swift
-//  NoMas
-//
 //  Auth Screen #3: Required account binding after subscription.
 //  Shown to users who skipped early auth and need to connect their account.
 //
@@ -28,34 +20,35 @@ struct BindAccountView: View {
     @StateObject private var authManager = AuthManager.shared
     
     @State private var showingEmailSignUp = false
-    @State private var showingEmailLogin = false
     
     var body: some View {
         ZStack {
-            // Background
-            AppBackground()
+            // Image background
+            Image("bg7")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .ignoresSafeArea()
+            
+            // Dark overlay
+            Color.black.opacity(0.25)
+                .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                Spacer()
-                
-                // Icon
-                Image(systemName: "person.badge.key.fill")
-                    .font(.system(size: 60))
-                    .foregroundStyle(LinearGradient.accent)
-                
-                Spacer()
-                    .frame(minHeight: 24)
+                // Logo at top
+                Image("nomaslogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 60)
+                    .padding(.vertical, 80)
                 
                 // Title
                 Text("Bind Your Account")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
+                    .padding(.bottom, 12)
                 
-                Spacer()
-                    .frame(minHeight: 12)
-                
-                // Subtitle
+                // Subtitle - directly under header
                 Text("Connect your account to activate\nyour subscription and sync your progress.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
@@ -64,6 +57,7 @@ struct BindAccountView: View {
                     .padding(.horizontal, 40)
                 
                 Spacer()
+                    .frame(height: 40)
                 
                 // Error message
                 if let error = authManager.authError {
@@ -117,31 +111,10 @@ struct BindAccountView: View {
                         }
                     )
                 }
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 48)
                 .opacity(authManager.isLoading ? 0.6 : 1.0)
                 
                 Spacer()
-                    .frame(minHeight: 24)
-                
-                // Login link (no skip button!)
-                HStack(spacing: 4) {
-                    Text("Already have an account?")
-                        .font(.bodySmall)
-                        .foregroundColor(.textSecondary)
-                    
-                    Button(action: {
-                        showingEmailLogin = true
-                    }) {
-                        Text("Login here")
-                            .font(.bodySmall)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.textPrimary)
-                            .underline()
-                    }
-                }
-                
-                Spacer()
-                    .frame(minHeight: 40)
             }
         }
         .fullScreenCover(isPresented: $showingEmailSignUp) {
@@ -153,22 +126,8 @@ struct BindAccountView: View {
                     }
                 },
                 onShowLogin: {
+                    // Just dismiss - no login option on this screen
                     showingEmailSignUp = false
-                    showingEmailLogin = true
-                }
-            )
-        }
-        .fullScreenCover(isPresented: $showingEmailLogin) {
-            EmailLoginView(
-                onComplete: {
-                    showingEmailLogin = false
-                    if authManager.isAuthenticated {
-                        handleAuthComplete()
-                    }
-                },
-                onShowSignUp: {
-                    showingEmailLogin = false
-                    showingEmailSignUp = true
                 }
             )
         }

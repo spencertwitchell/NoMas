@@ -106,6 +106,8 @@
 		29F600DE2F0F2DE300A63F5D /* CameraSoftPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */; };
 		29F600E02F0F34FB00A63F5D /* Dailycheckinview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600DF2F0F34FB00A63F5D /* Dailycheckinview.swift */; };
 		29F600E22F13392E00A63F5D /* BindAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600E12F13392E00A63F5D /* BindAccountView.swift */; };
+		29F600E42F13494500A63F5D /* ReturningUserLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600E32F13494500A63F5D /* ReturningUserLoginView.swift */; };
+		29F600E62F13495000A63F5D /* SubscriptionRequiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F600E52F13495000A63F5D /* SubscriptionRequiredView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -202,6 +204,8 @@
 		29F600DD2F0F2DE300A63F5D /* CameraSoftPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSoftPromptView.swift; sourceTree = "<group>"; };
 		29F600DF2F0F34FB00A63F5D /* Dailycheckinview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dailycheckinview.swift; sourceTree = "<group>"; };
 		29F600E12F13392E00A63F5D /* BindAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindAccountView.swift; sourceTree = "<group>"; };
+		29F600E32F13494500A63F5D /* ReturningUserLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReturningUserLoginView.swift; sourceTree = "<group>"; };
+		29F600E52F13495000A63F5D /* SubscriptionRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionRequiredView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,6 +265,8 @@
 				297AD10B2EE76D7500CCE3BC /* NoMasApp.swift */,
 				297AD1792EE8AF3000CCE3BC /* SplashView.swift */,
 				297AD17B2EE8AF5200CCE3BC /* RootView.swift */,
+				29F600E32F13494500A63F5D /* ReturningUserLoginView.swift */,
+				29F600E52F13495000A63F5D /* SubscriptionRequiredView.swift */,
 				297AD17E2EE8F6CA00CCE3BC /* SuperwallManager.swift */,
 				297AD1962EEB96A800CCE3BC /* MainView.swift */,
 				297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */,
@@ -528,6 +534,7 @@
 				297AD16A2EE7B51700CCE3BC /* BenefitsView.swift in Sources */,
 				297AD11A2EE76EA700CCE3BC /* OnboardingPhase.swift in Sources */,
 				2932FC7C2EF3D1D700D02A1A /* MotivationalQuoteManager.swift in Sources */,
+				29F600E42F13494500A63F5D /* ReturningUserLoginView.swift in Sources */,
 				297AD1FA2EF24AC600CCE3BC /* ImageCacheManager.swift in Sources */,
 				2932FC642EF3420100D02A1A /* Dailyprayerview.swift in Sources */,
 				297AD1762EE8AD8A00CCE3BC /* AuthView.swift in Sources */,
@@ -547,6 +554,7 @@
 				297AD17C2EE8AF5200CCE3BC /* RootView.swift in Sources */,
 				2932FC682EF3505400D02A1A /* PledgeView.swift in Sources */,
 				297AD1502EE7B02000CCE3BC /* LoopingVideoBackground.swift in Sources */,
+				29F600E62F13495000A63F5D /* SubscriptionRequiredView.swift in Sources */,
 				297AD1952EEB8E8B00CCE3BC /* OptionalAuthView.swift in Sources */,
 				297AD2022EF25BA700CCE3BC /* RelaxationSound.swift in Sources */,
 				297AD19A2EEBB7D700CCE3BC /* ProfilePictureView.swift in Sources */,

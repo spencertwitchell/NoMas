@@ -238,7 +238,7 @@ struct EmailSignUpView: View {
     
     @State private var email = ""
     @State private var password = ""
-    @State private var showingVerification = false
+    @State private var showingVerificationScreen = false
     
     private var isValid: Bool {
         !email.isEmpty && email.contains("@") && password.count >= 6
@@ -249,18 +249,20 @@ struct EmailSignUpView: View {
             ZStack {
                 AppBackground()
                 
+                // Centered content
                 VStack(spacing: 24) {
-                    Spacer()
-                        .frame(minHeight: 40)
+                    // Title section
+                    VStack(spacing: 12) {
+                        Text("Create Account")
+                            .font(.titleLarge)
+                            .foregroundColor(.textPrimary)
+                        
+                        Text("Start your recovery journey today")
+                            .font(.body)
+                            .foregroundColor(.textSecondary)
+                    }
                     
-                    Text("Create Account")
-                        .font(.titleLarge)
-                        .foregroundColor(.textPrimary)
-                    
-                    Text("Start your recovery journey today")
-                        .font(.body)
-                        .foregroundColor(.textSecondary)
-                    
+                    // Form fields
                     VStack(spacing: 16) {
                         // Email field
                         TextField("", text: $email, prompt: Text("Email").foregroundColor(.textTertiary))
@@ -297,8 +299,15 @@ struct EmailSignUpView: View {
                         Task {
                             do {
                                 try await authManager.signUpWithEmail(email: email, password: password)
-                                // Show verification message or complete
-                                showingVerification = true
+                                // Check if we got a session (auto-verified) or need email confirmation
+                                if authManager.isAuthenticated {
+                                    // Auto-verified (unlikely with email confirmation enabled)
+                                    dismiss()
+                                    onComplete()
+                                } else {
+                                    // Email confirmation required - show verification screen
+                                    showingVerificationScreen = true
+                                }
                             } catch {
                                 // Error handled by authManager
                             }
@@ -310,7 +319,7 @@ struct EmailSignUpView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 18)
                             .background(LinearGradient.accent)
-                            .cornerRadius(12)
+                            .cornerRadius(16)
                     }
                     .padding(.horizontal, 32)
                     .disabled(!isValid || authManager.isLoading)
@@ -325,9 +334,8 @@ struct EmailSignUpView: View {
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
-                    
-                    Spacer()
                 }
+                .frame(maxHeight: .infinity)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -337,13 +345,172 @@ struct EmailSignUpView: View {
                     .foregroundColor(.textPrimary)
                 }
             }
-            .alert("Check Your Email", isPresented: $showingVerification) {
-                Button("OK") {
-                    dismiss()
-                    onComplete()
+            .fullScreenCover(isPresented: $showingVerificationScreen) {
+                EmailVerificationPendingView(
+                    email: email,
+                    onVerified: {
+                        showingVerificationScreen = false
+                        dismiss()
+                        onComplete()
+                    },
+                    onCancel: {
+                        showingVerificationScreen = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+// MARK: - Email Verification Pending View
+
+struct EmailVerificationPendingView: View {
+    let email: String
+    let onVerified: () -> Void
+    let onCancel: () -> Void
+    
+    @StateObject private var authManager = AuthManager.shared
+    @State private var isCheckingStatus = false
+    @State private var errorMessage: String? = nil
+    
+    var body: some View {
+        ZStack {
+            AppBackground()
+            
+            VStack(spacing: 32) {
+                Spacer()
+                
+                // Email icon
+                Image(systemName: "envelope.badge.fill")
+                    .font(.system(size: 70))
+                    .foregroundStyle(LinearGradient.accent)
+                
+                // Title
+                VStack(spacing: 12) {
+                    Text("Check Your Email")
+                        .font(.titleLarge)
+                        .foregroundColor(.textPrimary)
+                    
+                    Text("We've sent a verification link to:")
+                        .font(.body)
+                        .foregroundColor(.textSecondary)
+                    
+                    Text(email)
+                        .font(.body)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.textPrimary)
                 }
-            } message: {
-                Text("We've sent a verification link to \(email). Please verify your email to continue.")
+                
+                // Instructions
+                VStack(spacing: 8) {
+                    Text("Click the link in the email to verify")
+                        .font(.body)
+                        .foregroundColor(.textSecondary)
+                    
+                    Text("your account and continue.")
+                        .font(.body)
+                        .foregroundColor(.textSecondary)
+                }
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+                
+                // Error message
+                if let error = errorMessage {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.red.opacity(0.9))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                }
+                
+                Spacer()
+                
+                // Check status button
+                Button(action: {
+                    checkVerificationStatus()
+                }) {
+                    HStack(spacing: 8) {
+                        if isCheckingStatus {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(0.8)
+                        }
+                        Text(isCheckingStatus ? "Checking..." : "I've Verified My Email")
+                    }
+                    .font(.button)
+                    .foregroundColor(.textPrimary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 18)
+                    .background(LinearGradient.accent)
+                    .cornerRadius(16)
+                }
+                .padding(.horizontal, 32)
+                .disabled(isCheckingStatus)
+                
+                // Resend link
+                Button(action: {
+                    resendVerificationEmail()
+                }) {
+                    Text("Resend verification email")
+                        .font(.bodySmall)
+                        .foregroundColor(.textSecondary)
+                        .underline()
+                }
+                
+                Spacer()
+                    .frame(height: 16)
+                
+                // Cancel / Go back
+                Button(action: onCancel) {
+                    Text("Cancel")
+                        .font(.bodySmall)
+                        .foregroundColor(.textTertiary)
+                }
+                
+                Spacer()
+                    .frame(height: 40)
+            }
+        }
+        .onChange(of: authManager.isAuthenticated) { _, isAuthenticated in
+            if isAuthenticated {
+                onVerified()
+            }
+        }
+    }
+    
+    private func checkVerificationStatus() {
+        isCheckingStatus = true
+        errorMessage = nil
+        
+        Task {
+            // Try to refresh the session to check if email is now verified
+            do {
+                try await authManager.refreshSession()
+                
+                if authManager.isAuthenticated {
+                    onVerified()
+                } else {
+                    // Not verified yet
+                    errorMessage = "Email not verified yet. Please check your inbox and click the verification link."
+                }
+            } catch {
+                errorMessage = "Unable to verify. Please try again."
+            }
+            
+            isCheckingStatus = false
+        }
+    }
+    
+    private func resendVerificationEmail() {
+        errorMessage = nil
+        
+        Task {
+            do {
+                // Use magic link to resend verification
+                try await authManager.signInWithMagicLink(email: email)
+                errorMessage = "Verification email sent!"
+            } catch {
+                errorMessage = "Failed to resend email. Please try again."
             }
         }
     }
@@ -372,18 +539,20 @@ struct EmailLoginView: View {
             ZStack {
                 AppBackground()
                 
+                // Centered content
                 VStack(spacing: 24) {
-                    Spacer()
-                        .frame(minHeight: 40)
+                    // Title section
+                    VStack(spacing: 12) {
+                        Text("Welcome Back")
+                            .font(.titleLarge)
+                            .foregroundColor(.textPrimary)
+                        
+                        Text("Continue your recovery journey")
+                            .font(.body)
+                            .foregroundColor(.textSecondary)
+                    }
                     
-                    Text("Welcome Back")
-                        .font(.titleLarge)
-                        .foregroundColor(.textPrimary)
-                    
-                    Text("Continue your recovery journey")
-                        .font(.body)
-                        .foregroundColor(.textSecondary)
-                    
+                    // Form fields
                     VStack(spacing: 16) {
                         // Email field
                         TextField("", text: $email, prompt: Text("Email").foregroundColor(.textTertiary))
@@ -444,7 +613,7 @@ struct EmailLoginView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 18)
                             .background(LinearGradient.accent)
-                            .cornerRadius(12)
+                            .cornerRadius(16)
                     }
                     .padding(.horizontal, 32)
                     .disabled(!isValid || authManager.isLoading)
@@ -459,9 +628,8 @@ struct EmailLoginView: View {
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
-                    
-                    Spacer()
                 }
+                .frame(maxHeight: .infinity)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

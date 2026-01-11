@@ -57,7 +57,7 @@ class AuthManager: ObservableObject {
     private func setupAuthListener() {
         Task {
             for await (event, session) in supabase.auth.authStateChanges {
-                print("🔐 Auth state changed: \(event)")
+                print("ðŸ” Auth state changed: \(event)")
                 
                 switch event {
                 case .initialSession:
@@ -86,7 +86,7 @@ class AuthManager: ObservableObject {
             // Link anonymous data to authenticated account
             await linkAnonymousData(authId: session.user.id)
             
-            print("✅ User authenticated: \(session.user.email ?? "no email")")
+            print("âœ… User authenticated: \(session.user.email ?? "no email")")
         } else {
             isAuthenticated = false
             currentUserId = nil
@@ -100,7 +100,7 @@ class AuthManager: ObservableObject {
         currentUserEmail = nil
         subscriptionStatus = false
         subscriptionExpiry = nil
-        print("👋 User signed out")
+        print("ðŸ‘‹ User signed out")
     }
     
     // MARK: - Check Current Auth Status
@@ -110,7 +110,7 @@ class AuthManager: ObservableObject {
             let session = try await supabase.auth.session
             await handleSessionChange(session)
         } catch {
-            print("ℹ️ No active session: \(error.localizedDescription)")
+            print("â„¹ï¸ No active session: \(error.localizedDescription)")
             isAuthenticated = false
         }
     }
@@ -139,10 +139,10 @@ class AuthManager: ObservableObject {
             )
             
             await handleSessionChange(session)
-            print("✅ Signed in with Apple")
+            print("âœ… Signed in with Apple")
         } catch {
             authError = error.localizedDescription
-            print("❌ Apple sign in failed: \(error)")
+            print("âŒ Apple sign in failed: \(error)")
             throw error
         }
     }
@@ -160,12 +160,12 @@ class AuthManager: ObservableObject {
                 provider: .google,
                 redirectTo: URL(string: AppConfig.authRedirectURL)
             )
-            print("🌐 Opened Google sign in...")
+            print("ðŸŒ Opened Google sign in...")
             // Note: The actual sign-in completion is handled by the auth state listener
             // when the app receives the callback URL
         } catch {
             authError = error.localizedDescription
-            print("❌ Google sign in failed: \(error)")
+            print("âŒ Google sign in failed: \(error)")
             throw error
         }
     }
@@ -184,10 +184,10 @@ class AuthManager: ObservableObject {
             )
             
             await handleSessionChange(session)
-            print("✅ Signed in with email")
+            print("âœ… Signed in with email")
         } catch {
             authError = error.localizedDescription
-            print("❌ Email sign in failed: \(error)")
+            print("âŒ Email sign in failed: \(error)")
             throw error
         }
     }
@@ -207,14 +207,14 @@ class AuthManager: ObservableObject {
             
             if let session = response.session {
                 await handleSessionChange(session)
-                print("✅ Signed up and logged in")
+                print("âœ… Signed up and logged in")
             } else {
                 // Email confirmation required
-                print("📧 Confirmation email sent")
+                print("ðŸ“§ Confirmation email sent")
             }
         } catch {
             authError = error.localizedDescription
-            print("❌ Email sign up failed: \(error)")
+            print("âŒ Email sign up failed: \(error)")
             throw error
         }
     }
@@ -231,10 +231,10 @@ class AuthManager: ObservableObject {
                 email: email,
                 redirectTo: URL(string: AppConfig.authRedirectURL)
             )
-            print("📧 Magic link sent to \(email)")
+            print("ðŸ“§ Magic link sent to \(email)")
         } catch {
             authError = error.localizedDescription
-            print("❌ Magic link failed: \(error)")
+            print("âŒ Magic link failed: \(error)")
             throw error
         }
     }
@@ -246,10 +246,25 @@ class AuthManager: ObservableObject {
         do {
             let session = try await supabase.auth.session(from: url)
             await handleSessionChange(session)
-            print("✅ OAuth callback handled successfully")
+            print("âœ… OAuth callback handled successfully")
         } catch {
-            print("❌ Failed to handle OAuth callback: \(error)")
+            print("âŒ Failed to handle OAuth callback: \(error)")
             authError = error.localizedDescription
+        }
+    }
+    
+    
+    // MARK: - Refresh Session
+    
+    /// Refresh the current session to check if email has been verified
+    func refreshSession() async throws {
+        do {
+            let session = try await supabase.auth.refreshSession()
+            await handleSessionChange(session)
+            print("Session refreshed successfully")
+        } catch {
+            print("Failed to refresh session: \(error)")
+            throw error
         }
     }
     
@@ -260,7 +275,7 @@ class AuthManager: ObservableObject {
             try await supabase.auth.signOut()
             handleSignOut()
         } catch {
-            print("❌ Sign out failed: \(error)")
+            print("âŒ Sign out failed: \(error)")
             // Force local sign out anyway
             handleSignOut()
         }
@@ -274,9 +289,9 @@ class AuthManager: ObservableObject {
         
         do {
             try await database.linkToAuthAccount(deviceId: deviceId, authId: authId)
-            print("✅ Anonymous data linked to auth account")
+            print("âœ… Anonymous data linked to auth account")
         } catch {
-            print("⚠️ Failed to link anonymous data: \(error)")
+            print("âš ï¸ Failed to link anonymous data: \(error)")
             // Non-fatal - user can still use the app
         }
     }
@@ -293,7 +308,7 @@ class AuthManager: ObservableObject {
                 subscriptionExpiry = progress.subscriptionExpiry
             }
         } catch {
-            print("❌ Failed to check subscription: \(error)")
+            print("âŒ Failed to check subscription: \(error)")
         }
     }
     
@@ -312,9 +327,9 @@ class AuthManager: ObservableObject {
             var progress = ProgressInput()
             progress.subscriptionStatus = isActive
             try await database.updateProgress(userId: userId, progress: progress)
-            print("✅ Subscription status updated: \(isActive)")
+            print("âœ… Subscription status updated: \(isActive)")
         } catch {
-            print("❌ Failed to update subscription status: \(error)")
+            print("âŒ Failed to update subscription status: \(error)")
         }
     }
     
@@ -328,10 +343,10 @@ class AuthManager: ObservableObject {
         
         do {
             try await supabase.auth.resetPasswordForEmail(email)
-            print("📧 Password reset email sent")
+            print("ðŸ“§ Password reset email sent")
         } catch {
             authError = error.localizedDescription
-            print("❌ Password reset failed: \(error)")
+            print("âŒ Password reset failed: \(error)")
             throw error
         }
     }
@@ -350,7 +365,7 @@ class AuthManager: ObservableObject {
         // Sign out
         await signOut()
         
-        print("🗑️ Account deleted (local data cleared)")
+        print("ðŸ—‘ï¸ Account deleted (local data cleared)")
     }
 }
 
@@ -434,13 +449,13 @@ struct SignInWithAppleButton: View {
                 Image(systemName: "apple.logo")
                     .font(.system(size: 20, weight: .semibold))
                 Text("Continue with Apple")
-                    .font(.system(size: 17, weight: .semibold))
+                    .font(.button)
             }
-            .foregroundColor(.black)
+            .foregroundColor(.white)
             .frame(maxWidth: .infinity)
-            .frame(height: 56)
-            .background(Color.white)
-            .cornerRadius(16)
+            .padding(.vertical, 18)
+            .background(Color.black)
+            .cornerRadius(28)
         }
     }
     
