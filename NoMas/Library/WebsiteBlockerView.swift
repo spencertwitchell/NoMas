@@ -14,6 +14,8 @@ struct WebsiteBlockerView: View {
     // Animation state
     @State private var isPulsing = false
     @State private var showConfirmDisable = false
+    @State private var showComingSoon = false
+
     
     var body: some View {
         ZStack {
@@ -51,6 +53,11 @@ struct WebsiteBlockerView: View {
             }
         } message: {
             Text("This will remove all website restrictions. Are you sure you want to continue?")
+        }
+        .alert("Coming Soon!", isPresented: $showComingSoon) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Website blocking is waiting for Apple approval. This feature will be available in an upcoming update!")
         }
     }
     
@@ -233,10 +240,13 @@ struct WebsiteBlockerView: View {
             // Show confirmation before disabling
             showConfirmDisable = true
         } else {
-            // Enable blocker
-            Task {
-                await blockerManager.enableBlocker()
-            }
+            
+            showComingSoon = true
+            
+            // Enable blocker (uncomment when apple approves)
+            //Task {
+             //   await blockerManager.enableBlocker()
+            //}
         }
     }
 }
