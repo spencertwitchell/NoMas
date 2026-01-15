@@ -44,7 +44,7 @@ struct SubscriptionRequiredView: View {
                     .frame(height: 32)
                 
                 // Title
-                Text("Subscription Required")
+                Text("Suscripción Requerida")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                 
@@ -52,7 +52,7 @@ struct SubscriptionRequiredView: View {
                     .frame(height: 16)
                 
                 // Message
-                Text("Your subscription has expired or is inactive.\nSubscribe to continue your recovery journey.")
+                Text("Tu suscripción ha caducado o está inactiva.\nSuscríbete para continuar tu proceso de recuperación.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -63,10 +63,10 @@ struct SubscriptionRequiredView: View {
                 
                 // Features reminder
                 VStack(alignment: .leading, spacing: 12) {
-                    SubscriptionFeatureRow(icon: "flame.fill", text: "Track your streak & milestones")
-                    SubscriptionFeatureRow(icon: "brain.head.profile", text: "AI-powered recovery companion")
-                    SubscriptionFeatureRow(icon: "book.fill", text: "Full library of resources")
-                    SubscriptionFeatureRow(icon: "person.3.fill", text: "Community support")
+                    SubscriptionFeatureRow(icon: "flame.fill", text: "Sigue tu racha y tus logros")
+                    SubscriptionFeatureRow(icon: "brain.head.profile", text: "Compañero de recuperación con IA")
+                    SubscriptionFeatureRow(icon: "book.fill", text: "Acceso completo a recursos")
+                    SubscriptionFeatureRow(icon: "person.3.fill", text: "Apoyo de la comunidad")
                 }
                 .padding(.horizontal, 40)
                 
@@ -76,7 +76,7 @@ struct SubscriptionRequiredView: View {
                 Button(action: {
                     triggerPaywall()
                 }) {
-                    Text("Subscribe Now")
+                    Text("Suscríbete Ahora")
                         .font(.button)
                         .foregroundColor(.textPrimary)
                         .frame(maxWidth: .infinity)
@@ -93,7 +93,7 @@ struct SubscriptionRequiredView: View {
                 Button(action: {
                     restorePurchases()
                 }) {
-                    Text("Restore Purchases")
+                    Text("Restaurar Compra")
                         .font(.bodySmall)
                         .foregroundColor(.textSecondary)
                         .underline()

@@ -32,22 +32,23 @@ struct PanicButtonFlowView: View {
     
     // Fallback phrases if Supabase fails
     let fallbackPhrases = [
-        "Remember why you started this journey.",
-        "Don't trade your progress for temporary relief.",
-        "This urge is lying to you. It will pass.",
-        "Stop what you're doing and breathe deeply.",
-        "You're going to feel so much regret later.",
-        "Do what your future healed self would want.",
-        "This feeling will pass. You've made it this far.",
-        "Think about how proud you'll be tomorrow.",
-        "You deserve better than this addiction.",
-        "Healing isn't linear, but every day counts.",
-        "The urge is temporary. The regret lasts longer.",
-        "You're stronger than this moment of weakness.",
-        "Your brain is trying to trick you. Don't fall for it.",
-        "One day at a time. One moment at a time.",
-        "You've overcome urges before. You can do it again."
+        "Recuerda por qué empezaste este camino.",
+        "No cambies tu progreso por un alivio temporal.",
+        "Este impulso es temporal. Lo superarás.",
+        "Detente y respira profundamente.",
+        "Ceder ahora solo traerá culpa después.",
+        "Haz lo que tu yo futuro desearía.",
+        "Esta sensación pasará. Has llegado hasta aquí.",
+        "Piensa en lo orgulloso que estarás mañana.",
+        "Mereces algo mejor que esta adicción.",
+        "La sanación no es lineal, pero cada día cuenta.",
+        "El impulso es temporal. El arrepentimiento dura más.",
+        "Eres más fuerte que este momento de debilidad.",
+        "Tu cerebro intenta engañarte. No caigas en la trampa.",
+        "Un día a la vez. Un momento a la vez.",
+        "Ya has superado impulsos antes. Puedes hacerlo de nuevo."
     ]
+
     
     let characterDelay: Double = 0.05
     
@@ -126,7 +127,7 @@ struct PanicButtonFlowView: View {
                                             .font(.system(size: 40))
                                             .foregroundColor(.white.opacity(0.3))
                                         
-                                        Text("Camera not enabled")
+                                        Text("Cámara desactivada")
                                             .font(.bodySmall)
                                             .foregroundColor(.textSecondary)
                                         
@@ -135,7 +136,7 @@ struct PanicButtonFlowView: View {
                                                 UIApplication.shared.open(url)
                                             }
                                         }) {
-                                            Text("Enable in Settings")
+                                            Text("Habilitar en Configuración")
                                                 .font(.buttonSmall)
                                                 .foregroundColor(.accentGradientStart)
                                         }
@@ -182,7 +183,7 @@ struct PanicButtonFlowView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "arrow.counterclockwise")
                                     .font(.system(size: 16))
-                                Text("I Broke - Reset Timer")
+                                Text("Recaí — Reiniciar Reloj")
                                     .font(.button)
                             }
                             .foregroundColor(.textPrimary)
@@ -199,7 +200,7 @@ struct PanicButtonFlowView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "exclamationmark.triangle.fill")
                                     .font(.system(size: 16))
-                                Text("I Might Break")
+                                Text("Podría Ceder")
                                     .font(.button)
                             }
                             .foregroundColor(.textPrimary)

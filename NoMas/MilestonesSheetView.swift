@@ -22,7 +22,7 @@ struct MilestonesSheetView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         // Header title
-                        Text("Your Progress")
+                        Text("Tu Progreso")
                             .font(.titleMedium)
                             .foregroundColor(.textPrimary)
                         
@@ -39,12 +39,12 @@ struct MilestonesSheetView: View {
                                         .font(.titleMedium)
                                         .foregroundColor(.textPrimary)
                                     
-                                    Text(userData.daysSinceRelapse == 1 ? "day" : "days")
+                                    Text(userData.daysSinceRelapse == 1 ? "día" : "días")
                                         .font(.bodySmall)
                                         .foregroundColor(.textPrimary)
                                 }
                                 
-                                Text("Clean")
+                                Text("Libre")
                                     .font(.captionSmall)
                                     .foregroundColor(.textSecondary)
                             }
@@ -67,12 +67,12 @@ struct MilestonesSheetView: View {
                                         .font(.titleMedium)
                                         .foregroundColor(.textPrimary)
                                 } else {
-                                    Text("â€”")
+                                    Text("m")
                                         .font(.titleMedium)
                                         .foregroundColor(.textPrimary)
                                 }
                                 
-                                Text("Projected Recovery")
+                                Text("Recuperación estimada")
                                     .font(.captionSmall)
                                     .foregroundColor(.textSecondary)
                             }
@@ -98,11 +98,11 @@ struct MilestonesSheetView: View {
                     .padding(24)
                 }
             }
-            .navigationTitle("Milestones")
+            .navigationTitle("Logros")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button("Listo") {
                         dismiss()
                     }
                     .foregroundColor(.accentGradientStart)
@@ -160,7 +160,7 @@ struct MilestoneRow: View {
                             .foregroundColor(.white)
                         
                         if isCurrent {
-                            Text("Current")
+                            Text("Actual")
                                 .font(.captionSmall)
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 6)
@@ -174,7 +174,7 @@ struct MilestoneRow: View {
                         .font(.bodySmall)
                         .foregroundColor(.white.opacity(isUnlocked ? 0.9 : 0.6))
                     
-                    Text("Day \(milestone.daysRequired)")
+                    Text("Día \(milestone.daysRequired)")
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.7))
                 }

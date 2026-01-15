@@ -22,10 +22,10 @@ import Combine
 class MotivationalQuoteManager: ObservableObject {
     static let shared = MotivationalQuoteManager()
     
-    @Published var currentQuote: String = "Every day you choose freedom is a victory. Keep going. 🔥"
+    @Published var currentQuote: String = "Cada día que eliges la libertad es una victoria. Sigue así. 🔥"
     @Published var isLoading: Bool = false
     
-    private let defaultQuote = "Every day you choose freedom is a victory. Keep going. 🔥"
+    private let defaultQuote = "Cada día que eliges la libertad es una victoria. Sigue así. 🔥"
     private let refreshInterval: TimeInterval = 6 * 60 * 60 // 6 hours in seconds
     
     // UserDefaults keys
@@ -64,7 +64,7 @@ class MotivationalQuoteManager: ObservableObject {
             if isReset {
                 // User just reset - mark the reset time
                 UserDefaults.standard.set(Date(), forKey: lastResetDateKey)
-                return "bronze_reset"
+                return "cobre_reset"
             }
             
             // Check if reset was recent (within last 7 days while on bronze)
@@ -72,22 +72,22 @@ class MotivationalQuoteManager: ObservableObject {
                 let daysSinceReset = Calendar.current.dateComponents([.day], from: lastResetDate, to: Date()).day ?? 0
                 if daysSinceReset < 7 {
                     // Still within 7 days of reset - keep showing bronze_reset quotes
-                    return "bronze_reset"
+                    return "cobre_reset"
                 }
             }
         }
         
         // Otherwise map milestone to category name (matches Supabase table)
         switch milestone {
-        case .bronze: return "bronze"
-        case .silver: return "silver"
-        case .gold: return "gold"
-        case .platinum: return "platinum"
-        case .diamond: return "diamond"
-        case .ruby: return "ruby"
-        case .elite: return "elite"
-        case .master: return "master"
-        case .grandmaster: return "grandmaster"
+        case .bronze: return "Cobre"
+        case .silver: return "Plata"
+        case .gold: return "Oro"
+        case .platinum: return "Platinio"
+        case .diamond: return "Diamante"
+        case .ruby: return "Ruby"
+        case .elite: return "Elite"
+        case .master: return "Maestro"
+        case .grandmaster: return "Legendario"
         }
     }
     

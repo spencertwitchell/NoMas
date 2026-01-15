@@ -28,9 +28,9 @@ struct MightBreakAnimationView: View {
     let characterDelay: Double = 0.08
     
     let pages: [String] = [
-        "Feeling the urge doesn't mean you're failing. It means you're human...",
-        "This moment of weakness is temporary. Your commitment to change is not...",
-        "Every urge you resist rewires your brain. You're building strength right now..."
+        "Sentir el impulso no significa que estés fallando. Significa que eres humano...",
+        "Este momento de debilidad es temporal. Tu compromiso contigo mismo no lo es...",
+        "Cada impulso que resistes reconfigura tu cerebro. Estás construyendo una nueva version de ti..."
     ]
     
     var currentText: String {
@@ -56,11 +56,11 @@ struct MightBreakAnimationView: View {
                 Spacer()
                 
                 Text(currentText)
-                    .font(.titleLarge)
+                    .font(.title)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .lineSpacing(8)
-                    .padding(.horizontal, 40)
+                    .padding(.horizontal, 32)
                     .frame(maxWidth: .infinity)
                     .opacity(fadeOut ? 0 : 1)
                 

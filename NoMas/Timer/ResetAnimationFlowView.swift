@@ -66,7 +66,7 @@ struct ResetAnimationFlowView: View {
                 Button(action: {
                     handleContinue()
                 }) {
-                    Text(currentPage == totalPages - 1 ? "Next Steps" : "Continue")
+                    Text(currentPage == totalPages - 1 ? "Próximos pasos" : "Continuar")
                         .font(.button)
                         .foregroundColor(.textPrimary)
                         .frame(maxWidth: .infinity)
@@ -131,12 +131,12 @@ struct ResetPage1_ItsOkay: View {
                 .frame(width: 175, height: 175)
             
             VStack(spacing: 16) {
-                Text("You relapsed — and that's okay.")
+                Text("Recaíste — y está bien.")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
                 
-                Text("Recovery isn't a straight line — it's a process of learning and coming back stronger each time.")
+                Text("La recuperación no es una línea recta — es un proceso de aprendizaje y de volver más fuerte cada vez.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -157,12 +157,12 @@ struct ResetPage2_EveryoneSlips: View {
                 .frame(width: 175, height: 175)
             
             VStack(spacing: 16) {
-                Text("Almost everyone slips up.")
+                Text("Casi todos tienen tropiezos.")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
                 
-                Text("What matters is that you're back here now — that's proof you're growing, not failing.")
+                Text("Lo que importa es que estés aquí ahora — eso demuestra que estás creciendo, no fracasando.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -187,7 +187,7 @@ struct ResetPage3_NewTimeline: View {
                 .frame(width: 200, height: 150)
             
             VStack(spacing: 16) {
-                Text("You're still on the right path — just with a new timeline.")
+                Text("Sigues en el camino correcto — solo con una nueva línea de tiempo.")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
@@ -197,7 +197,7 @@ struct ResetPage3_NewTimeline: View {
             // Recovery Date Card
             if isDataReady, let date = recoveryDate {
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Your new projected recovery date:")
+                    Text("Tu nueva fecha estimada de recuperación:")
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.8))
                     
@@ -214,7 +214,7 @@ struct ResetPage3_NewTimeline: View {
                             
                             Spacer()
                             
-                            Text("\(daysRemaining(to: date)) days remaining")
+                            Text("\(daysRemaining(to: date)) días restantes")
                                 .font(.captionSmall)
                                 .foregroundColor(.white.opacity(0.7))
                         }
@@ -251,7 +251,7 @@ struct ResetPage3_NewTimeline: View {
                         .tint(.white)
                         .scaleEffect(1.5)
                     
-                    Text("Calculating your new timeline...")
+                    Text("Calculando tu nueva línea de tiempo...")
                         .font(.caption)
                         .foregroundColor(.textTertiary)
                 }
@@ -262,9 +262,12 @@ struct ResetPage3_NewTimeline: View {
     
     private func formatRecoveryDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM d, yyyy"
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        formatter.locale = Locale.current
         return formatter.string(from: date)
     }
+
     
     private func daysRemaining(to date: Date) -> Int {
         let days = Calendar.current.dateComponents([.day], from: Date(), to: date).day ?? 0
@@ -282,12 +285,12 @@ struct ResetPage4_YouCanDoThis: View {
                 .frame(width: 200, height: 175)
             
             VStack(spacing: 16) {
-                Text("You can get through this.")
+                Text("Puedes superar esto.")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
                 
-                Text("Stay consistent. Stay patient. Stay strong — your recovered self is closer than you think.")
+                Text("Mantente constante. Ten paciencia. Mantente fuerte — tu yo recuperado está más cerca de lo que crees.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)

@@ -62,7 +62,7 @@ struct SettingsView: View {
                                     selection: $selectedPhoto,
                                     matching: .images
                                 ) {
-                                    Text(isCurrentlyUploading ? "Uploading..." : "Change Photo")
+                                    Text(isCurrentlyUploading ? "Subiendo..." : "Cambiar la foto")
                                         .font(.bodySmall)
                                         .foregroundColor(isCurrentlyUploading ? .textTertiary : .accentGradientStart)
                                 }
@@ -81,7 +81,7 @@ struct SettingsView: View {
                                 }
                             } else {
                                 // Show sign-in prompt for non-authenticated users
-                                Text("Sign in to change photo")
+                                Text("Inicia sesión para cambiar la foto")
                                     .font(.bodySmall)
                                     .foregroundColor(.textTertiary)
                             }
@@ -97,10 +97,10 @@ struct SettingsView: View {
                         
                         // Personal Info Section
                         VStack(alignment: .leading, spacing: 16) {
-                            SettingsSectionHeader(title: "Personal Info")
+                            SettingsSectionHeader(title: "Información personal")
                             
                             SettingsTextField(
-                                label: "Display Name",
+                                label: "Nombre visible",
                                 value: $userData.displayName
                             )
                             
@@ -113,8 +113,8 @@ struct SettingsView: View {
                             )
                             
                             SettingsTextField(
-                                label: "Instagram Handle",
-                                placeholder: "@username",
+                                label: "Usuario de Instagram",
+                                placeholder: "@usuario",
                                 value: Binding(
                                     get: { userData.instagramHandle ?? "" },
                                     set: { userData.instagramHandle = $0.isEmpty ? nil : $0 }
@@ -125,11 +125,11 @@ struct SettingsView: View {
                         
                         // Privacy Section
                         VStack(alignment: .leading, spacing: 16) {
-                            SettingsSectionHeader(title: "Privacy")
+                            SettingsSectionHeader(title: "Privacidad")
                             
                             SettingsToggle(
-                                label: "Public Profile",
-                                description: "Allow others to see your profile in the community",
+                                label: "Perfil Público",
+                                description: "Permite que otros vean tu perfil en la comunidad",
                                 isOn: Binding(
                                     get: { userData.isProfilePublic },
                                     set: { userData.isProfilePublic = $0 }
@@ -140,13 +140,13 @@ struct SettingsView: View {
                         
                         // Account Section
                         VStack(alignment: .leading, spacing: 16) {
-                            SettingsSectionHeader(title: "Account")
+                            SettingsSectionHeader(title: "Cuenta")
                             
                             // Auth status
                             if authManager.isAuthenticated {
                                 HStack {
                                     VStack(alignment: .leading, spacing: 4) {
-                                        Text("Signed In")
+                                        Text("Sesión iniciada")
                                             .font(.bodySmall)
                                             .foregroundColor(.textPrimary)
                                         if let email = authManager.currentUserEmail {
@@ -171,7 +171,7 @@ struct SettingsView: View {
                                 HStack {
                                     Image(systemName: "trash")
                                         .font(.body)
-                                    Text("Delete Account")
+                                    Text("Eliminar cuenta")
                                         .font(.body)
                                     Spacer()
                                 }
@@ -184,7 +184,7 @@ struct SettingsView: View {
                         .padding(.horizontal, 20)
                         
                         // Version (with hidden developer tap)
-                        Text("Version \(appVersion)")
+                        Text("Versión \(appVersion)")
                             .font(.captionSmall)
                             .foregroundColor(.textTertiary)
                             .padding(.top, 20)
@@ -219,7 +219,7 @@ struct SettingsView: View {
                     .padding(.top, 20)
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle("Configuración")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -230,18 +230,18 @@ struct SettingsView: View {
                 }
             }
             // Delete Account - First Confirmation
-            .alert("Delete Account", isPresented: $showDeleteConfirmation) {
-                Button("Cancel", role: .cancel) { }
-                Button("Continue", role: .destructive) {
+            .alert("Eliminar Cuenta", isPresented: $showDeleteConfirmation) {
+                Button("Cancelar", role: .cancel) { }
+                Button("Continuar", role: .destructive) {
                     showDeleteFinalConfirmation = true
                 }
             } message: {
-                Text("This will permanently delete your account and all your data. This action cannot be undone.")
+                Text("Esto eliminará permanentemente tu cuenta y todos tus datos. Esta acción no se puede deshacer.")
             }
             // Delete Account - Final Confirmation
-            .alert("Confirm Deletion", isPresented: $showDeleteFinalConfirmation) {
-                TextField("Type DELETE to confirm", text: $deleteConfirmationText)
-                Button("Cancel", role: .cancel) {
+            .alert("Confirmar eliminación", isPresented: $showDeleteFinalConfirmation) {
+                TextField("Escribe DELETE para confirmar", text: $deleteConfirmationText)
+                Button("Cancelar", role: .cancel) {
                     deleteConfirmationText = ""
                 }
                 Button("Delete Forever", role: .destructive) {
@@ -251,7 +251,7 @@ struct SettingsView: View {
                 }
                 .disabled(deleteConfirmationText.uppercased() != "DELETE")
             } message: {
-                Text("Type DELETE to confirm you want to permanently delete your account.")
+                Text("Escribe DELETE para confirmar")
             }
         }
     }
@@ -376,7 +376,7 @@ struct SettingsTextEditor: View {
                     .cornerRadius(12)
                 
                 if value.isEmpty {
-                    Text("Write something about yourself...")
+                    Text("Escribe algo sobre ti...")
                         .font(.body)
                         .foregroundColor(.textTertiary)
                         .padding(.horizontal, 16)

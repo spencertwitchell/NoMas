@@ -29,13 +29,13 @@ struct WhatNextView: View {
                         .frame(height: 20)
                     
                     // Header
-                    Text("What To Do Next")
+                    Text("Qué hacer ahora")
                         .font(.titleXL)
                         .foregroundColor(.textPrimary)
                         .multilineTextAlignment(.center)
                     
                     // Description
-                    Text("Don't dwell on what happened — redirect your energy. The best way to recover from a setback is by focusing on what you can do next to heal and move forward.")
+                    Text("No te quedes atrapado en lo que pasó — redirige tu energía. La mejor forma de recuperarte de un tropiezo es enfocarte en lo que puedes hacer ahora para sanar y seguir adelante.")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                         .multilineTextAlignment(.center)
@@ -84,7 +84,7 @@ struct WhatNextView: View {
                         shouldDismissToHome = true
                         dismiss()
                     }) {
-                        Text("Return to Timer")
+                        Text("Volver al Reloj")
                             .font(.button)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity)
@@ -95,7 +95,7 @@ struct WhatNextView: View {
                     .padding(.horizontal, 32)
                     
                     // Bottom caption
-                    Text("This moment will pass. Stay strong — you're moving forward.")
+                    Text("Este momento pasará. Mantente fuerte — sigue avanzando.")
                         .font(.caption)
                         .foregroundColor(.textTertiary)
                         .multilineTextAlignment(.center)

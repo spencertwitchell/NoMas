@@ -257,56 +257,57 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
     /// Display name for the milestone
     var displayName: String {
         switch self {
-        case .bronze: return "Bronze"
-        case .silver: return "Silver"
-        case .gold: return "Gold"
-        case .platinum: return "Platinum"
-        case .diamond: return "Diamond"
+        case .bronze: return "Cobre"
+        case .silver: return "Plata"
+        case .gold: return "Oro"
+        case .platinum: return "Platinio"
+        case .diamond: return "Diamante"
         case .ruby: return "Ruby"
         case .elite: return "Elite"
-        case .master: return "Master"
-        case .grandmaster: return "Grandmaster"
+        case .master: return "Maestro"
+        case .grandmaster: return "Legendario"
         }
     }
     
     /// Motivational title for the milestone
     var title: String {
         switch self {
-        case .bronze: return "The Journey Begins"
-        case .silver: return "Building Foundation"
-        case .gold: return "First Week Victory"
-        case .platinum: return "Growing Stronger"
-        case .diamond: return "Breaking Through"
-        case .ruby: return "One Month Milestone"
-        case .elite: return "Elite Status"
-        case .master: return "Master Level"
-        case .grandmaster: return "Grandmaster Achievement"
+        case .bronze: return "El Viaje Comienza"
+        case .silver: return "Armando la Base"
+        case .gold: return "Logro de la Primera Semana"
+        case .platinum: return "Fortaleciéndote"
+        case .diamond: return "Rompiendo límites"
+        case .ruby: return "Un mes de progreso"
+        case .elite: return "Estatus Élite"
+        case .master: return "Nivel Maestro"
+        case .grandmaster: return "Rango Legendario"
         }
-    }
-    
-    /// Description of what this milestone represents
-    var description: String {
-        switch self {
-        case .bronze:
-            return "Every journey begins with a single step. You've made the commitment to change Ã¢â‚¬â€ that takes real courage."
-        case .silver:
-            return "Three days of dedication. Your brain is already beginning to recognize new patterns. Keep pushing forward."
-        case .gold:
-            return "One full week accomplished. You're proving that you have the strength to take control of your life."
-        case .platinum:
-            return "Ten days of progress. The initial challenges are behind you, and you're building real momentum now."
-        case .diamond:
-            return "Two weeks of commitment. Your resolve is hardening like a diamond Ã¢â‚¬â€ unbreakable and brilliant."
-        case .ruby:
-            return "A full month of recovery. This is a major achievement that shows your dedication to lasting change."
-        case .elite:
-            return "45 days of transformation. You've entered elite territory Ã¢â‚¬â€ few make it this far. Be proud."
-        case .master:
-            return "Two months of mastery. You've developed new habits and your brain is rewiring itself for success."
-        case .grandmaster:
-            return "90 days of freedom. You've achieved grandmaster status Ã¢â‚¬â€ a complete recovery cycle. You are transformed."
         }
-    }
+
+        /// Description of what this milestone represents
+        var description: String {
+            switch self {
+            case .bronze:
+                return "Todo viaje comienza con un primer paso. Decidir cambiar exige verdadera valentía."
+            case .silver:
+                return "Tres días de dedicación. Tu cerebro ya comienza a reconocer nuevos patrones. Sigue avanzando."
+            case .gold:
+                return "Una semana completa lograda. Estás demostrando que tienes la fuerza para tomar control de tu vida."
+            case .platinum:
+                return "Diez días de progreso. Los desafíos iniciales han quedado atrás y ahora estás creando momentum real."
+            case .diamond:
+                return "Dos semanas de compromiso. Tu determinación se está volviendo tan firme como un diamante — irrompible y brillante."
+            case .ruby:
+                return "Un mes completo de recuperación. Un logro real que demuestra tu compromiso con el cambio."
+            case .elite:
+                return "45 días de transformación. Has entrado en territorio élite — pocos llegan tan lejos. Siéntete orgulloso."
+            case .master:
+                return "Dos meses de dominio. Has desarrollado nuevos hábitos y tu cerebro se está reconfigurando para el éxito."
+            case .grandmaster:
+                return "90 días de libertad. Has alcanzado el nivel Legendario — un ciclo completo de recuperación. Estás transformado."
+            }
+        }
+
     
     /// Color for this milestone (placeholder - will be replaced with Lottie animations)
     var color: Color {

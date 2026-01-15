@@ -116,11 +116,11 @@ struct DailyCheckInView: View {
     private var step1View: some View {
         VStack(spacing: 24) {
             // Header
-            Text("Did you relapse? 👀")
+            Text("¿Recaíste 👀?")
                 .font(.titleMedium)
                 .foregroundColor(.textPrimary)
             
-            Text("Let the community know by checking in.")
+            Text("Hazle saber a la comunidad.")
                 .font(.body)
                 .foregroundColor(.textSecondary)
             
@@ -140,7 +140,7 @@ struct DailyCheckInView: View {
                         .shadow(color: Color.accentGradientStart.opacity(0.4), radius: 50)
                 }
                 
-                Text("are still going strong")
+                Text("Siguen su racha")
                     .font(.body)
                     .foregroundColor(.textSecondary)
             }
@@ -159,7 +159,7 @@ struct DailyCheckInView: View {
                     }
                 } label: {
                     HStack(spacing: 8) {
-                        Text("No, still going strong")
+                        Text("No, mi racha sigue intacta")
                             .font(.titleSmall)
                             .fontWeight(.semibold)
                         Text("💪")
@@ -178,7 +178,7 @@ struct DailyCheckInView: View {
                     onOpenResetTimer()
                 } label: {
                     HStack(spacing: 8) {
-                        Text("Yes, I relapsed")
+                        Text("Sí, tuve una recaída")
                             .font(.titleSmall)
                             .fontWeight(.semibold)
                         Image(systemName: "exclamationmark.triangle.fill")
@@ -206,7 +206,7 @@ struct DailyCheckInView: View {
     private var step2View: some View {
         VStack(spacing: 32) {
             // Header
-            Text("And how are you feeling?")
+            Text("¿Y cómo te sientes?")
                 .font(.titleMedium)
                 .foregroundColor(.textPrimary)
             
@@ -240,7 +240,7 @@ struct DailyCheckInView: View {
     private var step3View: some View {
         VStack(spacing: 16) {
             // Header - reduced top spacing
-            Text("NOMÁS believes in you...")
+            Text("NOMÁS cree en ti...")
                 .font(.titleMedium)
                 .foregroundColor(.textPrimary)
                 .padding(.top, 8)
@@ -257,7 +257,7 @@ struct DailyCheckInView: View {
             .cornerRadius(16)
             
             // Caption
-            Text("This journey is hard but you are not alone...")
+            Text("Este camino es difícil, pero no estás solo...")
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
@@ -272,7 +272,7 @@ struct DailyCheckInView: View {
                         await saveCheckInAndClose(openJournal: true)
                     }
                 } label: {
-                    Text("Reflect")
+                    Text("Reflexionar")
                         .font(.titleSmall)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
@@ -288,7 +288,7 @@ struct DailyCheckInView: View {
                         await saveCheckInAndClose(openJournal: false)
                     }
                 } label: {
-                    Text("Finish")
+                    Text("Terminar")
                         .font(.titleSmall)
                         .fontWeight(.semibold)
                         .foregroundStyle(LinearGradient.accent)
@@ -315,7 +315,7 @@ struct DailyCheckInView: View {
             Text(feeling.emoji)
                 .font(.system(size: 36))
             
-            Text("\(count) others")
+            Text("\(count) personas")
                 .font(.titleMedium)
                 .fontWeight(.semibold)
                 .foregroundColor(.white)

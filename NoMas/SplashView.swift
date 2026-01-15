@@ -129,13 +129,13 @@ struct SplashView: View {
                 // Text lines container
                 VStack(spacing: 16) {
                     // First line with swipe reveal
-                    Text("Embrace this pause.")
+                    Text("Tómate esta pausa.")
                         .font(.titleLarge)
                         .foregroundColor(.textPrimary)
                         .swipeReveal(isRevealed: showFirstLine, duration: 0.8)
                     
                     // Second line with swipe reveal
-                    Text("Reflect before you relapse.")
+                    Text("Piensa antes de recaer.")
                         .font(.titleLarge)
                         .foregroundColor(.textPrimary)
                         .swipeReveal(isRevealed: showSecondLine, duration: 0.8)

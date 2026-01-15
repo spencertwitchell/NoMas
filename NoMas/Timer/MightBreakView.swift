@@ -23,11 +23,11 @@ struct MightBreakView: View {
     @State private var showingPledge = false
     
     let questions: [String] = [
-        "\"If I give in right now, will it bring real peace — or just a few minutes of relief followed by shame?\"",
-        "\"Am I craving connection, or just running from discomfort? What do I actually need right now?\"",
-        "\"Would the future version of me — the one I'm working to become — make this choice?\"",
-        "\"What triggered this urge? Boredom? Stress? Loneliness? Can I address that instead?\"",
-        "\"If I stay strong for just the next 10 minutes, will this urge still feel as powerful?\""
+        "\"Si cedo ahora mismo, ¿me dará paz real — o solo unos minutos de alivio seguidos de culpa?\"",
+        "\"¿Estoy buscando conexión o solo huyendo de la incomodidad? ¿Qué es lo que realmente necesito ahora mismo?\"",
+        "\"¿La versión futura de mí — en la que estoy trabajando para convertirme — tomaría esta decisión?\"",
+        "\"¿Qué detonó este impulso? ¿Aburrimiento? ¿Estrés? ¿Soledad? ¿Puedo abordar eso en su lugar?\"",
+        "\"Si me mantengo firme solo durante los próximos 10 minutos, ¿este impulso seguirá sintiéndose tan fuerte?\""
     ]
     
     var body: some View {
@@ -40,7 +40,7 @@ struct MightBreakView: View {
                         VStack(alignment: .center, spacing: 16) {
                             // Header section
                             VStack(alignment: .center, spacing: 12) {
-                                Text("Urges don't mean\nyou're failing.")
+                                Text("Los impulsos no significan\nque estés fallando.")
                                     .font(.titleLarge)
                                     .foregroundColor(.textPrimary)
                                     .multilineTextAlignment(.center)
@@ -51,7 +51,7 @@ struct MightBreakView: View {
                                     .playing(loopMode: .loop)
                                     .frame(width: 175, height: 175)
                                 
-                                Text("Feeling the pull is a normal part of recovery. What matters is what you do next. Every urge you overcome makes the next one easier to resist.")
+                                Text("Sentir el impulso es una parte normal de la recuperación. Lo que importa es lo que haces a continuación. Cada impulso que superas hace que el siguiente sea más fácil de resistir.")
                                     .font(.body)
                                     .foregroundColor(.textSecondary)
                                     .multilineTextAlignment(.center)
@@ -63,7 +63,7 @@ struct MightBreakView: View {
                             
                             // Questions section
                             VStack(alignment: .center, spacing: 2) {
-                                Text("Questions to reflect:")
+                                Text("Preguntas para reflexionar:")
                                     .font(.titleMedium)
                                     .foregroundColor(.textPrimary)
                                     .padding(.horizontal, 20)
@@ -93,7 +93,7 @@ struct MightBreakView: View {
                             
                             // Things to do instead section
                             VStack(alignment: .center, spacing: 16) {
-                                Text("Things to do instead:")
+                                Text("Cosas que hacer en su lugar:")
                                     .font(.titleMedium)
                                     .foregroundColor(.textPrimary)
                                     .padding(.horizontal, 20)
@@ -101,7 +101,7 @@ struct MightBreakView: View {
                                 VStack(spacing: 10) {
                                     MightBreakActionButton(
                                         icon: "ellipsis.message.fill",
-                                        title: "Talk It Out with AI Chat",
+                                        title: "Habla con Nomi",
                                         action: {
                                             dismiss()
                                             selectedTab = 1 // Chat tab
@@ -110,7 +110,7 @@ struct MightBreakView: View {
                                     
                                     MightBreakActionButton(
                                         icon: "hand.raised.fill",
-                                        title: "Make a Pledge for Today",
+                                        title: "Haz un compromiso para hoy",
                                         action: {
                                             showingPledge = true
                                         }
@@ -118,7 +118,7 @@ struct MightBreakView: View {
                                     
                                     MightBreakActionButton(
                                         icon: "person.3.fill",
-                                        title: "Connect with the Community",
+                                        title: "Conéctate con la comunidad",
                                         action: {
                                             dismiss()
                                             selectedTab = 3 // Community tab
@@ -127,7 +127,7 @@ struct MightBreakView: View {
                                     
                                     MightBreakActionButton(
                                         icon: "sparkles",
-                                        title: "Focus on Self Growth",
+                                        title: "Enfócate en ti mismo",
                                         action: {
                                             dismiss()
                                             selectedTab = 2 // Library tab
@@ -143,7 +143,7 @@ struct MightBreakView: View {
                                     HStack(spacing: 8) {
                                         Image(systemName: "arrow.counterclockwise")
                                             .font(.system(size: 16))
-                                        Text("Return to Timer")
+                                        Text("Volver al Reloj")
                                             .font(.button)
                                     }
                                     .foregroundColor(.textPrimary)
@@ -153,7 +153,7 @@ struct MightBreakView: View {
                                     .cornerRadius(12)
                                 }
                                 
-                                Text("This urge will pass. Stay strong — you're rewiring your brain.")
+                                Text("Este impulso pasará. Mantente fuerte — estás reconfigurando tu cerebro.")
                                     .font(.captionSmall)
                                     .foregroundColor(.textTertiary)
                                     .multilineTextAlignment(.center)

@@ -69,7 +69,7 @@ class RemindersManager: ObservableObject {
     // MARK: - Default Reminder
     
     private var defaultReminder: String {
-        "I'm trying to better myself"
+        "Estoy intentando mejorar como persona"
     }
     
     // MARK: - Fetch Reminders

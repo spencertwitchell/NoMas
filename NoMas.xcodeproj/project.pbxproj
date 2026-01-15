@@ -441,11 +441,11 @@
 				};
 			};
 			buildConfigurationList = 297AD0D12EE7646800CCE3BC /* Build configuration list for PBXProject "NoMas" */;
-			developmentRegion = en;
+			developmentRegion = es;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				es,
 			);
 			mainGroup = 297AD0CD2EE7646800CCE3BC;
 			minimizedProjectReferenceProxies = 1;

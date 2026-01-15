@@ -49,14 +49,14 @@ struct ReturningUserLoginView: View {
                     .frame(height: 32)
                 
                 // Welcome back message
-                Text("Welcome Back")
+                Text("Bienvenido")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                 
                 Spacer()
                     .frame(height: 12)
                 
-                Text("Sign in to continue your\nrecovery journey")
+                Text("Inicia sesión para continuar con tu\nproceso de recuperación")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -78,7 +78,7 @@ struct ReturningUserLoginView: View {
                 VStack(spacing: 16) {
                     // Google Sign In
                     AuthButton(
-                        title: "Continue with Google",
+                        title: "Continua con Google",
                         icon: "g.circle.fill",
                         style: .google,
                         isLoading: authManager.isLoading,
@@ -105,7 +105,7 @@ struct ReturningUserLoginView: View {
                     
                     // Email Login
                     AuthButton(
-                        title: "Sign in with Email",
+                        title: "Iniciar sesión con correo",
                         icon: "envelope.fill",
                         style: .accent,
                         isLoading: authManager.isLoading,
@@ -122,14 +122,14 @@ struct ReturningUserLoginView: View {
                 
                 // Sign up link
                 HStack(spacing: 4) {
-                    Text("Don't have an account?")
+                    Text("¿No tienes una cuenta?")
                         .font(.bodySmall)
                         .foregroundColor(.textSecondary)
                     
                     Button(action: {
                         showingEmailSignUp = true
                     }) {
-                        Text("Sign up")
+                        Text("Regístrate")
                             .font(.bodySmall)
                             .fontWeight(.semibold)
                             .foregroundColor(.textPrimary)

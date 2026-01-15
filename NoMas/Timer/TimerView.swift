@@ -47,13 +47,13 @@ struct TimerView: View {
                     HStack(spacing: 12) {
                         ActionButton(
                             icon: "exclamationmark.triangle.fill",
-                            title: "I Might Break",
+                            title: "Voy a Recaer",
                             action: { showingMightBreak = true }
                         )
                         
                         ActionButton(
                             icon: "arrow.counterclockwise",
-                            title: "Reset Timer",
+                            title: "Reiniciar Reloj",
                             action: { showingResetTimer = true }
                         )
                     }
@@ -179,27 +179,27 @@ struct TimerDisplayView: View {
     let currentTime: Date
     
     private var displayName: String {
-        userData.displayName.isEmpty ? "Hey there" : userData.displayName
+        userData.displayName.isEmpty ? "Hola" : userData.displayName
     }
     
     var body: some View {
         VStack(spacing: 8) {
-            Text("\(displayName), you've been clean for:")
+            Text("\(displayName), Llevas sin recaer por:")
                 .font(.body)
                 .foregroundColor(.textSecondary)
             
-            Text("\(timeComponents.days) \(timeComponents.days == 1 ? "day" : "days")")
+            Text("\(timeComponents.days) \(timeComponents.days == 1 ? "día" : "días")")
                 .font(.system(size: 48, weight: .bold))
                 .foregroundColor(.textPrimary)
                 .padding(.bottom, 8)
             
             HStack(spacing: 8) {
                 Text("+")
-                Text("\(timeComponents.hours) \(timeComponents.hours == 1 ? "hour" : "hours")")
+                Text("\(timeComponents.hours) \(timeComponents.hours == 1 ? "hora" : "horas")")
                 Text("|")
-                Text("\(timeComponents.minutes) \(timeComponents.minutes == 1 ? "minute" : "minutes")")
+                Text("\(timeComponents.minutes) \(timeComponents.minutes == 1 ? "minuto" : "minutos")")
                 Text("|")
-                Text("\(timeComponents.seconds) \(timeComponents.seconds == 1 ? "second" : "seconds")")
+                Text("\(timeComponents.seconds) \(timeComponents.seconds == 1 ? "segundo" : "segundos")")
             }
             .font(.bodySmall)
             .foregroundColor(.textPrimary)
@@ -261,7 +261,7 @@ struct AnalyticsSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Analytics")
+            Text("Análisis")
                 .font(.titleSmall)
                 .foregroundColor(.textPrimary)
             
@@ -269,22 +269,22 @@ struct AnalyticsSection: View {
                 AnalyticCard(
                     icon: "exclamationmark.triangle.fill",
                     value: "\(userData.timesRelapsed)",
-                    unit: userData.timesRelapsed == 1 ? "time" : "times",
-                    label: "Relapsed",
+                    unit: userData.timesRelapsed == 1 ? "vez" : "veces",
+                    label: userData.timesRelapsed == 1 ? "Recaída" : "Recaídas",
                     iconColor: iconColor
                 )
                 AnalyticCard(
                     icon: "flame.fill",
                     value: "\(userData.daysSinceRelapse)",
-                    unit: userData.daysSinceRelapse == 1 ? "day" : "days",
-                    label: "Current Streak",
+                    unit: userData.daysSinceRelapse == 1 ? "día" : "días",
+                    label: "En Racha",
                     iconColor: iconColor
                 )
                 AnalyticCard(
                     icon: "trophy.fill",
                     value: "\(userData.effectiveBestStreak)",
-                    unit: userData.effectiveBestStreak == 1 ? "day" : "days",
-                    label: "Best Streak",
+                    unit: userData.effectiveBestStreak == 1 ? "día" : "días",
+                    label: "Mejor Racha",
                     iconColor: iconColor
                 )
             }
@@ -337,7 +337,7 @@ struct RecoveryProgressSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("You'll be fully recovered by:")
+            Text("Estarás completamente recuperado para:")
                 .font(.bodySmall)
                 .foregroundColor(.textSecondary)
             
@@ -354,7 +354,7 @@ struct RecoveryProgressSection: View {
                     
                     Spacer()
                     
-                    Text("\(daysRemaining) \(daysRemaining == 1 ? "day" : "days") left")
+                    Text("Faltan \(daysRemaining) \(daysRemaining == 1 ? "día" : "días")")
                         .font(.captionSmall)
                         .foregroundColor(.textTertiary)
                 }
@@ -385,11 +385,14 @@ struct RecoveryProgressSection: View {
     
     var formattedRecoveryDate: String {
         guard let date = userData.projectedRecoveryDate else {
-            return "Calculating..."
+            return "Calculando..."
         }
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM d, yyyy"
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        formatter.locale = Locale.current
         return formatter.string(from: date)
+
     }
     
     var daysRemaining: Int {
@@ -406,7 +409,7 @@ struct RecoveryProgressSection: View {
     
     var progressFormatted: String {
         let percentage = Int(progressPercentage * 100)
-        return "\(percentage)% Complete"
+        return "\(percentage)% Completado"
     }
 }
 
@@ -422,13 +425,13 @@ struct CurrentMilestoneCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Current Milestone")
+                Text("Logro actual")
                     .font(.caption)
                     .foregroundColor(.white.opacity(0.7))
                 
                 Spacer()
                 
-                Text("Day \(milestone.daysRequired)")
+                Text("Día \(milestone.daysRequired)")
                     .font(.caption)
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -457,11 +460,11 @@ struct CurrentMilestoneCard: View {
                     
                     if let next = milestone.next {
                         let daysUntil = next.daysRequired - userData.daysSinceRelapse
-                        Text("\(daysUntil) \(daysUntil == 1 ? "day" : "days") until \(next.displayName)")
+                        Text("\(daysUntil) \(daysUntil == 1 ? "día" : "días") para \(next.displayName)")
                             .font(.caption)
                             .foregroundColor(.white.opacity(0.8))
                     } else {
-                        Text("You've reached the final milestone!")
+                        Text("¡Has alcanzado el logro final!")
                             .font(.caption)
                             .foregroundColor(.white.opacity(0.8))
                     }
@@ -513,11 +516,11 @@ struct RemindYourselfWhySection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Remind Yourself Why")
+            Text("Recuérdate por qué")
                 .font(.titleSmall)
                 .foregroundColor(.textPrimary)
             
-            Text("You chose to quit for a reason. When urges hit hard, remind yourself why you started:")
+            Text("Elegiste dejarlo por una razón. Cuando las ganas golpeen fuerte, recuérdate por qué empezaste:")
                 .font(.captionSmall)
                 .foregroundColor(.textSecondary)
                 .lineSpacing(4)
@@ -550,7 +553,7 @@ struct RemindYourselfWhySection: View {
             }) {
                 HStack {
                     Image(systemName: "plus.circle.fill")
-                    Text("Add / Edit")
+                    Text("Agregar / Editar")
                 }
                 .font(.captionSmall)
                 .fontWeight(.medium)
@@ -588,14 +591,14 @@ struct ToDoSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("To Do")
+            Text("Por hacer")
                 .font(.titleSmall)
                 .foregroundColor(.textPrimary)
             
             // Enable Notifications (checkbox NOT manually tappable - controlled by system)
             ToDoCard(
-                title: "Enable Notifications",
-                description: "Get timely check-ins, motivation, and quick interventions to catch urges before they spiral.",
+                title: "Habilitar notificaciones",
+                description: "Recibe recordatorios, motivación e intervenciones rápidas para detener los impulsos antes de que se salgan de control.",
                 isChecked: $notificationsChecked,
                 allowManualCheckbox: false,
                 action: {
@@ -605,8 +608,8 @@ struct ToDoSection: View {
             
             // Website Blocker (checkbox manually tappable)
             ToDoCard(
-                title: "Website Blocker",
-                description: "Block adult content across all browsers and apps to remove temptation and protect your recovery.",
+                title: "Bloqueador de sitios web",
+                description: "Bloquea contenido para adultos en todos los navegadores y apps para eliminar la tentación y proteger tu recuperación.",
                 isChecked: $websiteBlockerChecked,
                 allowManualCheckbox: true,
                 action: {
@@ -616,8 +619,8 @@ struct ToDoSection: View {
             
             // Chat with AI (checkbox manually tappable)
             ToDoCard(
-                title: "Chat with AI",
-                description: "Talk to Nomi, your AI companion who understands your journey and can help when urges hit.",
+                title: "Chat con IA",
+                description: "Habla con Nomi, tu compañero de IA que entiende tu proceso y puede ayudarte cuando aparezcan los impulsos.",
                 isChecked: $chatAIChecked,
                 allowManualCheckbox: true,
                 action: {
@@ -627,8 +630,8 @@ struct ToDoSection: View {
             
             // Update Your Profile (checkbox manually tappable)
             ToDoCard(
-                title: "Update Your Profile",
-                description: "Make your space feel like yours â€” add a photo, write a bio, or stay anonymous if you prefer.",
+                title: "Actualiza tu perfil",
+                description: "Haz que tu espacio se sienta tuyo — agrega una foto, escribe una bio o mantente anónimo si lo prefieres.",
                 isChecked: $profileChecked,
                 allowManualCheckbox: true,
                 action: {
@@ -638,8 +641,8 @@ struct ToDoSection: View {
             
             // Pledge for Today (checkbox NOT manually tappable - controlled by PledgeManager)
             ToDoCard(
-                title: "Pledge for Today",
-                description: "Make a daily commitment to stay strong. Small, achievable goals build lasting change.",
+                title: "Compromiso de hoy",
+                description: "Haz un compromiso diario para mantenerte firme. Metas pequeñas y alcanzables construyen un cambio duradero.",
                 isChecked: .constant(pledgeManager.isPledgedToday),
                 allowManualCheckbox: false,
                 action: {
@@ -649,8 +652,8 @@ struct ToDoSection: View {
             
             // Create A Post (checkbox manually tappable)
             ToDoCard(
-                title: "Create A Post",
-                description: "Share your story, struggles, or victories with the community. Your experience might help someone else.",
+                title: "Crear una publicación",
+                description: "Comparte tu historia, luchas o victorias con la comunidad. Tu experiencia podría ayudar a alguien más.",
                 isChecked: $createPostChecked,
                 allowManualCheckbox: true,
                 action: {
@@ -825,7 +828,7 @@ struct RemindersManagementView: View {
                     
                     // Add new reminder
                     VStack(spacing: 12) {
-                        TextField("", text: $newReminder, prompt: Text("Add new reminder...").foregroundColor(.textTertiary))
+                        TextField("", text: $newReminder, prompt: Text("Agregar nuevo recordatorio...").foregroundColor(.textTertiary))
                             .textFieldStyle(.plain)
                             .foregroundColor(.textPrimary)
                             .padding()
@@ -844,7 +847,7 @@ struct RemindersManagementView: View {
                                 }
                             }
                         }) {
-                            Text("Add Reminder")
+                            Text("Agregar recordatorio")
                                 .font(.button)
                                 .foregroundColor(.textPrimary)
                                 .frame(maxWidth: .infinity)
@@ -856,11 +859,11 @@ struct RemindersManagementView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Manage Reminders")
+            .navigationTitle("Controla tus recordatorios")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") { dismiss() }
+                    Button("Listo") { dismiss() }
                         .foregroundColor(.textPrimary)
                 }
             }
@@ -880,7 +883,7 @@ struct PanicButtonView: View {
             HStack(spacing: 8) {
                 Image(systemName: "exclamationmark.octagon.fill")
                     .font(.system(size: 20, weight: .bold))
-                Text("PANIC BUTTON")
+                Text("BOTÓN DE PÁNICO")
                     .font(.system(size: 18, weight: .bold))
             }
             .foregroundColor(.white)

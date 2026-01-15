@@ -2,6 +2,14 @@
 //  CameraSoftPromptView.swift
 //  NoMas
 //
+//  Created by Spencer Twitchell on 1/7/26.
+//
+
+
+//
+//  CameraSoftPromptView.swift
+//  NoMas
+//
 //  Created by Claude on 1/7/26.
 //
 
@@ -11,7 +19,6 @@ import AVFoundation
 
 struct CameraSoftPromptView: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject private var userData = UserData.shared
     
     var body: some View {
         ZStack {
@@ -26,13 +33,13 @@ struct CameraSoftPromptView: View {
                     .frame(width: 200, height: 200)
                 
                 // Header
-                Text("Enable Camera Access")
+                Text("Desbloquear acceso a la cámara")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
                 
                 // Description
-                Text("We use your camera for optional features to improve your NoMás experience. You can enable it now or later in Settings. (Optional)")
+                Text("Usamos tu cámara para funciones opcionales que mejoran tu experiencia en NoMás. Puedes habilitarla ahora o más tarde en Configuración. (Opcional)")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -42,11 +49,9 @@ struct CameraSoftPromptView: View {
                 
                 // Continue button
                 Button {
-                    // Set flag IMMEDIATELY before any async work
-                    userData.hasSeenCameraPrompt = true
                     requestCameraPermission()
                 } label: {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.titleSmall)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)

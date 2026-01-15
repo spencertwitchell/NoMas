@@ -139,10 +139,10 @@ struct MainView: View {
     
     private var tabTitle: String {
         switch selectedTab {
-        case 0: return "Timer"
+        case 0: return "Reloj"
         case 1: return "Chat"
-        case 2: return "Library"
-        case 3: return "Community"
+        case 2: return "Biblioteca"
+        case 3: return "Comunidad"
         default: return ""
         }
     }
@@ -257,10 +257,10 @@ struct CustomTabBar: View {
     @Binding var selectedTab: Int
     
     private let tabs: [(icon: String, label: String)] = [
-        ("timer", "Timer"),
+        ("timer", "Reloj"),
         ("ellipsis.message.fill", "Chat"),
-        ("book.pages.fill", "Library"),
-        ("person.3.fill", "Community")
+        ("book.pages.fill", "Biblioteca"),
+        ("person.3.fill", "Comunidad")
     ]
     
     var body: some View {
@@ -341,7 +341,7 @@ struct ProfileView: View {
                         
                         // Your Posts Section
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Your Posts")
+                            Text("Tus Posts")
                                 .font(.titleSmall)
                                 .foregroundColor(.textPrimary)
                                 .padding(.horizontal, 20)
@@ -359,10 +359,10 @@ struct ProfileView: View {
                                     Image(systemName: "square.and.pencil")
                                         .font(.system(size: 40))
                                         .foregroundColor(.textTertiary)
-                                    Text("You haven't posted anything yet")
+                                    Text("Aún no has publicado nada")
                                         .foregroundColor(.textSecondary)
                                         .font(.bodySmall)
-                                    Text("Share your journey in the Community tab")
+                                    Text("Comparte tu proceso con la Comunidad")
                                         .foregroundColor(.textTertiary)
                                         .font(.captionSmall)
                                 }
@@ -404,7 +404,7 @@ struct ProfileView: View {
                 }
                 
                 ToolbarItem(placement: .principal) {
-                    Text("Your Profile")
+                    Text("Tu Perfil")
                         .font(.titleSmall)
                         .foregroundColor(.textPrimary)
                 }
@@ -478,7 +478,7 @@ struct RecoveryStatsCard: View {
                 
                 // Current Rank Text
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Current Rank")
+                    Text("Rango Actual")
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.7))
                     

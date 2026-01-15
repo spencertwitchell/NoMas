@@ -61,8 +61,8 @@ struct MilestoneCelebrationView: View {
                 HStack(spacing: 8) {
                     Text("🏆")
                         .font(.system(size: 28))
-                    Text("\(milestone.displayName) Unlocked!")
-                        .font(.titleLarge)
+                    Text("¡\(milestone.displayName) Desbloqueado!")
+                        .font(.title)
                         .foregroundColor(.white)
                 }
                 .scaleEffect(animateContent ? 1 : 0.8)
@@ -87,7 +87,7 @@ struct MilestoneCelebrationView: View {
                         
                         Spacer()
                         
-                        Text("\(daysRemaining) \(daysRemaining == 1 ? "day" : "days") left")
+                        Text("Faltan \(daysRemaining) \(daysRemaining == 1 ? "día" : "días")")
                             .font(.captionSmall)
                             .foregroundColor(.white.opacity(0.6))
                     }
@@ -115,7 +115,7 @@ struct MilestoneCelebrationView: View {
                 
                 // Continue button
                 Button(action: onDismiss) {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.titleSmall)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
@@ -158,7 +158,7 @@ struct MilestoneCelebrationView: View {
     
     var progressFormatted: String {
         let percentage = Int(progressPercentage * 100)
-        return "\(percentage)% Complete"
+        return "\(percentage)% Completado"
     }
 }
 

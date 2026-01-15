@@ -36,7 +36,7 @@ struct ResetTimerFlowView: View {
                     Spacer()
                     
                     // Title
-                    Text("Had a Relapse?")
+                    Text("¿Tuviste una recaída?")
                         .font(.titleXL)
                         .foregroundColor(.textPrimary)
                         .multilineTextAlignment(.center)
@@ -48,17 +48,17 @@ struct ResetTimerFlowView: View {
                     
                     // Description
                     VStack(spacing: 16) {
-                        Text("It's okay. Slip-ups happen to almost everyone on this journey.")
+                        Text("Está bien. Los tropiezos le pasan a casi todos en este camino.")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
                         
-                        Text("What matters most is that you're here, facing it with honesty and strength.")
+                        Text("Lo más importante es que estás aquí, enfrentándolo con honestidad y fortaleza.")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
                         
-                        Text("When you're ready, tap below to reset your timer and start fresh.")
+                        Text("Cuando estés listo, toca abajo para reiniciar tu reloj y empezar de nuevo.")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
@@ -72,7 +72,7 @@ struct ResetTimerFlowView: View {
                         selectedResetDate = Date() // Default to now
                         showingDatePicker = true
                     }) {
-                        Text("Reset Timer")
+                        Text("Reiniciar reloj")
                             .font(.button)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity)
@@ -83,7 +83,7 @@ struct ResetTimerFlowView: View {
                     .padding(.horizontal, 32)
                     
                     // Caption below button
-                    Text("This isn't failure — it's growth in progress.")
+                    Text("Esto no es un fracaso — es crecimiento en proceso.")
                         .font(.caption)
                         .foregroundColor(.textTertiary)
                         .multilineTextAlignment(.center)
@@ -145,12 +145,12 @@ struct ResetDatePickerSheet: View {
             VStack(spacing: 20) {
                 // Header
                 VStack(spacing: 8) {
-                    Text("When Did You Relapse?")
+                    Text("¿Cuándo recaíste?")
                         .font(.titleMedium)
                         .foregroundColor(.textPrimary)
                         .multilineTextAlignment(.center)
                     
-                    Text("Select the date and time it happened")
+                    Text("Selecciona la fecha y la hora en que ocurrió")
                         .font(.bodySmall)
                         .foregroundColor(.textSecondary)
                         .multilineTextAlignment(.center)
@@ -179,7 +179,7 @@ struct ResetDatePickerSheet: View {
                     Button(action: {
                         onConfirm()
                     }) {
-                        Text("Confirm Reset")
+                        Text("Confirmar reinicio")
                             .font(.button)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity)
@@ -191,7 +191,7 @@ struct ResetDatePickerSheet: View {
                     Button(action: {
                         dismiss()
                     }) {
-                        Text("Cancel")
+                        Text("Cancelar")
                             .font(.bodySmall)
                             .foregroundColor(.textSecondary)
                     }

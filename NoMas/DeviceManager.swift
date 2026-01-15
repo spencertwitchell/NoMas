@@ -119,7 +119,7 @@ class DeviceManager: ObservableObject {
     
     // MARK: - Reset (for testing/debugging)
     
-    #if DEBUG
+    
     func resetDeviceId() {
         let newId = UUID().uuidString
         
@@ -134,5 +134,5 @@ class DeviceManager: ObservableObject {
         
         print("📱 Device ID reset to: \(newId.prefix(8))...")
     }
-    #endif
+    
 }
