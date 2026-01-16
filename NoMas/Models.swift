@@ -11,8 +11,8 @@ enum Gender: String, Codable, CaseIterable, Identifiable {
     
     var displayName: String {
         switch self {
-        case .male: return "Male"
-        case .female: return "Female"
+        case .male: return "Hombre"
+        case .female: return "Mujer"
         }
     }
 }
@@ -29,10 +29,10 @@ enum ViewingFrequency: String, Codable, CaseIterable, Identifiable {
     
     var displayName: String {
         switch self {
-        case .moreThanOnceDaily: return "More than once a day"
-        case .onceDaily: return "Once a day"
-        case .fewTimesWeekly: return "A few times a week"
-        case .lessThanWeekly: return "Less than once a week"
+        case .moreThanOnceDaily: return "Más de una vez al día"
+        case .onceDaily: return "Una vez al día"
+        case .fewTimesWeekly: return "Unas cuantas veces a la semana"
+        case .lessThanWeekly: return "Menos de una vez a la semana"
         }
     }
     
@@ -58,10 +58,10 @@ enum AgeFirstExposure: String, Codable, CaseIterable, Identifiable {
     
     var displayName: String {
         switch self {
-        case .twelveOrYounger: return "12 or younger"
-        case .thirteenToSixteen: return "13 to 16"
-        case .seventeenToTwentyFour: return "17 to 24"
-        case .twentyFiveOrOlder: return "25 or older"
+        case .twelveOrYounger: return "12 o menor"
+        case .thirteenToSixteen: return "13 a 16"
+        case .seventeenToTwentyFour: return "17 a 24"
+        case .twentyFiveOrOlder: return "25 o mayor"
         }
     }
     
@@ -86,9 +86,9 @@ enum FrequencyResponse: String, Codable, CaseIterable, Identifiable {
     
     var displayName: String {
         switch self {
-        case .frequently: return "Frequently"
-        case .occasionally: return "Occasionally"
-        case .rarelyOrNever: return "Rarely or Never"
+        case .frequently: return "Frecuencia"
+        case .occasionally: return "Ocasionalmente"
+        case .rarelyOrNever: return "Rara vez o nunca"
         }
     }
     

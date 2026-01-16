@@ -41,14 +41,14 @@ struct OptionalAuthView: View {
                     .padding(.vertical, 80)
                 
                 // Title
-                Text("Save Your Progress")
+                Text("Guarda Tu Progreso")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 12)
                 
                 // Subtitle - directly under header
-                Text("Sign in to sync your data across devices\nand never lose your progress.")
+                Text("Inicia sesión para sincronizar tu progreso entre dispositivos.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -115,7 +115,7 @@ struct OptionalAuthView: View {
                 // Skip button - more visible
                 Button(action: handleSkip) {
                     HStack(spacing: 6) {
-                        Text("Or skip for now")
+                        Text("O sáltalo por ahora")
                             .font(.body)
                             .fontWeight(.medium)
                             .underline()
@@ -131,14 +131,14 @@ struct OptionalAuthView: View {
                 
                 // Login link
                 HStack(spacing: 4) {
-                    Text("Already have an account?")
+                    Text("¿Ya tienes una cuenta?")
                         .font(.bodySmall)
                         .foregroundColor(.textSecondary)
                     
                     Button(action: {
                         showingEmailLogin = true
                     }) {
-                        Text("Login here")
+                        Text("Inicia sesión aquí")
                             .font(.bodySmall)
                             .fontWeight(.semibold)
                             .foregroundColor(.textPrimary)

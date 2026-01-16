@@ -32,13 +32,13 @@ struct QuizResultsView: View {
     
     private var scoreText: String {
         if score >= 85 {
-            return "a severe dependency"
+            return "una dependencia grave"
         } else if score >= 75 {
-            return "a significant dependency"
+            return "una dependencia significativa"
         } else if score >= 65 {
-            return "a moderate dependency"
+            return "una dependencia moderada"
         } else {
-            return "some level of dependency"
+            return "algún nivel de dependencia"
         }
     }
     
@@ -65,14 +65,14 @@ struct QuizResultsView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 24) {
                     // Title
-                    Text("Analysis Complete")
+                    Text("Análisis Completo")
                         .font(.titleXL)
                         .foregroundColor(.textPrimary)
                         .multilineTextAlignment(.center)
                         .padding(.top, 40)
                     
                     // Description
-                    Text("Your answers indicate \(scoreText) on pornography — meaning your brain has developed patterns that require intentional rewiring to overcome.")
+                    Text("Tus respuestas indican\(scoreText) sobre la pornografía — lo que indica patrones que requieren un cambio intencional.")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                         .multilineTextAlignment(.center)
@@ -104,7 +104,7 @@ struct QuizResultsView: View {
                                         .offset(y: -(userBarHeight / 2))
                                 }
                                 
-                                Text("Your Score")
+                                Text("Tus Resultados")
                                     .font(.caption)
                                     .foregroundColor(.textPrimary)
                             }
@@ -131,14 +131,14 @@ struct QuizResultsView: View {
                                         .offset(y: -(avgBarHeight / 3))
                                 }
                                 
-                                Text("Average")
+                                Text("Promedio")
                                     .font(.caption)
                                     .foregroundColor(.textSecondary)
                             }
                         }
                         
                         // Comparison text
-                        Text("\(aboveAveragePercent)% higher dependency\nthan average")
+                        Text("\(aboveAveragePercent)% mayor dependencia\nque el promedio")
                             .font(.titleMedium)
                             .foregroundColor(.textPrimary)
                             .multilineTextAlignment(.center)
@@ -147,7 +147,7 @@ struct QuizResultsView: View {
                     .padding(.vertical, 20)
                     
                     // Encouraging message
-                    Text("The good news? Recognizing this is the first step. We're here to help you break free.")
+                    Text("¿La buena noticia? Reconocerlo es el primer paso. Estamos aquí para ayudarte a liberarte.")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                         .multilineTextAlignment(.center)
@@ -158,7 +158,7 @@ struct QuizResultsView: View {
                     Button(action: {
                         onboardingState.advance()
                     }) {
-                        Text("View Your Symptoms")
+                        Text("Ver tus Síntomas")
                             .font(.button)
                             .foregroundColor(Color.accentGradientStart)
                             .frame(maxWidth: .infinity)
@@ -169,7 +169,7 @@ struct QuizResultsView: View {
                     .padding(.horizontal, 32)
                     
                     // Disclaimer
-                    Text("*This result is an indication only, not a medical diagnosis.")
+                    Text("*Este resultado es solo una indicación, no un diagnóstico médico.")
                         .font(.captionSmall)
                         .foregroundColor(.textTertiary)
                         .multilineTextAlignment(.center)

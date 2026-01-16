@@ -48,10 +48,10 @@ struct ScienceView: View {
                         // Chart section (now first)
                         VStack(spacing: 0) {
                             // Chart Title
-                            Text("Recovery Timeframe")
-                                .font(.titleSmall)
+                            Text("Tiempo de Recuperación")
+                                .font(.titleMedium)
                                 .foregroundColor(.textPrimary)
-                                .padding(.bottom, 12)
+                                .padding(.bottom, 24)
                             
                             // Animated Chart
                             VStack(spacing: 0) {
@@ -104,12 +104,12 @@ struct ScienceView: View {
                                 
                                 // X-axis labels
                                 HStack(alignment: .top, spacing: barSpacing) {
-                                    Text("Moderation")
+                                    Text("Moderación")
                                         .font(.caption)
                                         .foregroundColor(.textSecondary)
                                         .frame(width: barWidth)
                                     
-                                    Text("Full Quit")
+                                    Text("Abstinencia")
                                         .font(.caption)
                                         .foregroundColor(.textSecondary)
                                         .frame(width: barWidth)
@@ -121,14 +121,14 @@ struct ScienceView: View {
                         }
                         
                         // Title
-                        Text("It's Not A Trend—\nIt's Proven By Science")
+                        Text("No es una moda—\nestá comprobado por la ciencia")
                             .font(.titleLarge)
                             .foregroundColor(.textPrimary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 32)
                         
                         // Description
-                        Text("Studies show people who commit to quitting pornography recover substantially faster than those who try to moderate.")
+                        Text("Los estudios muestran que dejar la pornografía permite una recuperación más rápida que solo moderarla.")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
@@ -142,7 +142,7 @@ struct ScienceView: View {
                     Button(action: {
                         onboardingState.advance()
                     }) {
-                        Text("Continue")
+                        Text("Continuar")
                             .font(.button)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity)

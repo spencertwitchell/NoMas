@@ -47,12 +47,12 @@ struct WebsiteBlockerView: View {
             }
         }
         .alert("Disable Blocker?", isPresented: $showConfirmDisable) {
-            Button("Cancel", role: .cancel) { }
-            Button("Disable", role: .destructive) {
+            Button("Cerrar", role: .cancel) { }
+            Button("Desactivar", role: .destructive) {
                 blockerManager.disableBlocker()
             }
         } message: {
-            Text("This will remove all website restrictions. Are you sure you want to continue?")
+            Text("Esto eliminará todas las restricciones de sitios web. ¿Estás seguro de que deseas continuar?")
         }
         .alert("Coming Soon!", isPresented: $showComingSoon) {
             Button("OK", role: .cancel) { }
@@ -76,7 +76,7 @@ struct WebsiteBlockerView: View {
             
             Spacer()
             
-            Text("Website Blocker")
+            Text("Bloqueador de sitios web")
                 .font(.titleSmall)
                 .foregroundColor(.textPrimary)
             
@@ -187,8 +187,8 @@ struct WebsiteBlockerView: View {
     private var descriptionSection: some View {
         VStack(spacing: 16) {
             Text(blockerManager.isBlockerEnabled
-                 ? "Adult content is blocked across all browsers and apps"
-                 : "Tap to block adult content across all browsers and apps")
+                 ? "Contenido adulto bloqueado en todas las apps y navegadores"
+                 : "Toca para bloquear contenido adulto en todas las apps y navegadores")
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
@@ -209,7 +209,7 @@ struct WebsiteBlockerView: View {
             HStack(spacing: 8) {
                 Image(systemName: "checkmark.shield.fill")
                     .foregroundColor(.accentGradientStart)
-                Text("Blocks 60+ adult websites")
+                Text("Bloquea más de 60 sitios para adultos")
                     .font(.caption)
                     .foregroundColor(.textTertiary)
             }
@@ -217,7 +217,7 @@ struct WebsiteBlockerView: View {
             HStack(spacing: 8) {
                 Image(systemName: "lock.fill")
                     .foregroundColor(.accentGradientStart)
-                Text("Works in Safari, Chrome, and all apps")
+                Text("Funciona en Safari, Chrome y todas las apps")
                     .font(.caption)
                     .foregroundColor(.textTertiary)
             }
@@ -225,7 +225,7 @@ struct WebsiteBlockerView: View {
             HStack(spacing: 8) {
                 Image(systemName: "eye.slash.fill")
                     .foregroundColor(.accentGradientStart)
-                Text("Private browsing is also blocked")
+                Text("La navegación privada también está bloqueada")
                     .font(.caption)
                     .foregroundColor(.textTertiary)
             }

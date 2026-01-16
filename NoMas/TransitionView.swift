@@ -34,7 +34,7 @@ struct TransitionView: View {
                 // Content group (title, lottie, description)
                 VStack(spacing: 24) {
                     // Title
-                    Text("Breaking Free\nIs Possible")
+                    Text("Liberarse\nEs Posible")
                         .font(.titleXL)
                         .foregroundColor(.textPrimary)
                         .multilineTextAlignment(.center)
@@ -46,7 +46,7 @@ struct TransitionView: View {
                         .frame(width: 280, height: 220)
                     
                     // Description
-                    Text("Committing to recovery gives your brain the space it needs to heal. You'll regain clarity, feel more present, and rebuild the life you want.")
+                    Text("Comprometerte con la recuperación le da a tu cerebro el espacio que necesita para sanar. Recuperarás claridad, te sentirás más presente y reconstruirás la vida que deseas.")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                         .multilineTextAlignment(.center)
@@ -60,7 +60,7 @@ struct TransitionView: View {
                 Button(action: {
                     onboardingState.advance()
                 }) {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.button)
                         .foregroundColor(Color.accentGradientStart)
                         .frame(maxWidth: .infinity)

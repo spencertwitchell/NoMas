@@ -106,7 +106,7 @@ struct DailyPrayerView: View {
         VStack {
             Spacer()
             
-            Text("Let us pray...")
+            Text("Oremos...")
                 .font(.titleLarge)
                 .foregroundColor(.white)
             
@@ -157,7 +157,7 @@ struct DailyPrayerView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "arrow.clockwise")
                             .font(.system(size: 16, weight: .semibold))
-                        Text("Repeat")
+                        Text("Repite")
                             .font(.button)
                     }
                     .foregroundColor(.white)
@@ -172,7 +172,7 @@ struct DailyPrayerView: View {
                 // Continue Button
                 Button(action: nextPrayer) {
                     HStack(spacing: 8) {
-                        Text("Continue")
+                        Text("Continuar")
                             .font(.button)
                         Image(systemName: "arrow.right")
                             .font(.system(size: 16, weight: .semibold))
@@ -199,7 +199,7 @@ struct DailyPrayerView: View {
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 50))
                 .foregroundColor(.white.opacity(0.7))
-            Text("Failed to load verses")
+            Text("No se pudieron cargar los versículos")
                 .font(.titleSmall)
                 .foregroundColor(.white)
             Text(error)
@@ -215,7 +215,7 @@ struct DailyPrayerView: View {
     private var emptyView: some View {
         VStack {
             Spacer()
-            Text("No verses available")
+            Text("No hay versículos disponibles")
                 .font(.titleSmall)
                 .foregroundColor(.textSecondary)
             Spacer()

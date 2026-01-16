@@ -53,7 +53,7 @@ struct ReflectionJournalView: View {
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Recovery Journal")
+                    Text("Diario de Sanación")
                         .font(.titleSmall)
                         .foregroundColor(.white)
                 }
@@ -72,7 +72,7 @@ struct ReflectionJournalView: View {
     
     private var promptSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Prompt of the Day")
+            Text("Reflexión del Día")
                 .font(.titleSmall)
                 .foregroundColor(.white)
             
@@ -93,7 +93,7 @@ struct ReflectionJournalView: View {
                 viewModel.getNextPrompt()
             }) {
                 HStack(spacing: 6) {
-                    Text("Show Me Another")
+                    Text("Muéstrame otra")
                         .font(.caption)
                     Image(systemName: "arrow.right")
                         .font(.system(size: 12, weight: .medium))
@@ -119,7 +119,7 @@ struct ReflectionJournalView: View {
                     .focused($isTextFieldFocused)
                 
                 if entryText.isEmpty {
-                    Text("Enter your thoughts here...")
+                    Text("Escribe tus pensamientos aquí...")
                         .font(.body)
                         .foregroundColor(.textTertiary)
                         .padding(24)
@@ -148,7 +148,7 @@ struct ReflectionJournalView: View {
             }) {
                 ZStack {
                     HStack(spacing: 8) {
-                        Text("Save to Journal")
+                        Text("Guardar en el diario")
                             .font(.button)
                         Image(systemName: "square.and.arrow.down")
                             .font(.system(size: 16, weight: .semibold))
@@ -175,7 +175,7 @@ struct ReflectionJournalView: View {
                 showingPastEntries = true
             }) {
                 HStack(spacing: 8) {
-                    Text("View Your Past Journal Entries")
+                    Text("Ver tus entradas anteriores del diario")
                         .font(.buttonSmall)
                     Image(systemName: "arrow.right")
                         .font(.system(size: 14, weight: .medium))

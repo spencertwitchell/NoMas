@@ -380,11 +380,11 @@ enum AuthError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingToken:
-            return "Failed to get authentication token"
+            return "No se pudo obtener el token de autenticación"
         case .invalidCredentials:
-            return "Invalid email or password"
+            return "Correo electrónico o contraseña inválidos"
         case .networkError:
-            return "Network error. Please check your connection."
+            return "Error de red. Por favor, revisa tu conexión."
         case .unknown(let message):
             return message
         }
@@ -484,7 +484,7 @@ struct SignInWithGoogleButton: View {
                 // Google "G" logo - you can replace with actual Google logo image
                 Image(systemName: "g.circle.fill")
                     .font(.system(size: 20, weight: .semibold))
-                Text("Continue with Google")
+                Text("Continua con Google")
                     .font(.system(size: 17, weight: .semibold))
             }
             .foregroundColor(.black)

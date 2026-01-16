@@ -38,14 +38,14 @@ struct PledgeView: View {
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Pledge")
+                    Text("Compromiso")
                         .font(.titleSmall)
                         .foregroundColor(.white)
                 }
             }
             .toolbarBackground(.hidden, for: .navigationBar)
         }
-        .alert("Pledge for Today?", isPresented: $showingConfirmation) {
+        .alert("¿Compromiso para hoy?", isPresented: $showingConfirmation) {
             Button("Cancel", role: .cancel) { }
             Button("Pledge") {
                 pledgeManager.makePledge()
@@ -55,7 +55,7 @@ struct PledgeView: View {
                 }
             }
         } message: {
-            Text("You're committing to stay strong for the next 24 hours. You've got this!")
+            Text("Te comprometes a mantenerte fuerte durante las próximas 24 horas. ¡Tú puedes!")
         }
     }
     
@@ -71,12 +71,12 @@ struct PledgeView: View {
                 .foregroundColor(.white.opacity(0.8))
             
             // Title
-            Text("Pledge Sobriety Today")
+            Text("Compromiso de sobriedad")
                 .font(.titleLarge)
                 .foregroundColor(.white)
             
             // Description
-            Text("Make a commitment to yourself to stay strong for today. You'll check in tomorrow to see how you did.")
+            Text("Haz un compromiso contigo mismo para mantenerte fuerte hoy. Mañana revisarás cómo te fue.")
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
@@ -94,7 +94,7 @@ struct PledgeView: View {
             Button(action: {
                 showingConfirmation = true
             }) {
-                Text("Pledge Now")
+                Text("Comprometerme ahora")
                     .font(.button)
                     .foregroundColor(.backgroundGradientEnd)
                     .frame(maxWidth: .infinity)
@@ -114,19 +114,19 @@ struct PledgeView: View {
             benefitRow(
                 icon: "checkmark.circle",
                 title: "Achievable Goal",
-                description: "When pledging, you agree to stay strong for the day only."
+                description: "Al comprometerte, aceptas mantenerte fuerte por hoy."
             )
             
             benefitRow(
                 icon: "sparkles",
-                title: "Take it Easy",
-                description: "Just live the day as normal and after pledging, don't change your mind."
+                title: "Tómalo con calma",
+                description: "Simplemente vive el día con normalidad y, después de comprometerte, no cambies de opinión."
             )
             
             benefitRow(
                 icon: "crown",
-                title: "Success is Inevitable",
-                description: "Stay strong, the first few days/weeks will be tough but after that it'll get easier."
+                title: "El éxito es inevitable",
+                description: "Mantente fuerte: los primeros días o semanas serán difíciles, pero después será más fácil."
             )
         }
         .padding(20)
@@ -168,11 +168,11 @@ struct PledgeView: View {
                 .font(.system(size: 80))
                 .foregroundColor(.green)
             
-            Text("You've Pledged!")
+            Text("¡Te has comprometido!")
                 .font(.titleLarge)
                 .foregroundColor(.white)
             
-            Text("You made a commitment to stay strong today. Keep going, you've got this!")
+            Text("Hiciste un compromiso para mantenerte fuerte hoy. Sigue adelante, ¡tú puedes!")
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
@@ -189,7 +189,7 @@ struct PledgeView: View {
             
             // Close button
             Button(action: { dismiss() }) {
-                Text("Close")
+                Text("Cerrar")
                     .font(.button)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)

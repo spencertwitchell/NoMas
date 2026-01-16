@@ -131,44 +131,44 @@ struct NomiQuizView: View {
             welcomePage
         case 1:
             questionPage(
-                title: "How long have you been struggling with porn use?",
-                subtitle: "Weeks, months, or years — just share what feels accurate.",
+                title: "¿Cuánto tiempo has estado luchando con el consumo de pornografía?",
+                subtitle: "Semanas, meses o años — comparte lo que sientas que es más preciso.",
                 binding: $viewModel.quizData.struggleDuration
             )
         case 2:
             questionPage(
-                title: "How would you describe your relationship with porn right now?",
-                subtitle: "Occasional but hard to control, or something that feels compulsive? Describe your current pattern.",
+                title: "¿Cómo describirías tu relación con la pornografía en este momento?",
+                subtitle: "¿Ocasional pero difícil de controlar, o algo que se siente compulsivo? Describe tu patrón actual.",
                 binding: $viewModel.quizData.currentRelationship
             )
         case 3:
             questionPage(
-                title: "What usually triggers the urge to watch porn?",
-                subtitle: "Boredom, stress, loneliness, late nights, emotions, or habits — noticing triggers helps you regain control.",
+                title: "¿Qué suele desencadenar el impulso de ver pornografía?",
+                subtitle: "Aburrimiento, estrés, soledad, noches tardías, emociones o hábitos — identificar los detonantes te ayuda a recuperar el control.",
                 binding: $viewModel.quizData.triggers
             )
         case 4:
             questionPage(
-                title: "When are you most likely to give in to the urge?",
-                subtitle: "Time of day, location, mood, or specific situations where it tends to happen.",
+                title: "¿Cuándo es más probable que cedas al impulso?",
+                subtitle: "Hora del día, lugar, estado de ánimo o situaciones específicas en las que suele ocurrir.",
                 binding: $viewModel.quizData.vulnerableSituations
             )
         case 5:
             questionPage(
-                title: "How does porn use tend to make you feel afterward?",
-                subtitle: "Relief, numbness, guilt, frustration, or something else — be honest about what comes up.",
+                title: "¿Cómo suele hacerte sentir el consumo de pornografía después?",
+                subtitle: "Alivio, insensibilidad, culpa, frustración u otra cosa — sé honesto sobre lo que aparece.",
                 binding: $viewModel.quizData.postUseFeelings
             )
         case 6:
             questionPage(
-                title: "What negative effects has this had on your life?",
-                subtitle: "Motivation, confidence, relationships, mental health, focus, or energy — whatever feels most relevant.",
+                title: "¿Qué efectos negativos ha tenido esto en tu vida?",
+                subtitle: "Motivación, confianza, relaciones, salud mental, enfoque o energía — lo que te resulte más relevante.",
                 binding: $viewModel.quizData.negativeEffects
             )
         case 7:
             questionPage(
-                title: "What's motivating you to want change right now?",
-                subtitle: "A relationship, your future self, mental clarity, confidence, or being tired of the cycle — what pushed you to act?",
+                title: "¿Qué te motiva a querer cambiar en este momento?",
+                subtitle: "Una relación, tu yo futuro, claridad mental, confianza o estar cansado del ciclo — ¿qué te impulsó a actuar?",
                 binding: $viewModel.quizData.motivationForChange
             )
         case 8:
@@ -190,11 +190,11 @@ struct NomiQuizView: View {
                 .frame(width: 200, height: 200)
             
             VStack(spacing: 12) {
-                Text("Let's Get to Know You")
+                Text("Vamos a conocerte")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                 
-                Text("Answer a few questions so Nomi can better understand your situation and provide more personalized support.")
+                Text("Responde algunas preguntas para que Nomi pueda entender mejor tu situación y ofrecerte apoyo más personalizado.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -208,7 +208,7 @@ struct NomiQuizView: View {
                     currentPage = 1
                 }
             } label: {
-                Text("Enter Details")
+                Text("Continuar")
                     .font(.button)
                     .foregroundColor(.textPrimary)
                     .frame(maxWidth: .infinity)
@@ -262,12 +262,12 @@ struct NomiQuizView: View {
                 .frame(width: 200, height: 200)
             
             VStack(spacing: 12) {
-                Text("Thank You for Sharing")
+                Text("Gracias por compartir")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
                 
-                Text("Opening up isn't easy, but it's the first step toward real change. Nomi now has a better understanding of your journey and is ready to support you.")
+                Text("Abrirte no es fácil, pero es el primer paso hacia un cambio real. Nomi ahora comprende mejor tu camino y está lista para apoyarte.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -289,7 +289,7 @@ struct NomiQuizView: View {
                         .background(LinearGradient.accent)
                         .cornerRadius(26)
                 } else {
-                    Text("Start Chatting with Nomi")
+                    Text("Comienza a chatear con Nomi")
                         .font(.button)
                         .foregroundColor(.textPrimary)
                         .frame(maxWidth: .infinity)
@@ -343,7 +343,7 @@ struct NomiQuizView: View {
                     currentPage += 1
                 }
             } label: {
-                Text("Continue")
+                Text("Continuar")
                     .font(.button)
                     .foregroundColor(.textPrimary)
                     .frame(maxWidth: .infinity)

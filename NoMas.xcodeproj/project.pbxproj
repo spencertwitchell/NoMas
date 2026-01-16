@@ -97,7 +97,6 @@
 		297AD1F42EF24A9100CCE3BC /* Librarymodels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1F32EF24A9100CCE3BC /* Librarymodels.swift */; };
 		297AD1F82EF24ABE00CCE3BC /* Librarymarkdownstyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1F72EF24ABE00CCE3BC /* Librarymarkdownstyle.swift */; };
 		297AD1FA2EF24AC600CCE3BC /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1F92EF24AC600CCE3BC /* ImageCacheManager.swift */; };
-		297AD1FC2EF24AD600CCE3BC /* ToolPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1FB2EF24AD600CCE3BC /* ToolPlaceholderView.swift */; };
 		297AD1FE2EF25B9800CCE3BC /* RelaxationSoundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1FD2EF25B9800CCE3BC /* RelaxationSoundsView.swift */; };
 		297AD2002EF25B9E00CCE3BC /* SoundPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD1FF2EF25B9E00CCE3BC /* SoundPlayerView.swift */; };
 		297AD2022EF25BA700CCE3BC /* RelaxationSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297AD2012EF25BA700CCE3BC /* RelaxationSound.swift */; };
@@ -195,7 +194,6 @@
 		297AD1F32EF24A9100CCE3BC /* Librarymodels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Librarymodels.swift; sourceTree = "<group>"; };
 		297AD1F72EF24ABE00CCE3BC /* Librarymarkdownstyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Librarymarkdownstyle.swift; sourceTree = "<group>"; };
 		297AD1F92EF24AC600CCE3BC /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
-		297AD1FB2EF24AD600CCE3BC /* ToolPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPlaceholderView.swift; sourceTree = "<group>"; };
 		297AD1FD2EF25B9800CCE3BC /* RelaxationSoundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelaxationSoundsView.swift; sourceTree = "<group>"; };
 		297AD1FF2EF25B9E00CCE3BC /* SoundPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayerView.swift; sourceTree = "<group>"; };
 		297AD2012EF25BA700CCE3BC /* RelaxationSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelaxationSound.swift; sourceTree = "<group>"; };
@@ -373,7 +371,6 @@
 				297AD1F32EF24A9100CCE3BC /* Librarymodels.swift */,
 				297AD1F72EF24ABE00CCE3BC /* Librarymarkdownstyle.swift */,
 				297AD1F92EF24AC600CCE3BC /* ImageCacheManager.swift */,
-				297AD1FB2EF24AD600CCE3BC /* ToolPlaceholderView.swift */,
 				297AD1FD2EF25B9800CCE3BC /* RelaxationSoundsView.swift */,
 				297AD1FF2EF25B9E00CCE3BC /* SoundPlayerView.swift */,
 				297AD2012EF25BA700CCE3BC /* RelaxationSound.swift */,
@@ -484,7 +481,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				297AD1FC2EF24AD600CCE3BC /* ToolPlaceholderView.swift in Sources */,
 				297AD1722EE8AD5800CCE3BC /* MotivationView.swift in Sources */,
 				297AD1542EE7B14300CCE3BC /* OnboardingWelcomeView.swift in Sources */,
 				2932FC542EF32CB000D02A1A /* WebsiteBlockerView.swift in Sources */,

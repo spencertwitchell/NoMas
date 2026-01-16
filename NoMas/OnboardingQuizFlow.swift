@@ -45,7 +45,7 @@ struct OnboardingQuizFlow: View {
                             Spacer()
                             
                             QuizContinueButton(
-                                title: "Continue",
+                                title: "Continuar",
                                 isEnabled: canContinue,  // Use local computed property that reads from userData
                                 action: { quizState.advance() }
                             )
@@ -406,24 +406,24 @@ struct PersonalInfoQuestion: View {
             VStack(spacing: 24) {
                 // Display Name
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Display Name")
+                    Text("Nombre")
                         .font(.caption)
                         .foregroundColor(Color.textSecondary)
                     
                     QuizTextField(
-                        placeholder: "Optional",
+                        placeholder: "Opcional",
                         text: $displayName
                     )
                 }
                 
                 // Age
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Age")
+                    Text("Edad")
                         .font(.caption)
                         .foregroundColor(Color.textSecondary)
                     
                     QuizNumberField(
-                        placeholder: "Required",
+                        placeholder: "Requerido",
                         value: $age
                     )
                 }

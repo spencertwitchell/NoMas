@@ -32,31 +32,32 @@ struct BenefitsView: View {
     
     private let cards = [
         BenefitCard(
-            title: "Reclaim Your\nMental Clarity",
-            description: "Without the fog of addiction, your mind becomes sharper. Focus improves, creativity returns, and you'll think more clearly than you have in years.",
+            title: "Reclama Tu\nClaridad Mental",
+            description: "Sin la niebla de la adicción, tu mente se vuelve más aguda. La concentración mejora, la creatividad vuelve y pensarás más claramente que en años.",
             lottieName: "clarityyy"
         ),
         BenefitCard(
-            title: "Restore Real\nIntimacy",
-            description: "As your brain resets, genuine connection becomes possible again. You'll experience deeper, more fulfilling relationships.",
+            title: "Restaura La\nIntimidad Real",
+            description: "A medida que tu cerebro se reinicia, la conexión genuina vuelve a ser posible. Experimentarás relaciones más profundas y satisfactorias.",
             lottieName: "resto"
         ),
         BenefitCard(
-            title: "Boost Your\nConfidence",
-            description: "Every day of recovery proves you're in control. That self-mastery spills into every area of your life—work, relationships, and personal goals.",
+            title: "Aumenta Tu\nConfianza",
+            description: "Cada día de recuperación demuestra que tienes el control. Ese dominio personal se refleja en todas las áreas de tu vida: trabajo, relaciones y metas personales.",
             lottieName: "confidente"
         ),
         BenefitCard(
-            title: "Regain Your\nTime & Energy",
-            description: "Hours spent on pornography become hours for growth. You'll be amazed at what you accomplish when you redirect that energy.",
+            title: "Recupera Tu\nTiempo Y Energía",
+            description: "Las horas que antes dedicabas a la pornografía se convierten en horas para crecer. Te sorprenderá lo que logras al redirigir esa energía.",
             lottieName: "timetyshi"
         ),
         BenefitCard(
-            title: "Break Free\nFor Good",
-            description: "This isn't about willpower—it's about rewiring your brain. With the right approach, lasting freedom is absolutely possible.",
+            title: "Libérate\nDefinitivamente",
+            description: "No se trata de fuerza de voluntad, sino de reconfigurar tu cerebro. Con el enfoque correcto, es posible lograr una libertad duradera.",
             lottieName: "fogood"
         )
     ]
+
     
     var body: some View {
         ZStack {
@@ -121,7 +122,7 @@ struct BenefitsView: View {
                         onboardingState.advance()
                     }
                 }) {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.button)
                         .foregroundColor(.benefitsGradientEnd)
                         .frame(maxWidth: .infinity)

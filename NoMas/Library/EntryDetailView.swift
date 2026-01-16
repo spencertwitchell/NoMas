@@ -39,7 +39,7 @@ struct EntryDetailView: View {
                         // Prompt (if exists)
                         if let promptText = entry.promptText {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Prompt")
+                                Text("Guía")
                                     .font(.caption)
                                     .foregroundColor(.textSecondary)
                                 
@@ -58,7 +58,7 @@ struct EntryDetailView: View {
                         
                         // Entry Content
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Your Reflection")
+                            Text("Reflexión")
                                 .font(.caption)
                                 .foregroundColor(.textSecondary)
                             
@@ -87,12 +87,12 @@ struct EntryDetailView: View {
                         }
                         
                         // Timestamp
-                        Text("Written on \(formatFullDate(entry.createdAt))")
+                        Text("Escribe el \(formatFullDate(entry.createdAt))")
                             .font(.captionSmall)
                             .foregroundColor(.textTertiary)
                         
                         if entry.updatedAt > entry.createdAt {
-                            Text("Last edited on \(formatFullDate(entry.updatedAt))")
+                            Text("Último cambio el \(formatFullDate(entry.updatedAt))")
                                 .font(.captionSmall)
                                 .foregroundColor(.textTertiary)
                         }
@@ -139,7 +139,7 @@ struct EntryDetailView: View {
                                 ProgressView()
                                     .tint(.white)
                             } else {
-                                Text("Save")
+                                Text("Guardar")
                                     .font(.bodySmall)
                                     .foregroundColor(.white)
                                     .fontWeight(.semibold)
@@ -151,13 +151,13 @@ struct EntryDetailView: View {
                             Button(action: {
                                 isEditing = true
                             }) {
-                                Label("Edit", systemImage: "pencil")
+                                Label("Editar", systemImage: "pencil")
                             }
                             
                             Button(role: .destructive, action: {
                                 showingDeleteConfirmation = true
                             }) {
-                                Label("Delete", systemImage: "trash")
+                                Label("Borrar", systemImage: "trash")
                             }
                         } label: {
                             Image(systemName: "ellipsis.circle")
@@ -168,16 +168,16 @@ struct EntryDetailView: View {
             }
             .toolbarBackground(.hidden, for: .navigationBar)
         }
-        .alert("Delete Entry", isPresented: $showingDeleteConfirmation) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert("Borrar Entrada", isPresented: $showingDeleteConfirmation) {
+            Button("Cancelar", role: .cancel) { }
+            Button("Borrar", role: .destructive) {
                 Task {
                     await viewModel.deleteEntry(id: entry.id)
                     dismiss()
                 }
             }
         } message: {
-            Text("Are you sure you want to delete this journal entry? This cannot be undone.")
+            Text("¿Estás seguro de que deseas eliminar esta entrada del diario? Esta acción no se puede deshacer.")
         }
     }
     
@@ -197,8 +197,8 @@ struct EntryDetailView: View {
             id: UUID(),
             userId: UUID(),
             promptId: UUID(),
-            promptText: "What triggered you today and how did you handle it?",
-            entryText: "Today I felt triggered when I was alone and bored. I handled it by going for a walk and calling a friend.",
+            promptText: "¿Qué te activó hoy y cómo lo manejaste?",
+            entryText: "Hoy me sentí activado cuando estaba solo y aburrido. Lo manejé saliendo a caminar y llamando a un amigo.",
             createdAt: Date(),
             updatedAt: Date()
         ),

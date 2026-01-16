@@ -138,7 +138,7 @@ class JournalViewModel: ObservableObject {
             isLoading = false
         } catch {
             print("❌ Failed to fetch entries: \(error)")
-            errorMessage = "Failed to load entries"
+            errorMessage = "No se pudieron cargar las entradas"
             isLoading = false
         }
     }
@@ -154,13 +154,13 @@ class JournalViewModel: ObservableObject {
         // Today
         let todayEntries = entries.filter { calendar.isDateInToday($0.createdAt) }
         if !todayEntries.isEmpty {
-            groups.append(GroupedEntries(title: "Today", entries: todayEntries))
+            groups.append(GroupedEntries(title: "Hoy", entries: todayEntries))
         }
         
         // Yesterday
         let yesterdayEntries = entries.filter { calendar.isDateInYesterday($0.createdAt) }
         if !yesterdayEntries.isEmpty {
-            groups.append(GroupedEntries(title: "Yesterday", entries: yesterdayEntries))
+            groups.append(GroupedEntries(title: "Ayer", entries: yesterdayEntries))
         }
         
         // Previous 7 Days (excluding today and yesterday)
@@ -172,13 +172,13 @@ class JournalViewModel: ObservableObject {
             $0.createdAt < now
         }
         if !weekEntries.isEmpty {
-            groups.append(GroupedEntries(title: "Previous 7 Days", entries: weekEntries))
+            groups.append(GroupedEntries(title: "Últimos 7 días", entries: weekEntries))
         }
         
         // Older
         let olderEntries = entries.filter { $0.createdAt < sevenDaysAgo }
         if !olderEntries.isEmpty {
-            groups.append(GroupedEntries(title: "Older", entries: olderEntries))
+            groups.append(GroupedEntries(title: "Viejo", entries: olderEntries))
         }
         
         groupedEntries = groups

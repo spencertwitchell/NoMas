@@ -24,9 +24,9 @@ struct QuizCalculatingView: View {
     private var onboardingState: OnboardingState { OnboardingState.shared }
     
     private let messages = [
-        "Analyzing your responses...",
-        "Calculating dependency level...",
-        "Preparing your recovery plan..."
+        "Analizando tus respuestas...",
+        "Calculando el nivel de dependencia...",
+        "Preparando tu plan de recuperación..."
     ]
     
     var body: some View {
@@ -67,7 +67,7 @@ struct QuizCalculatingView: View {
                 
                 // Status text
                 VStack(spacing: 16) {
-                    Text("Calculating...")
+                    Text("Calculando...")
                         .font(.titleLarge)
                         .foregroundColor(.textPrimary)
                     

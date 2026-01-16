@@ -39,10 +39,10 @@ struct BreathingExerciseView: View {
         
         var instruction: String {
             switch self {
-            case .inhale: return "Breathe in while the heart grows..."
-            case .hold: return "Hold in your breath while it pumps..."
-            case .exhale: return "Exhale as the heart gently fades..."
-            case .pause: return "Pause gently, no rush to breathe in."
+            case .inhale: return "Inhala y deja que tu cuerpo se relaje..."
+            case .hold: return "Mantén el aire mientras fluye..."
+            case .exhale: return "Exhala mientras el corazón se desvanece suavemente..."
+            case .pause: return "Haz una pausa suave, sin prisa por inhalar."
             }
         }
         
@@ -82,7 +82,7 @@ struct BreathingExerciseView: View {
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("Breathing Exercise")
+                    Text("Ejercicio de Respiración")
                         .font(.titleSmall)
                         .foregroundColor(.white)
                 }
@@ -101,7 +101,7 @@ struct BreathingExerciseView: View {
         VStack {
             Spacer()
             
-            Text("Calm your urges with a breathing exercise...")
+            Text("Calma tus impulsos con un ejercicio de respiración...")
                 .font(.titleMedium)
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)

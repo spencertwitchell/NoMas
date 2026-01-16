@@ -65,11 +65,11 @@ struct LibraryView: View {
     private var selfCareSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Self Care")
+                Text("Cuidado Personal")
                     .font(.titleMedium)
                     .foregroundColor(.textPrimary)
                 
-                Text("Daily practices to strengthen your mind and support recovery.")
+                Text("Prácticas diarias para fortalecer tu mente y apoyar tu recuperación.")
                     .font(.caption)
                     .foregroundColor(.textSecondary)
             }
@@ -78,19 +78,19 @@ struct LibraryView: View {
             HStack(spacing: 16) {
                 SelfCareCircleButton(
                     icon: "book.pages.fill",
-                    label: "Recovery\nJournal",
+                    label: "Diario de\nSanación",
                     action: { showingJournal = true }
                 )
                 
                 SelfCareCircleButton(
                     icon: "figure.mind.and.body",
-                    label: "Daily\nPrayer",
+                    label: "Oración\nDiaria",
                     action: { showingPrayer = true }
                 )
                 
                 SelfCareCircleButton(
                     icon: "wind",
-                    label: "Breathing\nExercise",
+                    label: "Ejercicio de\nRespiración",
                     action: { showingBreathing = true }
                 )
                 
@@ -106,13 +106,13 @@ struct LibraryView: View {
             // 2 Image Background Cards
             VStack(spacing: 12) {
                 SelfCareImageCard(
-                    title: "Guided Meditation",
+                    title: "Meditación Guiada",
                     imageName: "meditation",
                     action: { showingMeditation = true }
                 )
                 
                 SelfCareImageCard(
-                    title: "Website Blocker",
+                    title: "Bloqueador de Sitios Web",
                     imageName: "website blocker",
                     action: { showingWebsiteBlocker = true }
                 )
@@ -125,11 +125,11 @@ struct LibraryView: View {
     private var guidesArticlesSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Guides & Articles")
+                Text("Guías y Artículos")
                     .font(.titleMedium)
                     .foregroundColor(.textPrimary)
                 
-                Text("Educational content on addiction, recovery, and building a healthier life.")
+                Text("Contenido educativo sobre la adicción, la recuperación y la construcción de una vida más saludable.")
                     .font(.caption)
                     .foregroundColor(.textSecondary)
             }
@@ -148,7 +148,7 @@ struct LibraryView: View {
                     .foregroundColor(.red.opacity(0.8))
                     .padding(.vertical, 20)
             } else if viewModel.categories.isEmpty {
-                Text("No articles available yet")
+                Text("Aún no hay artículos disponibles")
                     .font(.bodySmall)
                     .foregroundColor(.textTertiary)
                     .padding(.vertical, 20)
@@ -225,7 +225,7 @@ struct PledgeCircleButton: View {
             }
             .disabled(isPledged)
             
-            Text(isPledged ? "Pledged\nToday" : "Daily\nPledge")
+            Text(isPledged ? "Comprometido\nHoy" : "Compromiso\nDiario")
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(isPledged ? .white.opacity(0.5) : .white)
                 .multilineTextAlignment(.center)
@@ -285,7 +285,7 @@ struct CategorySection: View {
                 .foregroundColor(.white)
             
             if articles.isEmpty {
-                Text("No articles yet")
+                Text("Aún no hay artículos disponibles")
                     .font(.caption)
                     .foregroundColor(.textTertiary)
                     .padding(.bottom, 8)
@@ -425,7 +425,7 @@ struct ArticleDetailView: View {
         isLoading = true
         
         guard let url = URL(string: article.bodyMd) else {
-            articleContent = "Failed to load article content."
+            articleContent = "No se pudo cargar el contenido del artículo."
             isLoading = false
             return
         }
@@ -435,10 +435,10 @@ struct ArticleDetailView: View {
             if let content = String(data: data, encoding: .utf8) {
                 articleContent = content
             } else {
-                articleContent = "Failed to decode article content."
+                articleContent = "No se pudo cargar el contenido del artículo."
             }
         } catch {
-            articleContent = "Error loading article: \(error.localizedDescription)"
+            articleContent = "Error cargando el articulo: \(error.localizedDescription)"
         }
         
         isLoading = false

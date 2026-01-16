@@ -26,11 +26,11 @@ enum QuizInterstitial: String, CaseIterable {
     var caption: String {
         switch self {
         case .adolescentBrain:
-            return "Did you know?"
+            return "¿Sabías que?"
         case .boredomTrigger:
-            return "Did you know?"
+            return "¿Sabías que?"
         case .financialImpact:
-            return "Did you know?"
+            return "¿Sabías que?"
         }
     }
     
@@ -38,11 +38,11 @@ enum QuizInterstitial: String, CaseIterable {
     var headerText: String {
         switch self {
         case .adolescentBrain:
-            return "Early exposure to pornography has been associated with lasting effects on brain development and impulse control."
+            return "La exposición temprana a la pornografía se ha asociado con efectos duraderos en el desarrollo del cerebro y el control de los impulsos."
         case .boredomTrigger:
-            return "Psychological research shows that pornography is often used as a coping mechanism for stress, boredom, loneliness, or emotional discomfort — not just sexual desire."
+            return "La investigación psicológica muestra que la pornografía a menudo se utiliza como un mecanismo de afrontamiento para el estrés, el aburrimiento, la soledad o el malestar emocional, no solo por deseo sexual."
         case .financialImpact:
-            return "Research shows that paying for pornography is linked to loss of control and increased difficulty stopping — a key marker of addictive behavior."
+            return "Las investigaciones muestran que pagar por pornografía está relacionado con la pérdida de control y una mayor dificultad para dejarla, un indicador clave de comportamiento adictivo."
         }
     }
     
@@ -62,11 +62,11 @@ enum QuizInterstitial: String, CaseIterable {
     var sourceText: String {
         switch self {
         case .adolescentBrain:
-            return "Source: Harvard Health Publishing – \"How pornography affects the adolescent brain\""
+            return "Fuente: Harvard Health Publishing – \"How pornography affects the adolescent brain\""
         case .boredomTrigger:
-            return "Source: American Psychological Association – \"Stress, coping, and compulsive sexual behaviors\""
+            return "Fuente: American Psychological Association – \"Stress, coping, and compulsive sexual behaviors\""
         case .financialImpact:
-            return "Source: World Health Organization (WHO) – \"Compulsive Sexual Behavior Disorder\""
+            return "Fuente: World Health Organization (WHO) – \"Compulsive Sexual Behavior Disorder\""
         }
     }
     
@@ -147,41 +147,41 @@ enum QuizStep: Int, CaseIterable {
     var questionTitle: String {
         switch self {
         case .gender:
-            return "What is your gender?"
+            return "¿Cuál es tu género?"
         case .lastRelapseDate:
-            return "When did you last view pornography?"
+            return "¿Cuándo fue la última vez que viste pornografía?"
         case .viewingFrequency:
-            return "How often do you typically view pornography?"
+            return "¿Con qué frecuencia sueles ver pornografía?"
         case .ageFirstExposure:
-            return "At what age did you first come across explicit content?"
+            return "¿A qué edad tuviste tu primer contacto con contenido explícito?"
         case .escalationToExtreme:
-            return "Have you noticed a shift towards more extreme or graphic material?"
+            return "¿Has notado un cambio hacia pornografía más extrema o gráfica?"
         case .arousalDifficulty:
-            return "Do you find it difficult to achieve sexual arousal without pornography or fantasy?"
+            return "¿Te resulta difícil lograr excitación sexual sin pornografía o fantasía?"
         case .copingEmotional:
-            return "Do you use pornography as a way to cope with emotional discomfort or pain?"
+            return "¿Usas la pornografía como una forma de lidiar con el malestar o dolor emocional?"
         case .stressResponse:
-            return "Do you turn to pornography when feeling stressed?"
+            return "¿Recurres a la pornografía cuando te sientes estresado?"
         case .boredomResponse:
-            return "Do you watch pornography out of boredom?"
+            return "¿Ves pornografía por aburrimiento?"
         case .spentMoney:
-            return "About how much do you currently spend per month on explicit content?"
+            return "Aproximadamente, ¿cuánto gastas al mes en contenido explícito?"
         case .personalInfo:
-            return "Lastly, a little more about you"
+            return "Por último, un poco más sobre ti"
         }
-    }
-    
-    /// Optional subtitle/helper text
-    var questionSubtitle: String? {
-        switch self {
-        case .lastRelapseDate:
-            return "This helps us track your progress from the start"
-        case .personalInfo:
-            return "This helps personalize your experience"
-        default:
-            return nil
         }
-    }
+
+        /// Optional subtitle/helper text
+        var questionSubtitle: String? {
+            switch self {
+            case .lastRelapseDate:
+                return "Esto nos ayuda a seguir tu progreso desde el inicio"
+            case .personalInfo:
+                return "Esto ayuda a personalizar tu experiencia"
+            default:
+                return nil
+            }
+        }
 }
 
 // MARK: - Quiz State Manager
@@ -430,13 +430,13 @@ struct QuizAnswerSummary {
     /// Text description of the score severity
     var severityText: String {
         if dependencyScore >= 85 {
-            return "a severe dependency"
+            return "una dependencia grave"
         } else if dependencyScore >= 75 {
-            return "a significant dependency"
+            return "una dependencia significativa"
         } else if dependencyScore >= 65 {
-            return "a moderate dependency"
+            return "una dependencia moderada"
         } else {
-            return "some level of dependency"
+            return "algún nivel de dependencia"
         }
     }
     

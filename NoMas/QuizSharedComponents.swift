@@ -70,7 +70,7 @@ struct QuizInterstitialView: View {
                 
                 // Continue button
                 QuizContinueButton(
-                    title: "Continue",
+                    title: "Continuar",
                     isEnabled: true,
                     action: onContinue
                 )
@@ -119,7 +119,7 @@ struct QuizHeader: View {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 16, weight: .semibold))
-                            Text("Back")
+                            Text("Atrás")
                                 .font(.system(size: 16, weight: .medium))
                         }
                         .foregroundColor(.white.opacity(0.9))
@@ -129,7 +129,7 @@ struct QuizHeader: View {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 16, weight: .semibold))
-                        Text("Back")
+                        Text("Atrás")
                             .font(.system(size: 16, weight: .medium))
                     }
                     .foregroundColor(.clear)
@@ -138,7 +138,7 @@ struct QuizHeader: View {
                 Spacer()
                 
                 // Question counter - changed to "Question #X" format
-                Text("Question #\(quizState.currentStep.questionNumber)")
+                Text("Pregunta #\(quizState.currentStep.questionNumber)")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -240,7 +240,7 @@ struct QuizYesNoButtons: View {
     var body: some View {
         HStack(spacing: 16) {
             QuizYesNoButton(
-                text: "Yes",
+                text: "Sí",
                 isSelected: selection == true,
                 action: { onSelect(true) }
             )
@@ -615,9 +615,9 @@ struct QuizBackground: View {
     ZStack {
         Color.black.ignoresSafeArea()
         VStack(spacing: 12) {
-            QuizOptionButton(text: "More than once a day", isSelected: true, action: {})
-            QuizOptionButton(text: "Once a day", isSelected: false, action: {})
-            QuizOptionButton(text: "A few times a week", isSelected: false, action: {})
+            QuizOptionButton(text: "Más de una vez al día", isSelected: true, action: {})
+            QuizOptionButton(text: "Una vez al día", isSelected: false, action: {})
+            QuizOptionButton(text: "Unas cuantas veces a la semana", isSelected: false, action: {})
         }
         .padding()
     }

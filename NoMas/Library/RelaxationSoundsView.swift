@@ -49,16 +49,16 @@ struct RelaxationSoundsView: View {
                     }
                 }
             }
-            .navigationTitle("Guided Meditation")
+            .navigationTitle("Meditación guiada")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Guided Meditation")
+                    Text("Meditación guiada")
                         .font(.titleSmall)
                         .foregroundColor(.white)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Close") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                     .font(.bodySmall)

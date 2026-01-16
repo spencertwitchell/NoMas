@@ -36,7 +36,7 @@ struct PastEntriesView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("My Reflections")
+                    Text("Mis reflexiones")
                         .font(.titleSmall)
                         .foregroundColor(.white)
                 }
@@ -65,11 +65,11 @@ struct PastEntriesView: View {
                 .font(.system(size: 60))
                 .foregroundColor(.textTertiary)
             
-            Text("No journal entries yet")
+            Text("Aún no hay entradas en el diario")
                 .font(.body)
                 .foregroundColor(.textSecondary)
             
-            Text("Start reflecting to see your entries here")
+            Text("Empieza a reflexionar para ver tus entradas aquí")
                 .font(.caption)
                 .foregroundColor(.textTertiary)
         }
@@ -97,7 +97,7 @@ struct PastEntriesView: View {
                 }
                 
                 // Total count
-                Text("\(viewModel.entries.count) \(viewModel.entries.count == 1 ? "Entry" : "Entries") Total")
+                Text("\(viewModel.entries.count) \(viewModel.entries.count == 1 ? "Entrada" : "Entradas") Total")
                     .font(.caption)
                     .foregroundColor(.textTertiary)
                     .frame(maxWidth: .infinity)

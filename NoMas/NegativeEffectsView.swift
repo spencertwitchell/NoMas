@@ -32,23 +32,23 @@ struct NegativeEffectsView: View {
     
     private let cards = [
         NegativeEffectCard(
-            title: "Pornography Rewires Your Brain",
-            description: "Repeated exposure hijacks your brain's reward system, creating neural pathways that demand increasingly extreme content to feel the same dopamine rush.",
+            title: "La pornografía reconfigura tu cerebro",
+            description: "La exposición repetida secuestra el sistema de recompensa de tu cerebro, creando vías neuronales que requieren contenido cada vez más extremo para sentir la misma descarga de dopamina.",
             lottieName: "Brain"
         ),
         NegativeEffectCard(
-            title: "It Damages Real Intimacy",
-            description: "Pornography creates unrealistic expectations and desensitizes you to real human connection, making genuine intimacy feel less satisfying over time.",
+            title: "Daña la intimidad real",
+            description: "La pornografía genera expectativas poco realistas y te insensibiliza a la conexión humana real, haciendo que la intimidad genuina se sienta menos satisfactoria con el tiempo.",
             lottieName: "intimac"
         ),
         NegativeEffectCard(
-            title: "Each Relapse Deepens the Rut",
-            description: "Every time you give in, you strengthen the addictive pathways in your brain. It's not about willpower—it's about breaking the cycle before it breaks you.",
+            title: "Cada recaída profundiza el ciclo",
+            description: "Cada vez que cedes, fortaleces las vías adictivas en tu cerebro. No se trata de fuerza de voluntad, sino de romper el ciclo antes de que te rompa a ti.",
             lottieName: "rut"
         ),
         NegativeEffectCard(
-            title: "Recovery Requires Distance",
-            description: "Just like any addiction, healing requires complete abstinence. Your brain needs time without stimulation to rebuild healthy neural connections.",
+            title: "La recuperación requiere distancia",
+            description: "Al igual que con cualquier adicción, la sanación requiere abstinencia completa. Tu cerebro necesita tiempo sin estimulación para reconstruir conexiones neuronales saludables.",
             lottieName: "recovery"
         )
     ]
@@ -116,7 +116,7 @@ struct NegativeEffectsView: View {
                         onboardingState.advance()
                     }
                 }) {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.button)
                         .foregroundColor(.warningGradientEnd)
                         .frame(maxWidth: .infinity)

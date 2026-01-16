@@ -36,7 +36,7 @@ struct OnboardingWelcomeView: View {
                 
                 // Title & Description
                 VStack(spacing: 16) {
-                    Text("Welcome to NoMas")
+                    Text("Bienvenido a NoMás")
                         .font(.titleXL)
                         .foregroundColor(.textPrimary)
                         .multilineTextAlignment(.center)
@@ -44,7 +44,7 @@ struct OnboardingWelcomeView: View {
                         .minimumScaleFactor(0.8)
                         .lineLimit(2)
                     
-                    Text("Take a short quiz to help us understand your situation — we'll use your answers to build a personalized recovery plan just for you.")
+                    Text("Realiza un breve cuestionario para ayudarnos a entender tu situación; usaremos tus respuestas para crear un plan de recuperación personalizado solo para ti.")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                         .multilineTextAlignment(.center)
@@ -60,7 +60,7 @@ struct OnboardingWelcomeView: View {
                     onboardingState.advance()
                 }) {
                     HStack(spacing: 8) {
-                        Text("Start Quiz")
+                        Text("Comenzar Quiz")
                             .font(.button)
                         
                         Image(systemName: "arrow.right")

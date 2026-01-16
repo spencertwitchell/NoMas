@@ -21,8 +21,8 @@ struct SymptomsView: View {
         // Always show these core symptoms
         result.append(Symptom(
             icon: "brain.head.profile",
-            title: "Dopamine Dysregulation",
-            description: "Your brain's reward system has been altered by repeated exposure"
+            title: "Desregulación de la dopamina",
+            description: "El sistema de recompensa de tu cerebro ha sido alterado por la exposición repetida"
         ))
         
         // Add based on frequency
@@ -31,14 +31,14 @@ struct SymptomsView: View {
             case .moreThanOnceDaily, .onceDaily:
                 result.append(Symptom(
                     icon: "arrow.triangle.2.circlepath",
-                    title: "Compulsive Behavior Patterns",
-                    description: "Daily usage has created strong habitual neural pathways"
+                    title: "Patrones de comportamiento compulsivo",
+                    description: "El uso diario ha creado fuertes vías neuronales habituales"
                 ))
             case .fewTimesWeekly:
                 result.append(Symptom(
                     icon: "clock.arrow.circlepath",
-                    title: "Habitual Triggers",
-                    description: "Regular usage has created predictable urge patterns"
+                    title: "Desencadenantes habituales",
+                    description: "El uso regular ha creado patrones de impulso predecibles"
                 ))
             case .lessThanWeekly:
                 break
@@ -49,8 +49,8 @@ struct SymptomsView: View {
         if userData.escalationToExtreme == true {
             result.append(Symptom(
                 icon: "exclamationmark.triangle",
-                title: "Tolerance & Escalation",
-                description: "You've needed more extreme content to feel the same effect"
+                title: "Tolerancia y escalada",
+                description: "Has necesitado contenido más extremo para sentir el mismo efecto"
             ))
         }
         
@@ -58,8 +58,8 @@ struct SymptomsView: View {
         if userData.arousalDifficulty == .frequently {
             result.append(Symptom(
                 icon: "heart.slash",
-                title: "Arousal Dependency",
-                description: "Difficulty with natural arousal without pornography"
+                title: "Dependencia de la excitación",
+                description: "Dificultad para la excitación natural sin pornografía"
             ))
         }
         
@@ -67,8 +67,8 @@ struct SymptomsView: View {
         if userData.copingEmotional == .frequently || userData.copingEmotional == .occasionally {
             result.append(Symptom(
                 icon: "cloud.rain",
-                title: "Emotional Numbing",
-                description: "Using pornography to escape difficult emotions"
+                title: "Desconexión emocional",
+                description: "Usar la pornografía para escapar de emociones difíciles"
             ))
         }
         
@@ -76,8 +76,8 @@ struct SymptomsView: View {
         if userData.stressResponse == .frequently || userData.boredomResponse == .frequently {
             result.append(Symptom(
                 icon: "bolt.horizontal",
-                title: "Automatic Stress Response",
-                description: "Your brain defaults to pornography when stressed or bored"
+                title: "Respuesta automática al estrés",
+                description: "Tu cerebro recurre automáticamente a la pornografía cuando está estresado o aburrido"
             ))
         }
         
@@ -85,8 +85,8 @@ struct SymptomsView: View {
         if result.count < 3 {
             result.append(Symptom(
                 icon: "eye.slash",
-                title: "Attention Fragmentation",
-                description: "Difficulty focusing on tasks without intrusive thoughts"
+                title: "Fragmentación de la atención",
+                description: "Dificultad para concentrarte en tareas sin pensamientos intrusivos"
             ))
         }
         
@@ -113,13 +113,13 @@ struct SymptomsView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 24) {
                         // Title
-                        Text("Your Symptoms")
+                        Text("Tus síntomas")
                             .font(.titleLarge)
                             .foregroundColor(.textPrimary)
                             .multilineTextAlignment(.center)
                         
                         // Subtitle
-                        Text("Based on your answers, you may be experiencing:")
+                        Text("Según tus respuestas, es posible que estés experimentando:")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
@@ -145,7 +145,7 @@ struct SymptomsView: View {
                 Button(action: {
                     onboardingState.advance()
                 }) {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.button)
                         .foregroundColor(.textPrimary)
                         .frame(maxWidth: .infinity)

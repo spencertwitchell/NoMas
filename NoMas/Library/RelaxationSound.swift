@@ -32,7 +32,7 @@ struct RelaxationSound: Identifiable, Codable {
     
     // MARK: - Hardcoded fallback (optional - remove once DB is set up)
     
-    static let supabaseURL = "https://YOUR_PROJECT_ID.supabase.co/storage/v1/object/public/relaxation-sounds"
+    static let supabaseURL = "https://app.nomas-app.com/storage/v1/object/public/relaxation-sounds/"
     
     static let fallbackSounds: [RelaxationSound] = [
         RelaxationSound(

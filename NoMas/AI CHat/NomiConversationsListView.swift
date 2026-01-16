@@ -79,11 +79,11 @@ struct NomiConversationsListView: View {
                 .playing(loopMode: .loop)
                 .frame(width: 200, height: 200)
             
-            Text("Start Your First Chat")
+            Text("Empieza Tu Primer Chat")
                 .font(.titleMedium)
                 .foregroundColor(.textPrimary)
             
-            Text("Connect with Nomi for personalized support on your recovery journey")
+            Text("Conéctate con Nomi para recibir apoyo personalizado en tu camino de recuperación.")
                 .font(.bodySmall)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
@@ -122,7 +122,7 @@ struct NomiConversationsListView: View {
                 
                 // Total count + space for floating button
                 if !viewModel.conversations.isEmpty {
-                    Text("\(viewModel.conversations.count) \(viewModel.conversations.count == 1 ? "Conversation" : "Conversations") Total")
+                    Text("\(viewModel.conversations.count) \(viewModel.conversations.count == 1 ? "Conversación" : "Conversaciónes") Total")
                         .font(.captionSmall)
                         .foregroundColor(.textTertiary)
                         .frame(maxWidth: .infinity)
@@ -150,7 +150,7 @@ struct NomiConversationsListView: View {
             HStack(spacing: 8) {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 20))
-                Text("Start New Chat")
+                Text("Empieza Nuevo Chat")
                     .font(.button)
             }
             .foregroundColor(.textPrimary)
@@ -171,7 +171,9 @@ struct NomiConversationCard: View {
     
     private var formattedDate: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "M/d/yy - h:mm a"
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        formatter.locale = Locale.current
         return formatter.string(from: conversation.updatedAt)
     }
     

@@ -17,21 +17,19 @@ struct NomiWelcomeView: View {
         VStack(spacing: 32) {
             Spacer()
             
-            // Lottie animation placeholder
-            LottieView(animation: .named("nomaswink"))
-                .playing(loopMode: .loop)
-                .frame(width: 200, height: 200)
+        
             
             VStack(spacing: 16) {
-                Text("Meet Nomi")
-                    .font(.titleLarge)
+                Text("Conoce a Nomi")
+                    .font(.titleXL)
                     .foregroundColor(.textPrimary)
                 
-                Text("Your personal AI accountability coach")
-                    .font(.titleSmall)
-                    .foregroundColor(.textSecondary)
+                // Lottie animation placeholder
+                LottieView(animation: .named("nomaswink"))
+                    .playing(loopMode: .loop)
+                    .frame(width: 200, height: 200)
                 
-                Text("Nomi is here to support you through your recovery journey. Before you start chatting, let's get to know you a bit better so Nomi can provide personalized guidance.")
+                Text("Nomi, tu compañera de IA, está aquí para apoyarte en tu proceso de recuperación. Antes de empezar a chatear, conozcámonos un poco mejor para que Nomi pueda ofrecerte orientación personalizada.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -47,7 +45,7 @@ struct NomiWelcomeView: View {
                     showQuiz = true
                 }
             } label: {
-                Text("Get Started")
+                Text("Comenzar")
                     .font(.button)
                     .foregroundColor(.textPrimary)
                     .frame(maxWidth: .infinity)

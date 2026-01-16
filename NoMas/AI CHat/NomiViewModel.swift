@@ -185,13 +185,13 @@ class NomiViewModel: ObservableObject {
         // Today
         let todayConversations = conversations.filter { calendar.isDateInToday($0.updatedAt) }
         if !todayConversations.isEmpty {
-            groups.append(GroupedNomiConversations(title: "Today", conversations: todayConversations))
+            groups.append(GroupedNomiConversations(title: "Hoy", conversations: todayConversations))
         }
         
         // Yesterday
         let yesterdayConversations = conversations.filter { calendar.isDateInYesterday($0.updatedAt) }
         if !yesterdayConversations.isEmpty {
-            groups.append(GroupedNomiConversations(title: "Yesterday", conversations: yesterdayConversations))
+            groups.append(GroupedNomiConversations(title: "Ayer", conversations: yesterdayConversations))
         }
         
         // Previous 7 Days
@@ -203,13 +203,13 @@ class NomiViewModel: ObservableObject {
             $0.updatedAt < now
         }
         if !weekConversations.isEmpty {
-            groups.append(GroupedNomiConversations(title: "Previous 7 Days", conversations: weekConversations))
+            groups.append(GroupedNomiConversations(title: "Últimos 7 días", conversations: weekConversations))
         }
         
         // Older
         let olderConversations = conversations.filter { $0.updatedAt < sevenDaysAgo }
         if !olderConversations.isEmpty {
-            groups.append(GroupedNomiConversations(title: "Older", conversations: olderConversations))
+            groups.append(GroupedNomiConversations(title: "Viejo", conversations: olderConversations))
         }
         
         groupedConversations = groups
@@ -222,7 +222,7 @@ class NomiViewModel: ObservableObject {
             let newConversation = NomiConversation(
                 id: UUID(),
                 userId: userId,
-                title: "New Chat",
+                title: "Nuevo Chat",
                 createdAt: Date(),
                 updatedAt: Date(),
                 messageCount: 0,

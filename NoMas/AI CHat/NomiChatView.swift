@@ -38,7 +38,7 @@ struct NomiChatView: View {
                     messagesScrollView
                 }
             }
-            .navigationTitle("Chat with Nomi")
+            .navigationTitle("Chat con Nomi")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
@@ -183,10 +183,10 @@ struct NomiChatView: View {
                 .playing(loopMode: .loop)
                 .frame(width: 200, height: 200)
             VStack(spacing: 12) {
-                Text("What's on your mind?")
+                Text("¿En qué estás pensando?")
                     .font(.titleMedium)
                     .foregroundColor(.textPrimary)
-                Text("This is your space to talk through what you're feeling. Whether you're struggling with urges or celebrating progress, Nomi is here to help.")
+                Text("Este es tu espacio para hablar de lo que sientes. Ya sea que enfrentes impulsos o celebres tu progreso, Nomi está aquí para apoyarte.")
                     .font(.bodySmall)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -203,7 +203,7 @@ struct NomiChatView: View {
         VStack(spacing: 0) {
             Divider().background(Color.white.opacity(0.2))
             HStack(alignment: .bottom, spacing: 12) {
-                TextField("Ask anything...", text: $viewModel.messageText, axis: .vertical)
+                TextField("Pregunta lo que quieras...", text: $viewModel.messageText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
@@ -360,7 +360,7 @@ struct NomiMessageBubble: View {
         conversation: NomiConversation(
             id: UUID(),
             userId: UUID(),
-            title: "Test Conversation",
+            title: "Conversación de prueba",
             createdAt: Date(),
             updatedAt: Date(),
             messageCount: 5,
