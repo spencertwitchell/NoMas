@@ -59,14 +59,14 @@ struct TestimonialsView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 24) {
                         // Title
-                        Text("What Others Are Saying")
+                        Text("Lo que otros están diciendo")
                             .font(.titleLarge)
                             .foregroundColor(.textPrimary)
                             .multilineTextAlignment(.center)
                             .padding(.top, 24)
                         
                         // Subtitle
-                        Text("Millions of people have found healing by committing to quit pornography – because it actually enables healing.")
+                        Text("Millones de personas han experimentado una recuperación efectiva al comprometerse a dejar la pornografía,este enfoque promueve una sanación duradera.")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
@@ -95,7 +95,7 @@ struct TestimonialsView: View {
                 Button(action: {
                     onboardingState.advance()
                 }) {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.button)
                         .foregroundColor(.textPrimary)
                         .frame(maxWidth: .infinity)

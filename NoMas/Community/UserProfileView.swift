@@ -33,7 +33,7 @@ struct UserProfileView: View {
                     
                     Spacer()
                     
-                    Text("Profile")
+                    Text("Perfil")
                         .font(.titleSmall)
                         .foregroundColor(.textPrimary)
                     
@@ -66,7 +66,7 @@ struct UserProfileView: View {
                         
                         // User's Posts Section
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("\(profile.userName)'s Posts")
+                            Text("\(profile.userName) Posts")
                                 .font(.titleSmall)
                                 .foregroundColor(.textPrimary)
                                 .padding(.horizontal, 20)
@@ -76,7 +76,7 @@ struct UserProfileView: View {
                                     Image(systemName: "square.and.pencil")
                                         .font(.system(size: 40))
                                         .foregroundColor(.textTertiary)
-                                    Text("No posts yet")
+                                    Text("No posts aun")
                                         .foregroundColor(.textSecondary)
                                         .font(.bodySmall)
                                 }
@@ -106,7 +106,7 @@ struct UserProfileView: View {
                         Image(systemName: "person.slash")
                             .font(.system(size: 48))
                             .foregroundColor(.textTertiary)
-                        Text("Profile not found or private")
+                        Text("Perfil no encontrado o privado")
                             .foregroundColor(.textSecondary)
                             .font(.body)
                     }

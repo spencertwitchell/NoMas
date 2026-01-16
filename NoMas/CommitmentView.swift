@@ -36,23 +36,27 @@ struct CommitmentView: View {
                 // Content group
                 VStack(spacing: 20) {
                     // Title
-                    Text("Sign Your Commitment")
+                    Text("Firma Tu Compromiso")
                         .font(.titleLarge)
                         .foregroundColor(.textPrimary)
                         .multilineTextAlignment(.center)
+                        .padding(.top, 48)
                     
                     // Subtitle
-                    Text("Make a promise to yourself that you will commit to your recovery journey, one day at a time.")
+                    Text("Hazte una promesa a ti mismo: comprométete con tu proceso de recuperación, un día a la vez.")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
                         .padding(.horizontal, 40)
+                        .padding(.bottom, 20)
+                        .padding(.top, -8)
+                    
                     
                     // Signature section
                     VStack(alignment: .leading, spacing: 12) {
                         // Signature label
-                        Text("Draw Your Signature")
+                        Text("Firma")
                             .font(.titleSmall)
                             .foregroundColor(.textPrimary)
                         
@@ -100,12 +104,14 @@ struct CommitmentView: View {
                             paths.removeAll()
                             currentPath = Path()
                         }) {
-                            Text("Clear")
+                            Text("Borrar")
                                 .font(.bodySmall)
                                 .foregroundColor(.textSecondary)
                         }
                     }
                     .padding(.horizontal, 32)
+                    
+                    Spacer()
                 }
                 
                 Spacer()
@@ -114,7 +120,7 @@ struct CommitmentView: View {
                 Button(action: {
                     onboardingState.advance()
                 }) {
-                    Text("I Commit")
+                    Text("Me Comprometo")
                         .font(.button)
                         .foregroundColor(.accentGradientStart)
                         .frame(maxWidth: .infinity)

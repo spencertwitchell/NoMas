@@ -71,11 +71,11 @@ struct OnboardingCompleteView: View {
                 
                 // Congratulations text
                 VStack(spacing: 16) {
-                    Text("You're All Set!")
+                    Text("¡Todo listo!")
                         .font(.titleLarge)
                         .foregroundColor(.textPrimary)
                     
-                    Text("Your recovery journey begins now.\nWe're with you every step of the way.")
+                    Text("Tu camino de recuperación comienza ahora.\nEstamos contigo en cada paso.")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                         .multilineTextAlignment(.center)
@@ -90,7 +90,7 @@ struct OnboardingCompleteView: View {
                 
                 // Current streak display
                 VStack(spacing: 8) {
-                    Text("Your Current Streak")
+                    Text("Tu Racha Actual")
                         .font(.caption)
                         .foregroundColor(.textTertiary)
                     
@@ -103,7 +103,7 @@ struct OnboardingCompleteView: View {
                             .font(.titleXL)
                             .foregroundColor(.textPrimary)
                         
-                        Text(userData.daysSinceRelapse == 1 ? "day" : "days")
+                        Text(userData.daysSinceRelapse == 1 ? "día" : "días")
                             .font(.titleSmall)
                             .foregroundColor(.textSecondary)
                     }
@@ -120,7 +120,7 @@ struct OnboardingCompleteView: View {
                         advanceToNextStep()
                     }
                 }) {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.button)
                         .foregroundColor(.textPrimary)
                         .frame(maxWidth: .infinity)

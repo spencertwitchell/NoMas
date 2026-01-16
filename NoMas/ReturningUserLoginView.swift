@@ -105,7 +105,7 @@ struct ReturningUserLoginView: View {
                     
                     // Email Login
                     AuthButton(
-                        title: "Iniciar sesión con correo",
+                        title: "Iniciar Sesión con Correo",
                         icon: "envelope.fill",
                         style: .accent,
                         isLoading: authManager.isLoading,

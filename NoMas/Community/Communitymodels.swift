@@ -104,15 +104,15 @@ struct Comment: Identifiable, Codable {
         let components = Calendar.current.dateComponents([.minute, .hour, .day, .month], from: createdAt, to: now)
         
         if let month = components.month, month > 0 {
-            return month == 1 ? "1 month ago" : "\(month) months ago"
+            return month == 1 ? "Hace 1 mes" : "\(month) Meses atrás"
         } else if let day = components.day, day > 0 {
-            return day == 1 ? "1 day ago" : "\(day) days ago"
+            return day == 1 ? "Hace 1 día" : "\(day) días atrás"
         } else if let hour = components.hour, hour > 0 {
-            return hour == 1 ? "1 hour ago" : "\(hour) hours ago"
+            return hour == 1 ? "Hace 1 hora" : "\(hour) horas atrás"
         } else if let minute = components.minute, minute > 0 {
-            return minute == 1 ? "1 minute ago" : "\(minute) minutes ago"
+            return minute == 1 ? "Hace 1 minuto" : "\(minute) minutos atrás"
         } else {
-            return "Just now"
+            return "Ahora"
         }
     }
     
@@ -120,7 +120,7 @@ struct Comment: Identifiable, Codable {
         if isProfilePublic == true, let name = userName, !name.isEmpty {
             return name
         }
-        return "Anonymous"
+        return "Anónimo"
     }
     
     var isAnonymous: Bool {

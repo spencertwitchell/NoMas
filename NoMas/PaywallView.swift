@@ -34,7 +34,7 @@ struct PaywallView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
                     .scaleEffect(1.5)
                 
-                Text("Preparing your plan...")
+                Text("Preparando tu plan...")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                 

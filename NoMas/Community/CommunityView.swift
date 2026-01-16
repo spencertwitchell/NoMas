@@ -43,7 +43,7 @@ struct CommunityView: View {
                     
                     TextField("", text: $searchText)
                         .placeholder(when: searchText.isEmpty) {
-                            Text("Search posts...")
+                            Text("Buscar posts...")
                                 .foregroundColor(.textTertiary)
                         }
                         .foregroundColor(.textPrimary)
@@ -69,11 +69,11 @@ struct CommunityView: View {
                         Image(systemName: "person.3.fill")
                             .font(.system(size: 48))
                             .foregroundColor(.textTertiary)
-                        Text(searchText.isEmpty ? "No posts yet" : "No results found")
+                        Text(searchText.isEmpty ? "Aún no hay posts" : "No se encontraron resultados")
                             .foregroundColor(.textSecondary)
                             .font(.bodyLarge)
                         if searchText.isEmpty {
-                            Text("Be the first to share your journey")
+                            Text("Sé el primero en compartir tu experiencia")
                                 .foregroundColor(.textTertiary)
                                 .font(.bodySmall)
                         }
@@ -142,15 +142,15 @@ struct CommunityView: View {
                 }
             })
         }
-        .alert("Delete Post", isPresented: $showingDeleteAlert, presenting: postToDelete) { post in
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert("Borrar Post", isPresented: $showingDeleteAlert, presenting: postToDelete) { post in
+            Button("Cancelar", role: .cancel) { }
+            Button("Borrar", role: .destructive) {
                 Task {
                     await deletePost(post)
                 }
             }
         } message: { _ in
-            Text("Are you sure you want to delete this post? This action cannot be undone.")
+            Text("¿Estás seguro de que deseas eliminar esta publicación? Esta acción no se puede deshacer.")
         }
         .fullScreenCover(item: $selectedPost) { post in
             if let index = posts.firstIndex(where: { $0.id == post.id }) {
@@ -277,7 +277,7 @@ struct PostCardView: View {
                         Button(role: .destructive) {
                             onDelete()
                         } label: {
-                            Label("Delete", systemImage: "trash")
+                            Label("Borrar", systemImage: "trash")
                         }
                     }
                     
@@ -286,7 +286,7 @@ struct PostCardView: View {
                             await reportPost()
                         }
                     } label: {
-                        Label("Report", systemImage: "flag")
+                        Label("Reportar", systemImage: "flag")
                     }
                 } label: {
                     Image(systemName: "ellipsis")

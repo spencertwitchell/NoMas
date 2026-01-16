@@ -38,10 +38,11 @@ struct AuthView: View {
                     .frame(minHeight: 32)
                 
                 // Tagline
-                Text("Break Free.\nReclaim Your Life.")
+                Text("Libérate.\nRecupera Tu Vida.")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
+                    .padding(.bottom, 24)
                 
                 Spacer()
                 
@@ -59,7 +60,7 @@ struct AuthView: View {
                 VStack(spacing: 16) {
                     // Google Sign In
                     AuthButton(
-                        title: "Continue with Google",
+                        title: "Continua con Google",
                         icon: "g.circle.fill",
                         style: .google,
                         isLoading: authManager.isLoading,
@@ -91,7 +92,7 @@ struct AuthView: View {
                     
                     // Email Sign Up
                     AuthButton(
-                        title: "Sign up with Email",
+                        title: "Regístrate con Correo",
                         icon: "envelope.fill",
                         style: .accent,
                         isLoading: authManager.isLoading,
@@ -108,14 +109,14 @@ struct AuthView: View {
                 
                 // Login link
                 HStack(spacing: 4) {
-                    Text("Already have an account?")
+                    Text("¿Ya tienes una cuenta?")
                         .font(.bodySmall)
                         .foregroundColor(.textSecondary)
                     
                     Button(action: {
                         showingEmailLogin = true
                     }) {
-                        Text("Login here")
+                        Text("Inicia sesión")
                             .font(.bodySmall)
                             .fontWeight(.semibold)
                             .foregroundColor(.textPrimary)
@@ -253,11 +254,11 @@ struct EmailSignUpView: View {
                 VStack(spacing: 24) {
                     // Title section
                     VStack(spacing: 12) {
-                        Text("Create Account")
+                        Text("Crear una cuenta")
                             .font(.titleLarge)
                             .foregroundColor(.textPrimary)
                         
-                        Text("Start your recovery journey today")
+                        Text("Comienza tu camino de recuperación hoy")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                     }
@@ -276,7 +277,7 @@ struct EmailSignUpView: View {
                             .cornerRadius(12)
                         
                         // Password field
-                        SecureField("", text: $password, prompt: Text("Password (6+ characters)").foregroundColor(.textTertiary))
+                        SecureField("", text: $password, prompt: Text("Contraseña (6+ caracteres)").foregroundColor(.textTertiary))
                             .textContentType(.newPassword)
                             .padding()
                             .background(Color.surfaceBackground)
@@ -313,7 +314,7 @@ struct EmailSignUpView: View {
                             }
                         }
                     }) {
-                        Text("Create Account")
+                        Text("Crear una Cuenta")
                             .font(.button)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity)
@@ -330,7 +331,7 @@ struct EmailSignUpView: View {
                         dismiss()
                         onShowLogin()
                     }) {
-                        Text("Already have an account? Login here")
+                        Text("¿Ya tienes una cuenta? Inicia sesión aquí")
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -339,7 +340,7 @@ struct EmailSignUpView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                     .foregroundColor(.textPrimary)
@@ -387,11 +388,11 @@ struct EmailVerificationPendingView: View {
                 
                 // Title
                 VStack(spacing: 12) {
-                    Text("Check Your Email")
+                    Text("Revisa tu correo electrónico")
                         .font(.titleLarge)
                         .foregroundColor(.textPrimary)
                     
-                    Text("We've sent a verification link to:")
+                    Text("Hemos enviado un enlace de verificación a:")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                     
@@ -403,11 +404,7 @@ struct EmailVerificationPendingView: View {
                 
                 // Instructions
                 VStack(spacing: 8) {
-                    Text("Click the link in the email to verify")
-                        .font(.body)
-                        .foregroundColor(.textSecondary)
-                    
-                    Text("your account and continue.")
+                    Text("Haz clic en el enlace del correo electrónico para verificarlo tu cuenta y continúa.")
                         .font(.body)
                         .foregroundColor(.textSecondary)
                 }
@@ -435,7 +432,7 @@ struct EmailVerificationPendingView: View {
                                 .progressViewStyle(CircularProgressViewStyle(tint: .white))
                                 .scaleEffect(0.8)
                         }
-                        Text(isCheckingStatus ? "Checking..." : "I've Verified My Email")
+                        Text(isCheckingStatus ? "Chequeando..." : "He verificado mi correo electrónico")
                     }
                     .font(.button)
                     .foregroundColor(.textPrimary)
@@ -451,7 +448,7 @@ struct EmailVerificationPendingView: View {
                 Button(action: {
                     resendVerificationEmail()
                 }) {
-                    Text("Resend verification email")
+                    Text("Reenviar correo de verificación")
                         .font(.bodySmall)
                         .foregroundColor(.textSecondary)
                         .underline()
@@ -462,7 +459,7 @@ struct EmailVerificationPendingView: View {
                 
                 // Cancel / Go back
                 Button(action: onCancel) {
-                    Text("Cancel")
+                    Text("Cancelar")
                         .font(.bodySmall)
                         .foregroundColor(.textTertiary)
                 }
@@ -491,10 +488,10 @@ struct EmailVerificationPendingView: View {
                     onVerified()
                 } else {
                     // Not verified yet
-                    errorMessage = "Email not verified yet. Please check your inbox and click the verification link."
+                    errorMessage = "Correo no verificado aún. Por favor, revisa tu bandeja de entrada y haz clic en el enlace de verificación."
                 }
             } catch {
-                errorMessage = "Unable to verify. Please try again."
+                errorMessage = "No se pudo verificar. Por favor, inténtalo de nuevo."
             }
             
             isCheckingStatus = false
@@ -508,9 +505,9 @@ struct EmailVerificationPendingView: View {
             do {
                 // Use magic link to resend verification
                 try await authManager.signInWithMagicLink(email: email)
-                errorMessage = "Verification email sent!"
+                errorMessage = "¡Correo de verificación enviado!"
             } catch {
-                errorMessage = "Failed to resend email. Please try again."
+                errorMessage = "No se pudo reenviar el correo. Por favor, inténtalo de nuevo."
             }
         }
     }
@@ -543,11 +540,11 @@ struct EmailLoginView: View {
                 VStack(spacing: 24) {
                     // Title section
                     VStack(spacing: 12) {
-                        Text("Welcome Back")
+                        Text("Bienvenido de Vuelta")
                             .font(.titleLarge)
                             .foregroundColor(.textPrimary)
                         
-                        Text("Continue your recovery journey")
+                        Text("Continúa tu camino de recuperación")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                     }
@@ -566,7 +563,7 @@ struct EmailLoginView: View {
                             .cornerRadius(12)
                         
                         // Password field
-                        SecureField("", text: $password, prompt: Text("Password").foregroundColor(.textTertiary))
+                        SecureField("", text: $password, prompt: Text("Contraseña").foregroundColor(.textTertiary))
                             .textContentType(.password)
                             .padding()
                             .background(Color.surfaceBackground)
@@ -579,7 +576,7 @@ struct EmailLoginView: View {
                     Button(action: {
                         showingResetPassword = true
                     }) {
-                        Text("Forgot password?")
+                        Text("¿Olvidaste tu contraseña?")
                             .font(.caption)
                             .foregroundColor(.accentGradientStart)
                     }
@@ -607,7 +604,7 @@ struct EmailLoginView: View {
                             }
                         }
                     }) {
-                        Text("Login")
+                        Text("Iniciar sesión")
                             .font(.button)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity)
@@ -624,7 +621,7 @@ struct EmailLoginView: View {
                         dismiss()
                         onShowSignUp()
                     }) {
-                        Text("Don't have an account? Sign up")
+                        Text("¿No tienes una cuenta? Regístrate")
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -633,17 +630,17 @@ struct EmailLoginView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                     .foregroundColor(.textPrimary)
                 }
             }
-            .alert("Reset Password", isPresented: $showingResetPassword) {
+            .alert("Restablecer contraseña", isPresented: $showingResetPassword) {
                 TextField("Email", text: $email)
                     .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
-                Button("Send Reset Link") {
+                Button("Enviar Enlace de Restablecimiento") {
                     Task {
                         do {
                             try await authManager.resetPassword(email: email)
@@ -653,14 +650,14 @@ struct EmailLoginView: View {
                         }
                     }
                 }
-                Button("Cancel", role: .cancel) {}
+                Button("Cancelar", role: .cancel) {}
             } message: {
-                Text("Enter your email to receive a password reset link.")
+                Text("Ingresa tu correo electrónico para recibir un enlace de restablecimiento de contraseña.")
             }
-            .alert("Email Sent", isPresented: $resetEmailSent) {
+            .alert("Email Enviado", isPresented: $resetEmailSent) {
                 Button("OK") {}
             } message: {
-                Text("Check your email for a password reset link.")
+                Text("Revisa tu correo electrónico para el enlace de restablecimiento de contraseña.")
             }
         }
     }

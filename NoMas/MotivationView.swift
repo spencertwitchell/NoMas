@@ -29,18 +29,18 @@ struct MotivationView: View {
     // MARK: - Personalized Name
     
     private var displayName: String {
-        userData.displayName.isEmpty ? "Friend" : userData.displayName
+        userData.displayName.isEmpty ? "Amigo" : userData.displayName
     }
     
     // MARK: - Line Groups
     
     private var lineGroups: [[String]] {
         [
-            ["Hey \(displayName)"],
-            ["Welcome to NoMas,", "your path to freedom."],
-            ["Based on your answers,", "we've created a plan", "just for you."],
-            ["It's designed to help you", "quit porn forever."],
-            ["Now it's time to", "invest in yourself."]
+            ["Hola \(displayName)"],
+            ["Bienvenido a NoMás, tu", "camino hacia la libertad."],
+            ["En base a tus respuestas,", "hemos creado un plan", "solo para ti."],
+            ["Está diseñado para", "ayudarte a dejar la", "pornografía para siempre."],
+            ["Ahora es momento de", "invertir en ti."]
         ]
     }
     
@@ -90,7 +90,7 @@ struct MotivationView: View {
                 VStack(spacing: 8) {
                     ForEach(displayedLines) { line in
                         Text(line.text)
-                            .font(.titleCustom(size: 28))
+                            .font(.titleCustom(size: 26))
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                     }
@@ -254,7 +254,7 @@ struct CustomPlanCard: View {
                     
                     // Current Rank Text
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Current Rank")
+                        Text("Rango Actual")
                             .font(.caption)
                             .foregroundColor(.white.opacity(0.7))
                         
@@ -279,10 +279,10 @@ struct CustomPlanCard: View {
                 
                 // Stats Rows
                 VStack(spacing: 12) {
-                    PlanStatRow(label: "Days in App", value: "\(daysInApp)")
-                    PlanStatRow(label: "Dependency Score", value: "\(Int(dependencyScore))%")
+                    PlanStatRow(label: "Días en la App", value: "\(daysInApp)")
+                    PlanStatRow(label: "Puntuación de Dependencia", value: "\(Int(dependencyScore))%")
                     if projectedRecoveryDate != nil {
-                        PlanStatRow(label: "Projected Recovery", value: formattedRecoveryDate)
+                        PlanStatRow(label: "Recuperación Proyectada", value: formattedRecoveryDate)
                     }
                 }
             }
@@ -292,7 +292,7 @@ struct CustomPlanCard: View {
             HStack {
                 // Name on left
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Name")
+                    Text("Nombre")
                         .font(.captionSmall)
                         .foregroundColor(.white.opacity(0.7))
                     Text(displayName)
@@ -305,7 +305,7 @@ struct CustomPlanCard: View {
                 
                 // Free Since on right
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text("Free Since")
+                    Text("Libre desde")
                         .font(.captionSmall)
                         .foregroundColor(.white.opacity(0.7))
                     Text(formattedJoinDate)

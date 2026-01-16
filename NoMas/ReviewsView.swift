@@ -71,7 +71,7 @@ struct ReviewsView: View {
                             .frame(minHeight: 24)
                         
                         // Title
-                        Text("Help Others\nFind Freedom")
+                        Text("Ayuda a Otros\nFind Freedom")
                             .font(.titleLarge)
                             .foregroundColor(.textPrimary)
                             .multilineTextAlignment(.center)
@@ -134,7 +134,7 @@ struct ReviewsView: View {
                         }
                     }
                 }) {
-                    Text("Continue")
+                    Text("Continuar")
                         .font(.button)
                         .foregroundColor(.textPrimary)
                         .frame(maxWidth: .infinity)

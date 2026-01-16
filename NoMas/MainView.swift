@@ -503,13 +503,13 @@ struct RecoveryStatsCard: View {
             
             // Stats Rows
             VStack(spacing: 12) {
-                RecoveryStatRow(label: "Days in App", value: "\(userData.daysInApp)")
-                RecoveryStatRow(label: "Current Streak", value: "\(userData.daysSinceRelapse) days")
-                RecoveryStatRow(label: "Best Streak", value: "\(userData.effectiveBestStreak) days")
-                RecoveryStatRow(label: "Times Relapsed", value: "\(userData.timesRelapsed)")
-                RecoveryStatRow(label: "Dependency Score", value: "\(Int(userData.dependencyScore))%")
+                RecoveryStatRow(label: "Días en la App", value: "\(userData.daysInApp)")
+                RecoveryStatRow(label: "Racha Actual", value: "\(userData.daysSinceRelapse) días")
+                RecoveryStatRow(label: "Mejor Racha", value: "\(userData.effectiveBestStreak) días")
+                RecoveryStatRow(label: "Veces que Recaíste", value: "\(userData.timesRelapsed)")
+                RecoveryStatRow(label: "Puntuación de Dependencia", value: "\(Int(userData.dependencyScore))%")
                 if let projectedDate = userData.projectedRecoveryDate {
-                    RecoveryStatRow(label: "Projected Recovery", value: projectedDate.formatted(date: .abbreviated, time: .omitted))
+                    RecoveryStatRow(label: "Recuperación Proyectada", value: projectedDate.formatted(date: .abbreviated, time: .omitted))
                 }
             }
         }

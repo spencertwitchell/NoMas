@@ -76,7 +76,7 @@ struct WebsiteBlockerView: View {
             
             Spacer()
             
-            Text("Bloqueador de sitios web")
+            Text("Bloqueador de Sitios Web")
                 .font(.titleSmall)
                 .foregroundColor(.textPrimary)
             
@@ -94,13 +94,13 @@ struct WebsiteBlockerView: View {
     
     private var statusSection: some View {
         VStack(spacing: 8) {
-            Text(blockerManager.isBlockerEnabled ? "PROTECTION ACTIVE" : "PROTECTION OFF")
+            Text(blockerManager.isBlockerEnabled ? "PROTECCIÓN ACTIVADA" : "PROTECCIÓN DESACTIVADA")
                 .font(.titleCustom(size: 14))
                 .tracking(2)
                 .foregroundColor(blockerManager.isBlockerEnabled ? .green : .textTertiary)
             
             if blockerManager.isBlockerEnabled && blockerManager.blockedDomainsCount > 0 {
-                Text("\(blockerManager.blockedDomainsCount) custom sites blocked")
+                Text("\(blockerManager.blockedDomainsCount) sitios web bloqueados")
                     .font(.caption)
                     .foregroundColor(.textTertiary)
             }

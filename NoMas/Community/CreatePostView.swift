@@ -32,7 +32,7 @@ struct CreatePostView: View {
                             // Title input
                             TextField("", text: $title)
                                 .placeholder(when: title.isEmpty) {
-                                    Text("Enter title...")
+                                    Text("Ingresa un título...")
                                         .foregroundColor(.textTertiary)
                                 }
                                 .foregroundColor(.textPrimary)
@@ -45,7 +45,7 @@ struct CreatePostView: View {
                             // Body input
                             ZStack(alignment: .topLeading) {
                                 if postBody.isEmpty {
-                                    Text("Share your thoughts, struggles, or victories...")
+                                    Text("Comparte tus pensamientos, dificultades o logros...")
                                         .foregroundColor(.textTertiary)
                                         .font(.body)
                                         .padding(.horizontal, 16)
@@ -70,8 +70,8 @@ struct CreatePostView: View {
                                     .foregroundColor(.textTertiary)
                                 
                                 Text(userData.isProfilePublic
-                                    ? "Your name will be visible on this post"
-                                    : "You're posting anonymously")
+                                    ? "Tu nombre será visible en este post"
+                                    : "Estás posteando de forma anónima")
                                     .font(.captionSmall)
                                     .foregroundColor(.textSecondary)
                                 
@@ -99,7 +99,7 @@ struct CreatePostView: View {
                                 ProgressView()
                                     .tint(.textPrimary)
                             } else {
-                                Text("Submit Post")
+                                Text("Postear")
                                     .foregroundColor(.textPrimary)
                                     .font(.button)
                             }
@@ -151,13 +151,13 @@ struct CreatePostView: View {
     
     private func submitPost() async {
         guard let userId = userData.supabaseUserId else {
-            errorMessage = "You must be logged in to post"
+            errorMessage = "Debes iniciar sesión para publicar"
             showError = true
             return
         }
         
         guard !title.isEmpty && !postBody.isEmpty else {
-            errorMessage = "Please fill in both title and body"
+            errorMessage = "Por favor, completa tanto el título como el contenido."
             showError = true
             return
         }
@@ -187,7 +187,7 @@ struct CreatePostView: View {
             dismiss()
         } catch {
             print("❌ Failed to create post: \(error)")
-            errorMessage = "Failed to create post. Please try again."
+            errorMessage = "No se pudo crear la publicación. Por favor, inténtalo de nuevo."
             showError = true
             isSubmitting = false
         }

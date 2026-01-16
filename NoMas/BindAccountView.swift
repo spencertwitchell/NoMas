@@ -42,14 +42,14 @@ struct BindAccountView: View {
                     .padding(.vertical, 80)
                 
                 // Title
-                Text("Bind Your Account")
+                Text("Vincula Tu Cuenta")
                     .font(.titleLarge)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 12)
                 
                 // Subtitle - directly under header
-                Text("Connect your account to activate\nyour subscription and sync your progress.")
+                Text("Conecta tu cuenta para activar\ntu suscripción y sincronizar tu progreso.")
                     .font(.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -73,7 +73,7 @@ struct BindAccountView: View {
                 VStack(spacing: 16) {
                     // Google Sign In
                     AuthButton(
-                        title: "Continue with Google",
+                        title: "Continua con Google",
                         icon: "g.circle.fill",
                         style: .google,
                         isLoading: authManager.isLoading,
@@ -102,7 +102,7 @@ struct BindAccountView: View {
                     
                     // Email Sign Up
                     AuthButton(
-                        title: "Sign up with Email",
+                        title: "Regístrate con Correo",
                         icon: "envelope.fill",
                         style: .accent,
                         isLoading: authManager.isLoading,

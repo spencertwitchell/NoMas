@@ -107,7 +107,7 @@ struct PostDetailView: View {
                                         Button(role: .destructive) {
                                             showingDeletePostAlert = true
                                         } label: {
-                                            Label("Delete", systemImage: "trash")
+                                            Label("Borrar", systemImage: "trash")
                                         }
                                     }
                                     
@@ -116,7 +116,7 @@ struct PostDetailView: View {
                                             await reportPost()
                                         }
                                     } label: {
-                                        Label("Report", systemImage: "flag")
+                                        Label("Reportar", systemImage: "flag")
                                     }
                                 } label: {
                                     Image(systemName: "ellipsis")
@@ -165,7 +165,7 @@ struct PostDetailView: View {
                         
                         // Comments Section
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Comments")
+                            Text("Comentarios")
                                 .font(.titleSmall)
                                 .foregroundColor(.textPrimary)
                                 .padding(.horizontal, 20)
@@ -184,10 +184,10 @@ struct PostDetailView: View {
                                     Image(systemName: "bubble.left")
                                         .font(.system(size: 40))
                                         .foregroundColor(.textTertiary)
-                                    Text("No comments yet")
+                                    Text("Aún no hay comentarios")
                                         .foregroundColor(.textSecondary)
                                         .font(.bodySmall)
-                                    Text("Be the first to share your thoughts")
+                                    Text("Sé el primero en compartir tu opinión")
                                         .foregroundColor(.textTertiary)
                                         .font(.captionSmall)
                                 }
@@ -224,7 +224,7 @@ struct PostDetailView: View {
                     // Reply indicator
                     if let replyingTo = replyingTo {
                         HStack {
-                            Text("Replying to \(replyingTo.displayName)")
+                            Text("Respondiendo a \(replyingTo.displayName)")
                                 .foregroundColor(.textSecondary)
                                 .font(.captionSmall)
                             
@@ -247,7 +247,7 @@ struct PostDetailView: View {
                     HStack(spacing: 12) {
                         TextField("", text: $newCommentText)
                             .placeholder(when: newCommentText.isEmpty) {
-                                Text("Add a comment...")
+                                Text("Agregar un comentario...")
                                     .foregroundColor(.textTertiary)
                             }
                             .foregroundColor(.textPrimary)
@@ -288,18 +288,18 @@ struct PostDetailView: View {
             }
         }
         .alert("Delete Post", isPresented: $showingDeletePostAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+            Button("Cancelar", role: .cancel) { }
+            Button("Borrar", role: .destructive) {
                 Task {
                     await deletePost()
                 }
             }
         } message: {
-            Text("Are you sure you want to delete this post?")
+            Text("¿Estás seguro de que deseas eliminar esta publicación?")
         }
         .alert("Delete Comment", isPresented: $showingDeleteCommentAlert, presenting: commentToDelete) { _ in
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+            Button("Cancelar", role: .cancel) { }
+            Button("Borrar", role: .destructive) {
                 if let comment = commentToDelete {
                     Task {
                         await deleteComment(comment)
@@ -307,7 +307,7 @@ struct PostDetailView: View {
                 }
             }
         } message: { _ in
-            Text("Are you sure you want to delete this comment?")
+            Text("¿Estás seguro de que deseas eliminar este comentario?")
         }
         .fullScreenCover(item: $selectedUserId) { userId in
             UserProfileView(userId: userId)
@@ -522,7 +522,7 @@ struct CommentView: View {
                                 Button(role: .destructive) {
                                     onDelete(comment)
                                 } label: {
-                                    Label("Delete", systemImage: "trash")
+                                    Label("Borrar", systemImage: "trash")
                                 }
                             }
                             
@@ -531,7 +531,7 @@ struct CommentView: View {
                                     await reportComment()
                                 }
                             } label: {
-                                Label("Report", systemImage: "flag")
+                                Label("Reportar", systemImage: "flag")
                             }
                         } label: {
                             Image(systemName: "ellipsis")
@@ -565,7 +565,7 @@ struct CommentView: View {
                     Button {
                         onReply(comment)
                     } label: {
-                        Text("Reply")
+                        Text("Responder")
                             .foregroundColor(.textTertiary)
                             .font(.captionSmall)
                     }
