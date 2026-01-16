@@ -18,29 +18,29 @@ struct ReviewsView: View {
     
     private let reviews = [
         AppReview(
+            name: "Juanes",
+            text: "Ahora estoy más presente, y la app tuvo mucho que ver. En conversaciones, en momentos, en relaciones. Antes mi mente siempre estaba en otro lugar. Hoy puedo mirar a las personas a los ojos, escuchar de verdad y conectar. Mi familia y mis amigos han notado el cambio desde que empecé a usarla.",
+            imageName: "juanes"
+        ),
+        AppReview(
             name: "Miguel",
-            text: "La vida volvió a tener color. Durante años sentí que todo era gris, automático, sin emoción. Hoy me despierto con ilusión por el futuro. Estoy retomando hobbies que había olvidado, intereses que pensé que ya no eran para mí. Me estoy redescubriendo, y por primera vez en mucho tiempo, me siento vivo otra vez.",
-            imageName: "terrycrews"
+            text: "La vida volvió a tener color desde que empecé con la app. Durante años todo se sentía gris, automático, sin emoción. Hoy me despierto con ilusión por el futuro. La app me ayudó a reconectar conmigo, a retomar hobbies que había olvidado y a volver a creer en mí. Por primera vez en mucho tiempo, me siento vivo otra vez.",
+            imageName: "miguelo"
         ),
         AppReview(
-            name: "Anonymous",
-            text: "I was skeptical at first, but the daily tracking and science-based approach really works. My relationship with my wife has never been better.",
-            imageName: "chrisrock"
+            name: "Geros",
+            text: "Tomar la decisión de usar esta app cambió mi vida de formas que nunca imaginé. No fue fácil, hubo días muy duros, pero cada ejercicio, cada reflexión, cada paso valió la pena. Hoy tengo más confianza, más claridad y más paz.",
+            imageName: "marcel"
         ),
         AppReview(
-            name: "David K.",
-            text: "The community aspect is what sets this apart. Knowing others are going through the same struggle made me feel less alone. Highly recommend.",
-            imageName: "chicharito"
+            name: "Liam",
+            text: "Pensé que nunca podría salir de ese ciclo. Me sentía atrapado, avergonzado y cansado de mí mismo. La app me ayudó a entender que no estaba roto, solo estaba herido. Hoy me trato con más compasión y tengo herramientas reales para seguir adelante.",
+            imageName: "liam"
         ),
         AppReview(
-            name: "James L.",
-            text: "As someone who struggled since my teens, I never thought I could break free. This app proved me wrong. Best decision I ever made.",
-            imageName: "angelica"
-        ),
-        AppReview(
-            name: "Anonymous",
-            text: "The streak tracking is surprisingly motivating. Every day I don't want to break my streak, and before I knew it, I'd gone 90 days.",
-            imageName: "luismiguel"
+            name: "José",
+            text: "Volví a disfrutar las cosas simples: una conversación, una caminata, una risa sincera. Dejé de esconderme de mí mismo.",
+            imageName: "morebro"
         )
     ]
     
@@ -169,9 +169,11 @@ struct ReviewsView: View {
             VStack(alignment: .leading, spacing: 12) {
                 // Header: Avatar + Name + Stars
                 HStack(spacing: 12) {
-                    Image(systemName: review.imageName)
-                        .font(.system(size: 32))
-                        .foregroundColor(.accentGradientStart)
+                    Image(review.imageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 44, height: 44)
+                        .clipShape(Circle())
                     
                     Text(review.name)
                         .font(.titleSmall)
