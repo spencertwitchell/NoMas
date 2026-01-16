@@ -5,14 +5,6 @@
 //  Created by Spencer Twitchell on 12/9/25.
 //
 
-
-//
-//  SuperwallManager.swift
-//  NoMas
-//
-//  Created by Spencer Twitchell on 12/9/25.
-//
-
 import Foundation
 import SwiftUI
 import SuperwallKit
@@ -23,9 +15,9 @@ import Combine
 /// Manages Superwall paywall integration
 ///
 /// Setup steps:
-/// 1. Add SuperwallKit via SPM: https://github.com/superwall-me/Superwall-iOS
+/// 1. Add SuperwallKit via SPM: https://github.com/superwall/Superwall-iOS
 /// 2. Create account at superwall.com
-/// 3. Get your API key from Settings â†’ Keys
+/// 3. Get your API key from Settings → Keys
 /// 4. Update AppConfig.superwallAPIKey
 /// 5. Create paywalls in the Superwall dashboard
 /// 6. Configure placements (triggers) in the dashboard
@@ -43,8 +35,6 @@ class SuperwallManager: ObservableObject {
     
     /// Call this in NoMasApp.init()
     func configure() {
-        // TODO: Uncomment when SuperwallKit is added
-        /*
         Superwall.configure(apiKey: AppConfig.superwallAPIKey)
         
         // Set the delegate to handle purchase events
@@ -53,11 +43,11 @@ class SuperwallManager: ObservableObject {
         // Set user attributes for targeting
         updateUserAttributes()
         
-        isConfigured = true
-        print("âœ… Superwall configured")
-        */
+        // Check initial subscription status
+        updateSubscriptionFromSuperwall()
         
-        print("âš ï¸ Superwall SDK not yet integrated")
+        isConfigured = true
+        print("✅ Superwall configured")
     }
     
     // MARK: - User Attributes
@@ -66,8 +56,6 @@ class SuperwallManager: ObservableObject {
     func updateUserAttributes() {
         let userData = UserData.shared
         
-        // TODO: Uncomment when SuperwallKit is added
-        /*
         var attributes: [String: Any] = [
             "device_id": userData.deviceId,
             "days_since_relapse": userData.daysSinceRelapse,
@@ -85,25 +73,18 @@ class SuperwallManager: ObservableObject {
         }
         
         Superwall.shared.setUserAttributes(attributes)
-        */
     }
     
     /// Identify user after authentication
     func identifyUser(userId: String) {
-        // TODO: Uncomment when SuperwallKit is added
-        /*
         Superwall.shared.identify(userId: userId)
         updateUserAttributes()
-        */
     }
     
     /// Reset user on sign out
     func resetUser() {
-        // TODO: Uncomment when SuperwallKit is added
-        /*
         Superwall.shared.reset()
         hasActiveSubscription = false
-        */
     }
     
     // MARK: - Paywall Triggers
@@ -111,25 +92,47 @@ class SuperwallManager: ObservableObject {
     /// Show paywall at a specific placement
     /// Placements are configured in the Superwall dashboard
     func triggerPaywall(placement: String, completion: ((Bool) -> Void)? = nil) {
-        // TODO: Uncomment when SuperwallKit is added
-        /*
-        Superwall.shared.register(placement: placement) { result in
-            switch result {
-            case .purchased, .restored:
-                self.hasActiveSubscription = true
-                completion?(true)
-            case .declined, .timeout:
+        print("📱 Triggering paywall for placement: \(placement)")
+        
+        let handler = PaywallPresentationHandler()
+        
+        handler.onPresent { paywallInfo in
+            print("📱 Paywall presented: \(paywallInfo.identifier)")
+        }
+        
+        handler.onDismiss { paywallInfo, result in
+            print("📱 Paywall dismissed: \(paywallInfo.identifier), result: \(result)")
+            // Note: If purchased/restored, the feature block handles the completion
+            // This is called for all dismiss cases including declined
+            if case .declined = result {
                 completion?(false)
             }
         }
-        */
         
-        // Temporary: Simulate paywall behavior for development
-        // Shows a delay then returns true (simulating purchase)
-        print("📱 Simulating paywall for placement: \(placement)")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            // For development, simulate a successful purchase
+        handler.onSkip { reason in
+            print("⏭️ Paywall skipped: \(reason)")
+            
+            switch reason {
+            case .holdout, .noAudienceMatch, .placementNotFound:
+                // Paywall was skipped for non-subscription reasons
+                completion?(false)
+            @unknown default:
+                completion?(false)
+            }
+        }
+        
+        handler.onError { error in
+            print("❌ Paywall error: \(error.localizedDescription)")
+            completion?(false)
+        }
+        
+        // Register with feature block - this runs when user has access
+        // (either already subscribed, or just purchased)
+        Superwall.shared.register(placement: placement, handler: handler) {
+            // Feature block - called when user should get access
+            print("✅ User has access - feature block executed")
             self.hasActiveSubscription = true
+            UserData.shared.hasActiveSubscription = true
             completion?(true)
         }
     }
@@ -158,71 +161,41 @@ class SuperwallManager: ObservableObject {
     /// Check if user has active subscription
     /// This should be called on app launch and after purchases
     func checkSubscriptionStatus() async {
-        // TODO: Uncomment when SuperwallKit is added
-        /*
-        // Option 1: If using Superwall's built-in subscription status
-        let status = await Superwall.shared.subscriptionStatus
-        hasActiveSubscription = status == .active
-        
-        // Option 2: If using RevenueCat
-        // let customerInfo = try? await Purchases.shared.customerInfo()
-        // hasActiveSubscription = customerInfo?.entitlements["premium"]?.isActive ?? false
-        */
+        updateSubscriptionFromSuperwall()
         
         // Sync with AuthManager
         await AuthManager.shared.updateSubscriptionStatus(isActive: hasActiveSubscription)
+    }
+    
+    /// Update local subscription state from Superwall
+    private func updateSubscriptionFromSuperwall() {
+        // Superwall tracks subscription status automatically
+        let isActive = Superwall.shared.subscriptionStatus.isActive
+        hasActiveSubscription = isActive
+        UserData.shared.hasActiveSubscription = isActive
     }
 }
 
 // MARK: - Superwall Delegate
 
-/* TODO: Uncomment when SuperwallKit is added
 extension SuperwallManager: SuperwallDelegate {
     
-    // Called when a user completes a purchase
-    func didCompletePurchase(for product: StoreProduct) {
-        print("âœ… Purchase completed: \(product.productIdentifier)")
-        
-        Task {
-            hasActiveSubscription = true
-            await AuthManager.shared.updateSubscriptionStatus(isActive: true)
+    nonisolated func subscriptionStatusDidChange(to newValue: SubscriptionStatus) {
+        Task { @MainActor in
+            let isActive = newValue.isActive
+            self.hasActiveSubscription = isActive
+            UserData.shared.hasActiveSubscription = isActive
+            
+            await AuthManager.shared.updateSubscriptionStatus(isActive: isActive)
+            print("🔄 Subscription status changed: \(newValue), isActive: \(isActive)")
         }
     }
     
-    // Called when a user restores purchases
-    func didRestorePurchases() {
-        print("âœ… Purchases restored")
-        
-        Task {
-            await checkSubscriptionStatus()
-        }
-    }
-    
-    // Called when a purchase fails
-    func didFailToPurchase(for product: StoreProduct, with error: Error) {
-        print("âŒ Purchase failed: \(error.localizedDescription)")
-    }
-    
-    // Called when paywall is presented
-    func willPresentPaywall(withInfo paywallInfo: PaywallInfo) {
-        print("ðŸ“± Presenting paywall: \(paywallInfo.identifier)")
-    }
-    
-    // Called when paywall is dismissed
-    func willDismissPaywall(withInfo paywallInfo: PaywallInfo) {
-        print("ðŸ“± Dismissing paywall: \(paywallInfo.identifier)")
-    }
-    
-    // Called to check subscription status
-    func subscriptionStatusDidChange(to status: SubscriptionStatus) {
-        hasActiveSubscription = status == .active
-        
-        Task {
-            await AuthManager.shared.updateSubscriptionStatus(isActive: hasActiveSubscription)
-        }
+    nonisolated func handleSuperwallEvent(withInfo eventInfo: SuperwallEventInfo) {
+        // Log events for debugging
+        print("📊 Superwall event: \(eventInfo.event)")
     }
 }
-*/
 
 // MARK: - PaywallView Integration
 
@@ -256,18 +229,12 @@ struct SuperwallPaywallView: View {
     
     private func triggerPaywall() {
         superwallManager.triggerOnboardingCompletePaywall { purchased in
-            // Always advance regardless of purchase result
-            // (user can still use the app with limited features)
-            DispatchQueue.main.async {
-                onboardingState.advance()
+            if purchased {
+                DispatchQueue.main.async {
+                    onboardingState.advance()
+                }
             }
-        }
-        
-        // If Superwall isn't configured yet, just advance after a delay
-        if !superwallManager.isConfigured {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                onboardingState.advance()
-            }
+            // If not purchased, paywall stays - user must subscribe (hard paywall)
         }
     }
 }

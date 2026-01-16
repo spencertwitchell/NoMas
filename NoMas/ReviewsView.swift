@@ -18,29 +18,29 @@ struct ReviewsView: View {
     
     private let reviews = [
         AppReview(
-            name: "Michael R.",
-            text: "I tried quitting dozens of times on my own. This app gave me the structure and accountability I needed. 6 months clean and counting.",
-            imageName: "person.circle.fill"
+            name: "Miguel",
+            text: "La vida volvió a tener color. Durante años sentí que todo era gris, automático, sin emoción. Hoy me despierto con ilusión por el futuro. Estoy retomando hobbies que había olvidado, intereses que pensé que ya no eran para mí. Me estoy redescubriendo, y por primera vez en mucho tiempo, me siento vivo otra vez.",
+            imageName: "terrycrews"
         ),
         AppReview(
             name: "Anonymous",
             text: "I was skeptical at first, but the daily tracking and science-based approach really works. My relationship with my wife has never been better.",
-            imageName: "person.circle.fill"
+            imageName: "chrisrock"
         ),
         AppReview(
             name: "David K.",
             text: "The community aspect is what sets this apart. Knowing others are going through the same struggle made me feel less alone. Highly recommend.",
-            imageName: "person.circle.fill"
+            imageName: "chicharito"
         ),
         AppReview(
             name: "James L.",
             text: "As someone who struggled since my teens, I never thought I could break free. This app proved me wrong. Best decision I ever made.",
-            imageName: "person.circle.fill"
+            imageName: "angelica"
         ),
         AppReview(
             name: "Anonymous",
             text: "The streak tracking is surprisingly motivating. Every day I don't want to break my streak, and before I knew it, I'd gone 90 days.",
-            imageName: "person.circle.fill"
+            imageName: "luismiguel"
         )
     ]
     
@@ -71,7 +71,7 @@ struct ReviewsView: View {
                             .frame(minHeight: 24)
                         
                         // Title
-                        Text("Ayuda a Otros\nFind Freedom")
+                        Text("Ayuda a Otros\nEncuentra Libertad")
                             .font(.titleLarge)
                             .foregroundColor(.textPrimary)
                             .multilineTextAlignment(.center)
@@ -90,13 +90,13 @@ struct ReviewsView: View {
                         
                         // Description
                         VStack(spacing: 8) {
-                            Text("By leaving a positive rating, you're helping others struggling with addiction find this app and start their recovery journey.")
+                            Text("Al dejar una calificación positiva, ayudas a que otras personas que luchan contra la adicción encuentren esta app y comiencen su camino de recuperación.")
                                 .font(.body)
                                 .foregroundColor(.textSecondary)
                                 .multilineTextAlignment(.center)
                                 .lineSpacing(4)
                             
-                            Text("We appreciate your support!")
+                            Text("¡Agradecemos tu apoyo!")
                                 .font(.titleSmall)
                                 .foregroundColor(.textPrimary)
                                 .multilineTextAlignment(.center)

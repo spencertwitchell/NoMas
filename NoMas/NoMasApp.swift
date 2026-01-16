@@ -7,8 +7,7 @@
 
 import SwiftUI
 import UserNotifications
-// TODO: Uncomment when Superwall is added
-// import SuperwallKit
+import SuperwallKit
 
 @main
 struct NoMasApp: App {

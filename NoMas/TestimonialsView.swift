@@ -14,24 +14,29 @@ struct TestimonialsView: View {
     
     private let testimonials = [
         Testimonial(
-            name: "Michael R.",
-            quote: "I tried quitting dozens of times before finding this app. The structure and daily accountability made all the difference. 90 days clean and I finally feel like myself again.",
-            imageName: "testimonial1"
+            name: "Terry Crews",
+            quote: "Mi problema fue, y sigue siendo, con la pornografía: cambia la forma en que ves a las personas. Las personas se convierten en objetos, en partes del cuerpo; se convierten en cosas que se usan en lugar de personas a las que se ama.",
+            imageName: "terrycrews"
         ),
         Testimonial(
-            name: "David K.",
-            quote: "My relationship was falling apart because of my addiction. Six months into recovery, my wife says I'm a completely different person. More present, more connected. This app saved my marriage.",
-            imageName: "testimonial2"
+            name: "Javier “Chicharito” Hernández",
+            quote: "La adicción no es solo al alcohol o a las drogas. También puede ser a la pornografía, al sexo, a la validación. La adicción es un escape del dolor, y solo sanas cuando decides enfrentarte a ti mismo.",
+            imageName: "chicharito"
         ),
         Testimonial(
-            name: "James L.",
-            quote: "As a college student, I thought everyone watched porn. Learning the science behind addiction opened my eyes. I'm only 45 days in but my focus and confidence are already transforming.",
-            imageName: "testimonial3"
+            name: "Chris Rock",
+            quote: "Cuando ves demasiado porno, ¿sabes qué pasa? Te desensibilizas. Al principio, cualquier porno sirve. Luego, más adelante, ya estás todo jodido y necesitas un cóctel perfecto de porno para excitarte. Yo estaba muy jodido… ahora estoy mucho mejor.",
+            imageName: "chrisrock"
         ),
         Testimonial(
-            name: "Anonymous",
-            quote: "One year free. I never thought I'd say that. The urges still come sometimes, but they're whispers now, not screams. If I can do it, anyone can.",
-            imageName: "testimonial4"
+            name: "Angélica Jaramillo",
+            quote: "La adicción no es falta de fuerza, es una herida que nadie ve. Cuando aprendes a mirarte con honestidad, empieza la verdadera libertad.",
+            imageName: "angelica"
+        ),
+        Testimonial(
+            name: "Luis Miguel",
+            quote: "La adicción no empieza en la copa, empieza en el vacío. Mientras no sanas lo que llevas dentro, siempre vas a buscar algo afuera que te anestesie.",
+            imageName: "luismiguel"
         )
     ]
     
@@ -65,6 +70,7 @@ struct TestimonialsView: View {
                             .multilineTextAlignment(.center)
                             .padding(.top, 24)
                         
+                        
                         // Subtitle
                         Text("Millones de personas han experimentado una recuperación efectiva al comprometerse a dejar la pornografía,este enfoque promueve una sanación duradera.")
                             .font(.body)
@@ -84,6 +90,7 @@ struct TestimonialsView: View {
                         .padding(.bottom, 120) // Space for button
                     }
                 }
+                .padding(.horizontal, 12)
                 
                 Spacer(minLength: 0)
             }
