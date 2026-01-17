@@ -22,101 +22,112 @@ struct BindAccountView: View {
     @State private var showingEmailSignUp = false
     
     var body: some View {
-        ZStack {
-            // Image background
-            Image("bg7")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
-            
-            // Dark overlay
-            Color.black.opacity(0.25)
-                .ignoresSafeArea()
-            
-            VStack(spacing: 0) {
-                // Logo at top
-                Image("nomaslogo")
+        GeometryReader { geometry in
+            ZStack {
+                // Image background - constrained to screen bounds
+                Image("bg7")
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 60)
-                    .padding(.vertical, 80)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .ignoresSafeArea()
                 
-                // Title
-                Text("Vincula Tu Cuenta")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 12)
+                // Dark overlay
+                Color.black.opacity(0.25)
+                    .ignoresSafeArea()
                 
-                // Subtitle - directly under header
-                Text("Conecta tu cuenta para activar\ntu suscripción y sincronizar tu progreso.")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(4)
-                    .padding(.horizontal, 40)
-                
-                Spacer()
-                    .frame(height: 40)
-                
-                // Error message
-                if let error = authManager.authError {
-                    Text(error)
-                        .font(.caption)
-                        .foregroundColor(.red.opacity(0.9))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 32)
-                        .padding(.bottom, 16)
-                }
-                
-                // Auth buttons
-                VStack(spacing: 16) {
-                    // Google Sign In
-                    AuthButton(
-                        title: "Continua con Google",
-                        icon: "g.circle.fill",
-                        style: .google,
-                        isLoading: authManager.isLoading,
-                        action: {
-                            Task {
-                                do {
-                                    try await AuthManager.shared.signInWithGoogle()
-                                } catch {
-                                    print("❌ Google Sign In error: \(error)")
+                // Content constrained to screen size
+                VStack(spacing: 0) {
+                    // Logo anchored at top
+                    Image("nomaslogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 50)
+                        .padding(.top, 80)
+                    
+                    Spacer() // Flexible space between logo and content
+                    
+                    // Main content group - centered but offset up with bottom padding
+                    VStack(spacing: 0) {
+                        // Title
+                        Text("Vincula Tu Cuenta")
+                            .font(.titleLarge)
+                            .foregroundColor(.textPrimary)
+                            .multilineTextAlignment(.center)
+                            .padding(.bottom, 12)
+                        
+                        // Subtitle
+                        Text("Conecta tu cuenta para activar\ntu suscripción y sincronizar tu progreso.")
+                            .font(.body)
+                            .foregroundColor(.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(4)
+                            .padding(.horizontal, 40)
+                            .padding(.bottom, 32)
+                        
+                        // Error message
+                        if let error = authManager.authError {
+                            Text(error)
+                                .font(.caption)
+                                .foregroundColor(.red.opacity(0.9))
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 32)
+                                .padding(.bottom, 16)
+                        }
+                        
+                        // Auth buttons
+                        VStack(spacing: 16) {
+                            // Google Sign In
+                            AuthButton(
+                                title: "Continua con Google",
+                                icon: "g.circle.fill",
+                                style: .google,
+                                isLoading: authManager.isLoading,
+                                action: {
+                                    Task {
+                                        do {
+                                            try await AuthManager.shared.signInWithGoogle()
+                                        } catch {
+                                            print("❌ Google Sign In error: \(error)")
+                                        }
+                                    }
                                 }
-                            }
+                            )
+                            
+                            // Apple Sign In
+                            SignInWithAppleButton(
+                                onSuccess: {
+                                    if authManager.isAuthenticated {
+                                        handleAuthComplete()
+                                    }
+                                },
+                                onError: { error in
+                                    print("Apple Sign In error: \(error)")
+                                }
+                            )
+                            
+                            // Email Sign Up
+                            AuthButton(
+                                title: "Regístrate con Correo",
+                                icon: "envelope.fill",
+                                style: .accent,
+                                isLoading: authManager.isLoading,
+                                action: {
+                                    showingEmailSignUp = true
+                                }
+                            )
                         }
-                    )
+                        .padding(.horizontal, 48)
+                        .opacity(authManager.isLoading ? 0.6 : 1.0)
+                    }
+                    .padding(.bottom, 80) // Offset content upward
                     
-                    // Apple Sign In
-                    SignInWithAppleButton(
-                        onSuccess: {
-                            if authManager.isAuthenticated {
-                                handleAuthComplete()
-                            }
-                        },
-                        onError: { error in
-                            print("Apple Sign In error: \(error)")
-                        }
-                    )
-                    
-                    // Email Sign Up
-                    AuthButton(
-                        title: "Regístrate con Correo",
-                        icon: "envelope.fill",
-                        style: .accent,
-                        isLoading: authManager.isLoading,
-                        action: {
-                            showingEmailSignUp = true
-                        }
-                    )
+                    Spacer() // Flexible space below content
                 }
-                .padding(.horizontal, 48)
-                .opacity(authManager.isLoading ? 0.6 : 1.0)
-                
-                Spacer()
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
         }
+        .ignoresSafeArea()
         .fullScreenCover(isPresented: $showingEmailSignUp) {
             EmailSignUpView(
                 onComplete: {

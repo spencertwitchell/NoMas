@@ -97,7 +97,7 @@ struct OnboardingCompleteView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "flame.fill")
                             .font(.title)
-                            .foregroundColor(userData.currentMilestone.color)
+                            .foregroundStyle(userData.currentMilestone.gradient)
                         
                         Text("\(userData.daysSinceRelapse)")
                             .font(.titleXL)
