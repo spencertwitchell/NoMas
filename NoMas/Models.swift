@@ -275,10 +275,10 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
         case .bronze: return "El Viaje Comienza"
         case .silver: return "Armando la Base"
         case .gold: return "Logro de la Primera Semana"
-        case .platinum: return "FortaleciÃ©ndote"
-        case .diamond: return "Rompiendo lÃ­mites"
+        case .platinum: return "Fortaleciéndote"
+        case .diamond: return "Rompiendo límites"
         case .ruby: return "Un mes de progreso"
-        case .elite: return "Estatus Ã‰lite"
+        case .elite: return "Estatus Élite"
         case .master: return "Nivel Maestro"
         case .grandmaster: return "Rango Legendario"
         }
@@ -288,23 +288,23 @@ enum Milestone: String, Codable, CaseIterable, Identifiable {
         var description: String {
             switch self {
             case .bronze:
-                return "Todo viaje comienza con un primer paso. Decidir cambiar exige verdadera valentÃ­a."
+                return "Todo viaje comienza con un primer paso. Decidir cambiar exige verdadera valentía."
             case .silver:
-                return "Tres dÃ­as de dedicaciÃ³n. Tu cerebro ya comienza a reconocer nuevos patrones. Sigue avanzando."
+                return "Tres días de dedicación. Tu cerebro ya comienza a reconocer nuevos patrones. Sigue avanzando."
             case .gold:
-                return "Una semana completa lograda. EstÃ¡s demostrando que tienes la fuerza para tomar control de tu vida."
+                return "Una semana completa lograda. Estás demostrando que tienes la fuerza para tomar control de tu vida."
             case .platinum:
-                return "Diez dÃ­as de progreso. Los desafÃ­os iniciales han quedado atrÃ¡s y ahora estÃ¡s creando momentum real."
+                return "Diez días de progreso. Los desafíos iniciales han quedado atrás y ahora estás creando momentum real."
             case .diamond:
-                return "Dos semanas de compromiso. Tu determinaciÃ³n se estÃ¡ volviendo tan firme como un diamante â€” irrompible y brillante."
+                return "Dos semanas de compromiso. Tu determinación se está volviendo tan firme como un diamante — irrompible y brillante."
             case .ruby:
-                return "Un mes completo de recuperaciÃ³n. Un logro real que demuestra tu compromiso con el cambio."
+                return "Un mes completo de recuperación. Un logro real que demuestra tu compromiso con el cambio."
             case .elite:
-                return "45 dÃ­as de transformaciÃ³n. Has entrado en territorio Ã©lite â€” pocos llegan tan lejos. SiÃ©ntete orgulloso."
+                return "45 días de transformación. Has entrado en territorio élite — pocos llegan tan lejos. Siéntete orgulloso."
             case .master:
-                return "Dos meses de dominio. Has desarrollado nuevos hÃ¡bitos y tu cerebro se estÃ¡ reconfigurando para el Ã©xito."
+                return "Dos meses de dominio. Has desarrollado nuevos hábitos y tu cerebro se está reconfigurando para el éxito."
             case .grandmaster:
-                return "90 dÃ­as de libertad. Has alcanzado el nivel Legendario â€” un ciclo completo de recuperaciÃ³n. EstÃ¡s transformado."
+                return "90 días de libertad. Has alcanzado el nivel Legendario — un ciclo completo de recuperación. Estás transformado."
             }
         }
 
@@ -478,6 +478,7 @@ struct SupabaseUserProgress: Codable {
     let timesRelapsed: Int?
     let subscriptionStatus: Bool?
     let subscriptionExpiry: Date?
+    let manualPaywallBypass: Bool?
     let createdAt: Date?
     let updatedAt: Date?
     
@@ -498,6 +499,7 @@ struct SupabaseUserProgress: Codable {
         case timesRelapsed = "times_relapsed"
         case subscriptionStatus = "subscription_status"
         case subscriptionExpiry = "subscription_expiry"
+        case manualPaywallBypass = "manual_paywall_bypass"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }

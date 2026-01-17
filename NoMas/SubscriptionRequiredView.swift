@@ -74,6 +74,14 @@ struct SubscriptionRequiredView: View {
                 
                 // Subscribe button
                 Button(action: {
+                    // Check for manual paywall bypass
+                    if userData.manualPaywallBypass {
+                        print("🔓 Manual paywall bypass enabled - granting access")
+                        userData.hasActiveSubscription = true
+                        // RootView will automatically route to MainView
+                        return
+                    }
+                    
                     triggerPaywall()
                 }) {
                     Text("Suscríbete Ahora")
@@ -108,30 +116,30 @@ struct SubscriptionRequiredView: View {
     // MARK: - Paywall Logic
     
     private func triggerPaywall() {
-        print("💰 Triggering subscription required paywall...")
+        print("ðŸ’° Triggering subscription required paywall...")
         
         superwallManager.triggerSubscriptionRequiredPaywall { purchased in
             if purchased {
-                print("✅ User subscribed - updating state")
+                print("âœ… User subscribed - updating state")
                 userData.hasActiveSubscription = true
                 // RootView will automatically route to MainView
             } else {
-                print("❌ User did not subscribe")
+                print("âŒ User did not subscribe")
                 // Stay on this screen
             }
         }
     }
     
     private func restorePurchases() {
-        print("🔄 Restoring purchases...")
+        print("ðŸ”„ Restoring purchases...")
         
         Task {
             await superwallManager.checkSubscriptionStatus()
             if superwallManager.hasActiveSubscription {
                 userData.hasActiveSubscription = true
-                print("✅ Purchases restored successfully")
+                print("âœ… Purchases restored successfully")
             } else {
-                print("❌ No active subscription found")
+                print("âŒ No active subscription found")
             }
         }
     }

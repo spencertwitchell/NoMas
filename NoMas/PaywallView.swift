@@ -42,6 +42,14 @@ struct PaywallView: View {
             }
         }
         .onAppear {
+            // Check for manual paywall bypass first
+            if userData.manualPaywallBypass {
+                print("🔓 Manual paywall bypass enabled - skipping paywall")
+                userData.hasActiveSubscription = true
+                onboardingState.advance()
+                return
+            }
+            
             if !hasTriggeredPaywall {
                 hasTriggeredPaywall = true
                 triggerPaywall()
@@ -52,7 +60,7 @@ struct PaywallView: View {
     // MARK: - Paywall Logic
     
     private func triggerPaywall() {
-        print("💰 Triggering paywall...")
+        print("ðŸ’° Triggering paywall...")
         
         // Use SuperwallManager to show paywall
         superwallManager.triggerOnboardingPaywall { result in
@@ -62,7 +70,7 @@ struct PaywallView: View {
     
     private func handlePaywallResult(purchased: Bool) {
         if purchased {
-            print("✅ User purchased/restored subscription")
+            print("âœ… User purchased/restored subscription")
             userData.hasActiveSubscription = true
             
             // Advance to complete screen
@@ -71,11 +79,11 @@ struct PaywallView: View {
             // User dismissed without purchasing
             #if DEBUG
             // In debug mode, allow progression without purchase for testing
-            print("⚠️ DEBUG: Allowing progression without purchase")
+            print("âš ï¸ DEBUG: Allowing progression without purchase")
             onboardingState.advance()
             #else
             // In production, re-show the paywall (hard paywall)
-            print("🚫 User dismissed paywall - re-showing")
+            print("ðŸš« User dismissed paywall - re-showing")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 triggerPaywall()
             }

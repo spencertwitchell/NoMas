@@ -21,26 +21,32 @@ struct NomiChatView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                // Background
-                Image("bg7")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    if viewModel.dailyUsage.current >= 35 {
-                        usageWarningBanner
+            GeometryReader { geometry in
+                ZStack {
+                    // Background - constrained to screen bounds
+                    Image("bg7")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .clipped()
+                    
+                    Color.black.opacity(0.4)
+                    
+                    VStack(spacing: 0) {
+                        if viewModel.dailyUsage.current >= 35 {
+                            usageWarningBanner
+                        }
+                        messagesScrollView
                     }
-                    messagesScrollView
+                    .frame(width: geometry.size.width, height: geometry.size.height)
                 }
             }
+            .ignoresSafeArea(edges: .bottom)
+            .ignoresSafeArea(edges: .top)
             .navigationTitle("Chat con Nomi")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -49,11 +55,10 @@ struct NomiChatView: View {
                     } label: {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(.textPrimary)
+                            .foregroundColor(.white)
                     }
                 }
             }
-            .toolbarBackground(.hidden, for: .navigationBar)
             .onAppear {
                 viewModel.selectConversation(conversation)
             }
@@ -101,7 +106,7 @@ struct NomiChatView: View {
                                 Button {
                                     Task { await viewModel.loadMessages(for: conversation.id, loadMore: true) }
                                 } label: {
-                                    Text("Load More")
+                                    Text(" ")
                                         .font(.captionSmall)
                                         .foregroundColor(.textSecondary)
                                         .padding(.vertical, 8)
@@ -133,55 +138,44 @@ struct NomiChatView: View {
                                 .id(message.id)
                             }
                             
-                            // Bottom anchor for scrolling
+                            // Bottom spacer to ensure last message isn't hidden by input bar
                             Color.clear
-                                .frame(height: 275)
+                                .frame(height: 20)
                                 .id("bottom")
                         }
                         .padding(.horizontal, 16)
-                        .padding(.top, 12)
-                        .padding(.bottom, 10)
+                        .padding(.top, 80)
+                        .padding(.bottom, 20)
                     }
                 }
             }
             .scrollDismissesKeyboard(.interactively)
             .scrollContentBackground(.hidden)
-            .defaultScrollAnchor(.bottom)
-            .onAppear {
-                // Initial scroll to bottom
-                scrollToBottom(proxy: proxy, animated: false)
-            }
             .onChange(of: viewModel.messages.count) { _, _ in
-                // Scroll when message count changes
-                scrollToBottom(proxy: proxy, animated: true)
+                // Scroll to latest message when count changes
+                if let lastMessage = viewModel.messages.last {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        proxy.scrollTo(lastMessage.id, anchor: .bottom)
+                    }
+                }
             }
             .onChange(of: viewModel.isSendingMessage) { _, isSending in
                 // Scroll when sending starts (typing indicator appears)
-                if isSending {
-                    scrollToBottom(proxy: proxy, animated: true)
+                if isSending, let lastMessage = viewModel.messages.last {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        proxy.scrollTo(lastMessage.id, anchor: .bottom)
+                    }
                 }
-            }
-        }
-    }
-    
-    private func scrollToBottom(proxy: ScrollViewProxy, animated: Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            if animated {
-                withAnimation(.easeOut(duration: 0.2)) {
-                    proxy.scrollTo("bottom", anchor: .bottom)
-                }
-            } else {
-                proxy.scrollTo("bottom", anchor: .bottom)
             }
         }
     }
     
     private var placeholderView: some View {
         VStack(spacing: 24) {
-            Spacer()
             LottieView(animation: .named("nomasnormal"))
                 .playing(loopMode: .loop)
                 .frame(width: 200, height: 200)
+            
             VStack(spacing: 12) {
                 Text("¿En qué estás pensando?")
                     .font(.titleMedium)
@@ -192,11 +186,10 @@ struct NomiChatView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            .padding(.bottom, 222)
-            Spacer()
         }
         .frame(maxWidth: .infinity)
-        .frame(minHeight: 500)
+        .padding(.bottom, 100) // Offset upward to account for input bar
+        .containerRelativeFrame(.vertical, alignment: .center)
     }
     
     private var messageInputBar: some View {
