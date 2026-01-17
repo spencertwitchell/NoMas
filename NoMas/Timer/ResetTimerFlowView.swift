@@ -42,7 +42,7 @@ struct ResetTimerFlowView: View {
                         .multilineTextAlignment(.center)
                     
                     // Lottie Animation (placeholder)
-                    LottieView(animation: .named("Heart_Blue"))
+                    LottieView(animation: .named("stressin"))
                         .playing(loopMode: .loop)
                         .frame(width: 250, height: 180)
                     
@@ -58,7 +58,7 @@ struct ResetTimerFlowView: View {
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
                         
-                        Text("Cuando estés listo, toca abajo para reiniciar tu reloj y empezar de nuevo.")
+                        Text("Cuando estés listo, toca abajo para reiniciar tu timer y empezar de nuevo.")
                             .font(.body)
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
@@ -72,7 +72,7 @@ struct ResetTimerFlowView: View {
                         selectedResetDate = Date() // Default to now
                         showingDatePicker = true
                     }) {
-                        Text("Reiniciar reloj")
+                        Text("Reiniciar Timer")
                             .font(.button)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity)

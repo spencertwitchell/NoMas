@@ -1,24 +1,10 @@
-//
-//  CameraSoftPromptView.swift
-//  NoMas
-//
-//  Created by Spencer Twitchell on 1/7/26.
-//
-
-
-//
-//  CameraSoftPromptView.swift
-//  NoMas
-//
-//  Created by Claude on 1/7/26.
-//
-
 import SwiftUI
 import Lottie
 import AVFoundation
 
 struct CameraSoftPromptView: View {
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var userData = UserData.shared
     
     var body: some View {
         ZStack {
@@ -70,6 +56,8 @@ struct CameraSoftPromptView: View {
         AVCaptureDevice.requestAccess(for: .video) { _ in
             // Dismiss on main thread regardless of user's choice
             DispatchQueue.main.async {
+                // Mark that the user has seen the camera prompt so it never shows again
+                userData.hasSeenCameraPrompt = true
                 dismiss()
             }
         }

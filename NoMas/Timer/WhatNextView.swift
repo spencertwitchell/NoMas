@@ -43,7 +43,7 @@ struct WhatNextView: View {
                         .padding(.horizontal, 32)
                     
                     // Lottie Animation
-                    LottieView(animation: .named("Heart_Blue"))
+                    LottieView(animation: .named("whatnexttys"))
                         .playing(loopMode: .loop)
                         .frame(width: 175, height: 175)
                     
@@ -51,7 +51,7 @@ struct WhatNextView: View {
                     VStack(spacing: 12) {
                         WhatNextActionButton(
                             icon: "hand.raised.fill",
-                            title: "Pledge to Stay Strong Tomorrow",
+                            title: "Comprométete a Mantenerte Fuerte Mañana",
                             action: {
                                 showingPledge = true
                             }
@@ -59,7 +59,7 @@ struct WhatNextView: View {
                         
                         WhatNextActionButton(
                             icon: "person.3.fill",
-                            title: "Make a Post to Stay Accountable",
+                            title: "Crea un Post para Mantenerte Responsable",
                             action: {
                                 showingCreatePost = true
                             }
@@ -67,7 +67,7 @@ struct WhatNextView: View {
                         
                         WhatNextActionButton(
                             icon: "book.pages.fill",
-                            title: "Reflect on What Happened",
+                            title: "Reflexiona Sobre lo que Pasó",
                             action: {
                                 showingReflectionJournal = true
                             }
@@ -84,7 +84,7 @@ struct WhatNextView: View {
                         shouldDismissToHome = true
                         dismiss()
                     }) {
-                        Text("Volver al Reloj")
+                        Text("Volver al Timer")
                             .font(.button)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity)

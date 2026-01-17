@@ -62,7 +62,7 @@ struct PledgeView: View {
     // MARK: - Pledge Content View
     
     private var pledgeContentView: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 16) {
             Spacer()
             
             // Hand icon
@@ -82,8 +82,7 @@ struct PledgeView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
             
-            Spacer()
-                .frame(height: 20)
+Spacer()
             
             // Benefits card
             benefitsCard
@@ -113,7 +112,7 @@ struct PledgeView: View {
         VStack(alignment: .leading, spacing: 20) {
             benefitRow(
                 icon: "checkmark.circle",
-                title: "Achievable Goal",
+                title: "Meta Alcanzable",
                 description: "Al comprometerte, aceptas mantenerte fuerte por hoy."
             )
             

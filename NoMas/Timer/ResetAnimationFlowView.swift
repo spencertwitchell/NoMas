@@ -126,7 +126,7 @@ struct ResetAnimationFlowView: View {
 struct ResetPage1_ItsOkay: View {
     var body: some View {
         VStack(spacing: 32) {
-            LottieView(animation: .named("Heart_Blue"))
+            LottieView(animation: .named("recaiste"))
                 .playing(loopMode: .loop)
                 .frame(width: 175, height: 175)
             
@@ -152,7 +152,7 @@ struct ResetPage1_ItsOkay: View {
 struct ResetPage2_EveryoneSlips: View {
     var body: some View {
         VStack(spacing: 32) {
-            LottieView(animation: .named("Heart_Blue"))
+            LottieView(animation: .named("casi"))
                 .playing(loopMode: .loop)
                 .frame(width: 175, height: 175)
             
@@ -182,7 +182,7 @@ struct ResetPage3_NewTimeline: View {
     
     var body: some View {
         VStack(spacing: 32) {
-            LottieView(animation: .named("Heart_Blue"))
+            LottieView(animation: .named("newtimetyshi"))
                 .playing(loopMode: .loop)
                 .frame(width: 200, height: 150)
             
@@ -280,7 +280,7 @@ struct ResetPage3_NewTimeline: View {
 struct ResetPage4_YouCanDoThis: View {
     var body: some View {
         VStack(spacing: 32) {
-            LottieView(animation: .named("Heart_Blue"))
+            LottieView(animation: .named("page4"))
                 .playing(loopMode: .loop)
                 .frame(width: 200, height: 175)
             

@@ -183,7 +183,7 @@ struct PanicButtonFlowView: View {
                             HStack(spacing: 8) {
                                 Image(systemName: "arrow.counterclockwise")
                                     .font(.system(size: 16))
-                                Text("Recaí — Reiniciar Reloj")
+                                Text("Recaí — Reiniciar Timer")
                                     .font(.button)
                             }
                             .foregroundColor(.textPrimary)

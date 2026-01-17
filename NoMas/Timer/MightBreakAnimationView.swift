@@ -30,7 +30,7 @@ struct MightBreakAnimationView: View {
     let pages: [String] = [
         "Sentir el impulso no significa que estés fallando. Significa que eres humano...",
         "Este momento de debilidad es temporal. Tu compromiso contigo mismo no lo es...",
-        "Cada impulso que resistes reconfigura tu cerebro. Estás construyendo una nueva version de ti..."
+        "Cada impulso que resistes reconfigura tu cerebro. Estás construyendo una nueva versión de ti..."
     ]
     
     var currentText: String {

@@ -143,7 +143,7 @@ struct MightBreakView: View {
                                     HStack(spacing: 8) {
                                         Image(systemName: "arrow.counterclockwise")
                                             .font(.system(size: 16))
-                                        Text("Volver al Reloj")
+                                        Text("Volver al Timer")
                                             .font(.button)
                                     }
                                     .foregroundColor(.textPrimary)

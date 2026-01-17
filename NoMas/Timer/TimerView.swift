@@ -53,7 +53,7 @@ struct TimerView: View {
                         
                         ActionButton(
                             icon: "arrow.counterclockwise",
-                            title: "Reiniciar Reloj",
+                            title: "Reiniciar Timer",
                             action: { showingResetTimer = true }
                         )
                     }
@@ -184,7 +184,7 @@ struct TimerDisplayView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            Text("\(displayName), Llevas sin recaer por:")
+            Text("\(displayName), llevas sin recaer por:")
                 .font(.body)
                 .foregroundColor(.textSecondary)
             

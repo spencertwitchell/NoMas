@@ -139,7 +139,7 @@ struct MainView: View {
     
     private var tabTitle: String {
         switch selectedTab {
-        case 0: return "Reloj"
+        case 0: return "Timer"
         case 1: return "Chat"
         case 2: return "Biblioteca"
         case 3: return "Comunidad"
@@ -257,7 +257,7 @@ struct CustomTabBar: View {
     @Binding var selectedTab: Int
     
     private let tabs: [(icon: String, label: String)] = [
-        ("timer", "Reloj"),
+        ("timer", "Timer"),
         ("ellipsis.message.fill", "Chat"),
         ("book.pages.fill", "Biblioteca"),
         ("person.3.fill", "Comunidad")
