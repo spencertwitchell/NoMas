@@ -46,7 +46,7 @@ struct WebsiteBlockerView: View {
                 footerInfo
             }
         }
-        .alert("Disable Blocker?", isPresented: $showConfirmDisable) {
+        .alert("¿Desactivar bloqueador?", isPresented: $showConfirmDisable) {
             Button("Cerrar", role: .cancel) { }
             Button("Desactivar", role: .destructive) {
                 blockerManager.disableBlocker()
@@ -54,10 +54,10 @@ struct WebsiteBlockerView: View {
         } message: {
             Text("Esto eliminará todas las restricciones de sitios web. ¿Estás seguro de que deseas continuar?")
         }
-        .alert("Coming Soon!", isPresented: $showComingSoon) {
+        .alert("¡Próximamente!", isPresented: $showComingSoon) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("Website blocking is waiting for Apple approval. This feature will be available in an upcoming update!")
+            Text("El bloqueo de sitios web está pendiente de aprobación por parte de Apple. Esta función estará disponible en una próxima actualización.")
         }
     }
     

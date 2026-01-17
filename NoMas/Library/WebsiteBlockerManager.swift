@@ -54,7 +54,7 @@ class WebsiteBlockerManager: ObservableObject {
             return true
         } catch {
             print("❌ FamilyControls authorization failed: \(error)")
-            errorMessage = "Authorization failed. Please try again."
+            errorMessage = "La autorización falló. Por favor, inténtalo de nuevo."
             isAuthorized = false
             return false
         }

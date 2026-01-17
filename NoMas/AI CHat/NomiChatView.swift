@@ -71,7 +71,7 @@ struct NomiChatView: View {
     private var usageWarningBanner: some View {
         HStack(spacing: 8) {
             Image(systemName: "info.circle.fill").font(.system(size: 16))
-            Text("\(viewModel.dailyUsage.current)/\(viewModel.dailyUsage.limit) Messages Used Today")
+            Text("\(viewModel.dailyUsage.current)/\(viewModel.dailyUsage.limit) mensajes usados hoy")
                 .font(.captionSmall)
                 .fontWeight(.medium)
         }

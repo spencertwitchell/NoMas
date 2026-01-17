@@ -105,7 +105,7 @@ struct EntryDetailView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(isEditing ? "Edit Entry" : "Previous Reflection")
+                    Text(isEditing ? "Editar Entrada" : "Reflexión Anterior")
                         .font(.titleSmall)
                         .foregroundColor(.white)
                 }

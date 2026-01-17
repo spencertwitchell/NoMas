@@ -46,8 +46,8 @@ struct PledgeView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
         }
         .alert("¿Compromiso para hoy?", isPresented: $showingConfirmation) {
-            Button("Cancel", role: .cancel) { }
-            Button("Pledge") {
+            Button("Cancelar", role: .cancel) { }
+            Button("Compromiso") {
                 pledgeManager.makePledge()
                 // Brief delay then dismiss
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

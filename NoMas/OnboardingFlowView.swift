@@ -94,69 +94,9 @@ struct OnboardingFlowView: View {
     }
 }
 
-// MARK: - Placeholder View (Temporary)
-
-/// Temporary placeholder for screens not yet built
-struct PlaceholderView: View {
-    let title: String
-    let phase: OnboardingPhase
-    
-    private var onboardingState: OnboardingState { OnboardingState.shared }
-    
-    var body: some View {
-        ZStack {
-            AppBackground()
-            
-            VStack(spacing: 32) {
-                Spacer()
-                
-                Text(title)
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                
-                Text("Coming Soon")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-                
-                Spacer()
-                
-                // Navigation buttons
-                HStack(spacing: 16) {
-                    if phase.canGoBack {
-                        Button(action: { onboardingState.goBack() }) {
-                            Text("Back")
-                                .font(.button)
-                                .foregroundColor(.textPrimary)
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 14)
-                                .background(Color.surfaceBackground)
-                                .cornerRadius(12)
-                        }
-                    }
-                    
-                    Button(action: { onboardingState.advance() }) {
-                        Text("Continue")
-                            .font(.button)
-                            .foregroundColor(.textPrimary)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(LinearGradient.accent)
-                            .cornerRadius(12)
-                    }
-                }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 50)
-            }
-        }
-    }
-}
-
 // MARK: - Preview
 
 #Preview("Onboarding Flow") {
     OnboardingFlowView()
 }
 
-#Preview("Placeholder") {
-    PlaceholderView(title: "Test Screen", phase: .symptoms)
-}

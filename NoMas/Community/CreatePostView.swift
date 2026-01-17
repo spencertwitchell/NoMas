@@ -127,7 +127,7 @@ struct CreatePostView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Create Post")
+                    Text("Crear Post")
                         .font(.titleSmall)
                         .foregroundColor(.textPrimary)
                 }
