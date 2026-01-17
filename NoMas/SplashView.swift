@@ -7,6 +7,27 @@
 
 import SwiftUI
 
+// MARK: - Fade Up Modifier
+
+struct FadeUpModifier: ViewModifier {
+    let isVisible: Bool
+    let duration: Double
+    let offset: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .opacity(isVisible ? 1 : 0)
+            .offset(y: isVisible ? 0 : offset)
+            .animation(.easeOut(duration: duration), value: isVisible)
+    }
+}
+
+extension View {
+    func fadeUp(isVisible: Bool, duration: Double = 0.6, offset: CGFloat = 20) -> some View {
+        modifier(FadeUpModifier(isVisible: isVisible, duration: duration, offset: offset))
+    }
+}
+
 // MARK: - Swipe Reveal Modifier
 
 struct SwipeRevealModifier: ViewModifier {
@@ -17,6 +38,7 @@ struct SwipeRevealModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
+            .opacity(revealProgress > 0 ? 1 : 0) // Hide completely until animation starts
             .mask(
                 GeometryReader { geometry in
                     LinearGradient(
@@ -93,10 +115,9 @@ struct SplashView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                Spacer()
-                    .frame(height: 60)
+                Spacer() // Flexible top spacer for centering
                 
-                // Logo with glow effect - positioned towards top, smaller
+                // Logo with glow effect
                 ZStack {
                     // Glow
                     Circle()
@@ -114,7 +135,7 @@ struct SplashView: View {
                         .frame(width: 200, height: 200)
                         .opacity(glowOpacity)
                     
-                    // Logo - smaller (60px instead of 100px)
+                    // Logo
                     Image("nomaslogo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -128,17 +149,17 @@ struct SplashView: View {
                 
                 // Text lines container
                 VStack(spacing: 16) {
-                    // First line with swipe reveal
+                    // First line with fade up
                     Text("Tómate esta pausa.")
                         .font(.titleLarge)
                         .foregroundColor(.textPrimary)
-                        .swipeReveal(isRevealed: showFirstLine, duration: 0.8)
+                        .fadeUp(isVisible: showFirstLine, duration: 0.8)
                     
-                    // Second line with swipe reveal
+                    // Second line with fade up
                     Text("Piensa antes de recaer.")
                         .font(.titleLarge)
                         .foregroundColor(.textPrimary)
-                        .swipeReveal(isRevealed: showSecondLine, duration: 0.8)
+                        .fadeUp(isVisible: showSecondLine, duration: 0.8)
                 }
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
@@ -153,8 +174,9 @@ struct SplashView: View {
                     .frame(height: 40)
                     .swipeReveal(isRevealed: showReviews, duration: 0.8)
                 
-                Spacer()
+                Spacer() // Flexible bottom spacer for centering
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity) // Ensure stable layout
         }
         .opacity(fadeOut ? 0 : 1)
         .onAppear {

@@ -45,110 +45,119 @@ struct ReviewsView: View {
     ]
     
     var body: some View {
-        ZStack {
-            // Background image
-            Image("bg67")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
-            
-            // Dark overlay
-            Color.black.opacity(0.4)
-                .ignoresSafeArea()
-            
-            VStack(spacing: 0) {
-                // Header
-                OnboardingHeader(
-                    showBackButton: true,
-                    onBack: { onboardingState.goBack() }
-                )
-                .padding(.bottom, 12)
+        GeometryReader { geometry in
+            ZStack {
+                // Background image - constrained to screen bounds
+                Image("bg67")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .ignoresSafeArea()
                 
-                // Scrollable content
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 0) {
-                        Spacer()
-                            .frame(minHeight: 24)
-                        
-                        // Title
-                        Text("Ayuda a Otros\nEncuentra Libertad")
-                            .font(.titleLarge)
-                            .foregroundColor(.textPrimary)
-                            .multilineTextAlignment(.center)
-                        
-                        Spacer()
-                            .frame(minHeight: 16)
-                        
-                        // Reviews image
-                        Image("nomasreviews")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: 200)
-                        
-                        Spacer()
-                            .frame(minHeight: 16)
-                        
-                        // Description
-                        VStack(spacing: 8) {
-                            Text("Al dejar una calificación positiva, ayudas a que otras personas que luchan contra la adicción encuentren esta app y comiencen su camino de recuperación.")
-                                .font(.body)
-                                .foregroundColor(.textSecondary)
-                                .multilineTextAlignment(.center)
-                                .lineSpacing(4)
+                // Dark overlay
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                
+                // Content constrained to screen size
+                VStack(spacing: 0) {
+                    // Header anchored at top
+                    OnboardingHeader(
+                        showBackButton: true,
+                        onBack: { onboardingState.goBack() }
+                    )
+                    .padding(.top, 60)
+                    .padding(.bottom, 12)
+                    
+                    // Scrollable content
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 0) {
+                            Spacer()
+                                .frame(minHeight: 24)
                             
-                            Text("¡Agradecemos tu apoyo!")
-                                .font(.titleSmall)
+                            // Title
+                            Text("Ayuda a Otros Encuentra Libertad")
+                                .font(.titleLarge)
                                 .foregroundColor(.textPrimary)
                                 .multilineTextAlignment(.center)
+                            
+                            Spacer()
+                                .frame(minHeight: 16)
+                            
+                            // Reviews image
+                            Image("nomasreviews")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: 200)
+                            
+                            Spacer()
+                                .frame(minHeight: 16)
+                            
+                            // Description
+                            VStack(spacing: 16) {
+                                Text("Al dejar una calificación positiva, ayudas a otros a encontrar esta app y comenzar su recuperación.")
+                                    .font(.body)
+                                    .foregroundColor(.textSecondary)
+                                    .multilineTextAlignment(.center)
+                                    .lineSpacing(4)
+                                
+                                Text("¡Agradecemos tu apoyo!")
+                                    .font(.titleMedium)
+                                    .foregroundColor(.textPrimary)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .padding(.horizontal, 20)
+                            
+                            Spacer()
+                                .frame(minHeight: 32)
+                            
+                            // Reviews list
+                            VStack(spacing: 16) {
+                                ForEach(reviews) { review in
+                                    AppReviewCard(review: review)
+                                }
+                            }
+                            .padding(.horizontal, 20)
+                            
+                            // Bottom padding for floating button
+                            Spacer()
+                                .frame(minHeight: 120)
                         }
-                        .padding(.horizontal, 32)
-                        
-                        Spacer()
-                            .frame(minHeight: 32)
-                        
-                        // Reviews list
-                        VStack(spacing: 16) {
-                            ForEach(reviews) { review in
-                                AppReviewCard(review: review)
+                    }
+                }
+                .frame(width: geometry.size.width, height: geometry.size.height)
+                
+                // Floating Continue Button
+                VStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        if !isRequestingReview {
+                            isRequestingReview = true
+                            requestReview()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                onboardingState.advance()
                             }
                         }
-                        .padding(.horizontal, 32)
-                        
-                        // Bottom padding for floating button
-                        Spacer()
-                            .frame(minHeight: 120)
+                    }) {
+                        Text("Continuar")
+                            .font(.button)
+                            .foregroundColor(.textPrimary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 18)
+                            .background(LinearGradient.accent)
+                            .cornerRadius(16)
+                            .shadow(color: Color.black.opacity(0.3), radius: 12, x: 0, y: -4)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 40)
+                    .disabled(isRequestingReview)
+                    .opacity(isRequestingReview ? 0.6 : 1.0)
                 }
-            }
-            
-            // Floating Continue Button
-            VStack {
-                Spacer()
-                
-                Button(action: {
-                    if !isRequestingReview {
-                        isRequestingReview = true
-                        requestReview()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                            onboardingState.advance()
-                        }
-                    }
-                }) {
-                    Text("Continuar")
-                        .font(.button)
-                        .foregroundColor(.textPrimary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 18)
-                        .background(LinearGradient.accent)
-                        .cornerRadius(16)
-                        .shadow(color: Color.black.opacity(0.3), radius: 12, x: 0, y: -4)
-                }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 40)
-                .disabled(isRequestingReview)
-                .opacity(isRequestingReview ? 0.6 : 1.0)
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
         }
+        .ignoresSafeArea()
     }
     
     // MARK: - Review Model

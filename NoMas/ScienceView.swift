@@ -16,36 +16,40 @@ struct ScienceView: View {
     @State private var barOffset2: CGFloat = 180
     
     var body: some View {
-        ZStack {
-            // Background image
-            Image("bg67")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
+        GeometryReader { geometry in
+            let screenWidth = geometry.size.width
+            let barWidth = screenWidth * 0.18
+            let barSpacing = screenWidth * 0.08
+            let smallBarHeight: CGFloat = 50
+            let largeBarHeight: CGFloat = 180
             
-            // Dark overlay
-            Color.black.opacity(0.4)
-                .ignoresSafeArea()
-            
-            GeometryReader { geometry in
-                let screenWidth = geometry.size.width
-                let barWidth = screenWidth * 0.18
-                let barSpacing = screenWidth * 0.08
-                let smallBarHeight: CGFloat = 50
-                let largeBarHeight: CGFloat = 180
+            ZStack {
+                // Background image - constrained to screen bounds
+                Image("bg67")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .ignoresSafeArea()
                 
+                // Dark overlay
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                
+                // Content constrained to screen size
                 VStack(spacing: 0) {
-                    // Header
+                    // Header anchored at top
                     OnboardingHeader(
                         showBackButton: true,
                         onBack: { onboardingState.goBack() }
                     )
+                    .padding(.top, 60)
                     
-                    Spacer()
+                    Spacer() // Flexible space between header and content
                     
-                    // Content group (chart, title, description)
+                    // Content group (chart, title, description) - centered
                     VStack(spacing: 24) {
-                        // Chart section (now first)
+                        // Chart section
                         VStack(spacing: 0) {
                             // Chart Title
                             Text("Tiempo de Recuperación")
@@ -136,9 +140,9 @@ struct ScienceView: View {
                             .padding(.horizontal, 40)
                     }
                     
-                    Spacer()
+                    Spacer() // Flexible space between content and button
                     
-                    // Continue button
+                    // Continue button anchored at bottom
                     Button(action: {
                         onboardingState.advance()
                     }) {
@@ -153,8 +157,10 @@ struct ScienceView: View {
                     .padding(.horizontal, 32)
                     .padding(.bottom, 40)
                 }
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
         }
+        .ignoresSafeArea()
         .onAppear {
             withAnimation(.easeOut(duration: 1.2)) {
                 barOffset1 = 0

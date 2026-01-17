@@ -19,7 +19,7 @@ struct TestimonialsView: View {
             imageName: "terrycrews"
         ),
         Testimonial(
-            name: "Javier “Chicharito” Hernández",
+            name: "Javier \"Chicharito\" Hernández",
             quote: "La adicción no es solo al alcohol o a las drogas. También puede ser a la pornografía, al sexo, a la validación. La adicción es un escape del dolor, y solo sanas cuando decides enfrentarte a ti mismo.",
             imageName: "chicharito"
         ),
@@ -41,79 +41,85 @@ struct TestimonialsView: View {
     ]
     
     var body: some View {
-        ZStack {
-            // Background image
-            Image("bg67")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
-            
-            // Dark overlay
-            Color.black.opacity(0.4)
-                .ignoresSafeArea()
-            
-            VStack(spacing: 0) {
-                // Header
-                OnboardingHeader(
-                    showBackButton: true,
-                    onBack: { onboardingState.goBack() }
-                )
-                .padding(.bottom, 12)
+        GeometryReader { geometry in
+            ZStack {
+                // Background image - constrained to screen bounds
+                Image("bg67")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .ignoresSafeArea()
                 
-                // Scrollable content
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 24) {
-                        // Title
-                        Text("Lo que otros están diciendo")
-                            .font(.titleLarge)
-                            .foregroundColor(.textPrimary)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 24)
-                        
-                        
-                        // Subtitle
-                        Text("Millones de personas han experimentado una recuperación efectiva al comprometerse a dejar la pornografía,este enfoque promueve una sanación duradera.")
-                            .font(.body)
-                            .foregroundColor(.textSecondary)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(4)
-                            .padding(.horizontal, 32)
-                        
-                        // Testimonials list
-                        VStack(spacing: 16) {
-                            ForEach(testimonials, id: \.name) { testimonial in
-                                TestimonialCardView(testimonial: testimonial)
+                // Dark overlay
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                
+                // Content constrained to screen size
+                VStack(spacing: 0) {
+                    // Header anchored at top
+                    OnboardingHeader(
+                        showBackButton: true,
+                        onBack: { onboardingState.goBack() }
+                    )
+                    .padding(.top, 60)
+                    .padding(.bottom, 12)
+                    
+                    // Scrollable content
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 24) {
+                            // Title - slightly more padding than other elements
+                            Text("Lo que otros están diciendo...")
+                                .font(.titleLarge)
+                                .foregroundColor(.textPrimary)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 24)
+                                .padding(.top, 24)
+                            
+                            // Subtitle - reduced padding to align with cards
+                            Text("Millones de personas han experimentado una recuperación efectiva al comprometerse a dejar la pornografía, este enfoque promueve una sanación duradera.")
+                                .font(.body)
+                                .foregroundColor(.textSecondary)
+                                .multilineTextAlignment(.center)
+                                .lineSpacing(4)
+                                .padding(.horizontal, 20)
+                            
+                            // Testimonials list - reduced padding
+                            VStack(spacing: 16) {
+                                ForEach(testimonials, id: \.name) { testimonial in
+                                    TestimonialCardView(testimonial: testimonial)
+                                }
                             }
+                            .padding(.horizontal, 20)
+                            .padding(.top, 8)
+                            .padding(.bottom, 120) // Space for button
                         }
-                        .padding(.horizontal, 32)
-                        .padding(.top, 8)
-                        .padding(.bottom, 120) // Space for button
                     }
                 }
-                .padding(.horizontal, 12)
+                .frame(width: geometry.size.width, height: geometry.size.height)
                 
-                Spacer(minLength: 0)
-            }
-            
-            // Continue button (fixed at bottom)
-            VStack {
-                Spacer()
-                
-                Button(action: {
-                    onboardingState.advance()
-                }) {
-                    Text("Continuar")
-                        .font(.button)
-                        .foregroundColor(.textPrimary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 18)
-                        .background(LinearGradient.accent)
-                        .cornerRadius(16)
+                // Continue button (fixed at bottom)
+                VStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        onboardingState.advance()
+                    }) {
+                        Text("Continuar")
+                            .font(.button)
+                            .foregroundColor(.textPrimary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 18)
+                            .background(LinearGradient.accent)
+                            .cornerRadius(16)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 40)
                 }
-                .padding(.horizontal, 32)
-                .padding(.bottom, 40)
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
         }
+        .ignoresSafeArea()
     }
 }
 

@@ -21,135 +21,142 @@ struct OptionalAuthView: View {
     @State private var showingEmailLogin = false
     
     var body: some View {
-        ZStack {
-            // Image background
-            Image("bg7")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
-            
-            // Dark overlay
-            Color.black.opacity(0.25)
-                .ignoresSafeArea()
-            
-            VStack(spacing: 0) {
-                // Logo at top
-                Image("nomaslogo")
+        GeometryReader { geometry in
+            ZStack {
+                // Image background - clipped to screen bounds
+                Image("bg7")
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 60)
-                    .padding(.vertical, 80)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .ignoresSafeArea()
                 
-                // Title
-                Text("Guarda Tu Progreso")
-                    .font(.titleLarge)
-                    .foregroundColor(.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 12)
+                // Dark overlay
+                Color.black.opacity(0.25)
+                    .ignoresSafeArea()
                 
-                // Subtitle - directly under header
-                Text("Inicia sesión para sincronizar tu progreso entre dispositivos.")
-                    .font(.body)
-                    .foregroundColor(.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(4)
-                    .padding(.horizontal, 40)
-                
-                Spacer()
-                
-                // Error message
-                if let error = authManager.authError {
-                    Text(error)
-                        .font(.caption)
-                        .foregroundColor(.red.opacity(0.9))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 32)
-                        .padding(.bottom, 16)
-                }
-                
-                // Auth buttons
-                VStack(spacing: 16) {
-                    // Google Sign In
-                    AuthButton(
-                        title: "Continue with Google",
-                        icon: "g.circle.fill",
-                        style: .google,
-                        isLoading: authManager.isLoading,
-                        action: {
-                            Task {
-                                do {
-                                    try await AuthManager.shared.signInWithGoogle()
-                                } catch {
-                                    print("❌ Google Sign In error: \(error)")
-                                }
-                            }
-                        }
-                    )
+                // Content constrained to screen size
+                VStack(spacing: 0) {
+                    // Logo anchored at top
+                    Image("nomaslogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 60)
+                        .padding(.top, 60)
                     
-                    // Apple Sign In
-                    SignInWithAppleButton(
-                        onSuccess: {
-                            handleAuthSuccess()
-                        },
-                        onError: { error in
-                            print("Apple Sign In error: \(error)")
-                        }
-                    )
+                    Spacer() // Flexible space between logo and content
                     
-                    // Email Sign Up
-                    AuthButton(
-                        title: "Sign up with Email",
-                        icon: "envelope.fill",
-                        style: .accent,
-                        isLoading: authManager.isLoading,
-                        action: {
-                            showingEmailSignUp = true
-                        }
-                    )
-                }
-                .padding(.horizontal, 48)
-                .opacity(authManager.isLoading ? 0.6 : 1.0)
-                
-                Spacer()
-                
-                // Skip button - more visible
-                Button(action: handleSkip) {
-                    HStack(spacing: 6) {
-                        Text("O sáltalo por ahora")
-                            .font(.body)
-                            .fontWeight(.medium)
-                            .underline()
-                        Image(systemName: "arrow.right")
-                            .font(.body)
-                    }
-                    .foregroundColor(.white)
-                }
-                .disabled(authManager.isLoading)
-                
-                Spacer()
-
-                
-                // Login link
-                HStack(spacing: 4) {
-                    Text("¿Ya tienes una cuenta?")
-                        .font(.bodySmall)
-                        .foregroundColor(.textSecondary)
-                    
-                    Button(action: {
-                        showingEmailLogin = true
-                    }) {
-                        Text("Inicia sesión aquí")
-                            .font(.bodySmall)
-                            .fontWeight(.semibold)
+                    // Main content group - centered
+                    VStack(spacing: 0) {
+                        // Title
+                        Text("Guarda Tu Progreso")
+                            .font(.titleLarge)
                             .foregroundColor(.textPrimary)
-                            .underline()
+                            .multilineTextAlignment(.center)
+                            .padding(.bottom, 12)
+                        
+                        // Subtitle
+                        Text("Inicia sesión para sincronizar tu progreso entre dispositivos.")
+                            .font(.body)
+                            .foregroundColor(.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(4)
+                            .padding(.horizontal, 40)
+                            .padding(.bottom, 32)
+                        
+                        // Error message
+                        if let error = authManager.authError {
+                            Text(error)
+                                .font(.caption)
+                                .foregroundColor(.red.opacity(0.9))
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 32)
+                                .padding(.bottom, 16)
+                        }
+                        
+                        // Auth buttons
+                        VStack(spacing: 16) {
+                            // Google Sign In
+                            AuthButton(
+                                title: "Continua con Google",
+                                icon: "g.circle.fill",
+                                style: .google,
+                                isLoading: authManager.isLoading,
+                                action: {
+                                    Task {
+                                        do {
+                                            try await AuthManager.shared.signInWithGoogle()
+                                        } catch {
+                                            print("❌ Google Sign In error: \(error)")
+                                        }
+                                    }
+                                }
+                            )
+                            
+                            // Apple Sign In
+                            SignInWithAppleButton(
+                                onSuccess: {
+                                    handleAuthSuccess()
+                                },
+                                onError: { error in
+                                    print("Apple Sign In error: \(error)")
+                                }
+                            )
+                            
+                            // Email Sign Up
+                            AuthButton(
+                                title: "Regístrate con Correo",
+                                icon: "envelope.fill",
+                                style: .accent,
+                                isLoading: authManager.isLoading,
+                                action: {
+                                    showingEmailSignUp = true
+                                }
+                            )
+                        }
+                        .padding(.horizontal, 48)
+                        .opacity(authManager.isLoading ? 0.6 : 1.0)
+                        .padding(.bottom, 24)
+                        
+                        // Skip button
+                        Button(action: handleSkip) {
+                            HStack(spacing: 6) {
+                                Text("O sáltalo por ahora")
+                                    .font(.body)
+                                    .fontWeight(.medium)
+                                    .underline()
+                                Image(systemName: "arrow.right")
+                                    .font(.body)
+                            }
+                            .foregroundColor(.white)
+                        }
+                        .disabled(authManager.isLoading)
                     }
+                    
+                    Spacer() // Flexible space between content and login link
+                    
+                    // Login link anchored at bottom
+                    HStack(spacing: 4) {
+                        Text("¿Ya tienes una cuenta?")
+                            .font(.bodySmall)
+                            .foregroundColor(.textSecondary)
+                        
+                        Button(action: {
+                            showingEmailLogin = true
+                        }) {
+                            Text("Inicia sesión aquí")
+                                .font(.bodySmall)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.textPrimary)
+                                .underline()
+                        }
+                    }
+                    .padding(.bottom, 40)
                 }
-                
-                Spacer()
-                    .frame(height: 40)
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
         }
+        .ignoresSafeArea()
         .fullScreenCover(isPresented: $showingEmailSignUp) {
             EmailSignUpView(
                 onComplete: {
