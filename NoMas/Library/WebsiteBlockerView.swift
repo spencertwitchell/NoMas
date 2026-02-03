@@ -10,38 +10,36 @@ import SwiftUI
 struct WebsiteBlockerView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject private var blockerManager = WebsiteBlockerManager.shared
-    
+
     // Animation state
     @State private var isPulsing = false
     @State private var showConfirmDisable = false
-    @State private var showComingSoon = false
 
-    
     var body: some View {
         ZStack {
             AppBackground()
-            
+
             VStack(spacing: 0) {
                 // Header
                 header
-                
+
                 Spacer()
-                
+
                 // Main content
                 VStack(spacing: 32) {
                     // Status text
                     statusSection
-                    
+
                     // Power button
                     powerButton
-                    
+
                     // Description
                     descriptionSection
                 }
                 .padding(.horizontal, 32)
-                
+
                 Spacer()
-                
+
                 // Footer info
                 footerInfo
             }
@@ -54,15 +52,10 @@ struct WebsiteBlockerView: View {
         } message: {
             Text("Esto eliminará todas las restricciones de sitios web. ¿Estás seguro de que deseas continuar?")
         }
-        .alert("¡Próximamente!", isPresented: $showComingSoon) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            Text("El bloqueo de sitios web está pendiente de aprobación por parte de Apple. Esta función estará disponible en una próxima actualización.")
-        }
     }
-    
+
     // MARK: - Header
-    
+
     private var header: some View {
         HStack {
             Button(action: { dismiss() }) {
@@ -73,15 +66,15 @@ struct WebsiteBlockerView: View {
                     .background(Color.white.opacity(0.1))
                     .clipShape(Circle())
             }
-            
+
             Spacer()
-            
+
             Text("Bloqueador de Sitios Web")
                 .font(.titleSmall)
                 .foregroundColor(.textPrimary)
-            
+
             Spacer()
-            
+
             // Invisible spacer for balance
             Color.clear
                 .frame(width: 32, height: 32)
@@ -89,16 +82,16 @@ struct WebsiteBlockerView: View {
         .padding(.horizontal, 20)
         .padding(.top, 60)
     }
-    
+
     // MARK: - Status Section
-    
+
     private var statusSection: some View {
         VStack(spacing: 8) {
             Text(blockerManager.isBlockerEnabled ? "PROTECCIÓN ACTIVADA" : "PROTECCIÓN DESACTIVADA")
                 .font(.titleCustom(size: 14))
                 .tracking(2)
                 .foregroundColor(blockerManager.isBlockerEnabled ? .green : .textTertiary)
-            
+
             if blockerManager.isBlockerEnabled && blockerManager.blockedDomainsCount > 0 {
                 Text("\(blockerManager.blockedDomainsCount) sitios web bloqueados")
                     .font(.caption)
@@ -106,9 +99,9 @@ struct WebsiteBlockerView: View {
             }
         }
     }
-    
+
     // MARK: - Power Button
-    
+
     private var powerButton: some View {
         Button(action: handlePowerButtonTap) {
             ZStack {
@@ -131,34 +124,34 @@ struct WebsiteBlockerView: View {
                             value: isPulsing
                         )
                 }
-                
+
                 // Main button circle
                 Circle()
                     .fill(
                         blockerManager.isBlockerEnabled
-                            ? LinearGradient(
-                                colors: [Color.green.opacity(0.3), Color.green.opacity(0.1)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                            : LinearGradient(
-                                colors: [Color.white.opacity(0.15), Color.white.opacity(0.05)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
+                        ? LinearGradient(
+                            colors: [Color.green.opacity(0.3), Color.green.opacity(0.1)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        : LinearGradient(
+                            colors: [Color.white.opacity(0.15), Color.white.opacity(0.05)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
                     )
                     .frame(width: 160, height: 160)
-                
+
                 // Border
                 Circle()
                     .stroke(
                         blockerManager.isBlockerEnabled
-                            ? Color.green.opacity(0.5)
-                            : Color.white.opacity(0.2),
+                        ? Color.green.opacity(0.5)
+                        : Color.white.opacity(0.2),
                         lineWidth: 2
                     )
                     .frame(width: 160, height: 160)
-                
+
                 // Power icon or loading
                 if blockerManager.isLoading {
                     ProgressView()
@@ -181,9 +174,9 @@ struct WebsiteBlockerView: View {
             isPulsing = enabled
         }
     }
-    
+
     // MARK: - Description Section
-    
+
     private var descriptionSection: some View {
         VStack(spacing: 16) {
             Text(blockerManager.isBlockerEnabled
@@ -192,7 +185,7 @@ struct WebsiteBlockerView: View {
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
-            
+
             if let error = blockerManager.errorMessage {
                 Text(error)
                     .font(.caption)
@@ -201,9 +194,9 @@ struct WebsiteBlockerView: View {
             }
         }
     }
-    
+
     // MARK: - Footer Info
-    
+
     private var footerInfo: some View {
         VStack(spacing: 12) {
             HStack(spacing: 8) {
@@ -213,7 +206,7 @@ struct WebsiteBlockerView: View {
                     .font(.caption)
                     .foregroundColor(.textTertiary)
             }
-            
+
             HStack(spacing: 8) {
                 Image(systemName: "lock.fill")
                     .foregroundColor(.accentGradientStart)
@@ -221,7 +214,7 @@ struct WebsiteBlockerView: View {
                     .font(.caption)
                     .foregroundColor(.textTertiary)
             }
-            
+
             HStack(spacing: 8) {
                 Image(systemName: "eye.slash.fill")
                     .foregroundColor(.accentGradientStart)
@@ -232,21 +225,18 @@ struct WebsiteBlockerView: View {
         }
         .padding(.bottom, 50)
     }
-    
+
     // MARK: - Actions
-    
+
     private func handlePowerButtonTap() {
         if blockerManager.isBlockerEnabled {
             // Show confirmation before disabling
             showConfirmDisable = true
         } else {
-            
-            showComingSoon = true
-            
-            // Enable blocker (uncomment when apple approves)
-            //Task {
-             //   await blockerManager.enableBlocker()
-            //}
+            // Enable blocker
+            Task {
+                await blockerManager.enableBlocker()
+            }
         }
     }
 }
