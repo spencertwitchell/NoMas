@@ -20,20 +20,6 @@ let supabase = SupabaseClient(
     )
 )
 
-// MARK: - App Configuration
-
-enum AppConfig {
-    static let supabaseURL = "https://gxnnjgqmvynyllgyibhx.supabase.co"
-    static let supabaseAnonKey = "sb_publishable_yPniFSk_JofE3J9RCA9W6Q_19F603ZA"
-    
-    // Deep link URL scheme for OAuth callbacks
-    static let authRedirectURL = "nomas://auth-callback"
-    
-    // Superwall API Key - REQUIRED: Get from superwall.com dashboard
-    // Settings â†’ Keys â†’ Copy your API key
-    static let superwallAPIKey = "pk_Wmfb02wsL-JnAyyViD8-H"
-}
-
 // MARK: - Postgres Encoder/Decoder Configuration
 
 extension JSONEncoder {

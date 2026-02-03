@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2917C6EF2F329AD600AA8343 /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2917C6EE2F329AD600AA8343 /* TikTokBusinessSDK */; };
+		2917C6F12F329EE900AA8343 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2917C6F02F329EE900AA8343 /* AppDelegate.swift */; };
+		2917C6F32F329EEE00AA8343 /* TrackingPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2917C6F22F329EEE00AA8343 /* TrackingPermissionManager.swift */; };
+		2917C6F52F329F1000AA8343 /* TikTokSDKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2917C6F42F329F1000AA8343 /* TikTokSDKManager.swift */; };
+		2917C6F72F32A27A00AA8343 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2917C6F62F32A27A00AA8343 /* AppConfig.swift */; };
 		2932FC542EF32CB000D02A1A /* WebsiteBlockerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC532EF32CB000D02A1A /* WebsiteBlockerView.swift */; };
 		2932FC562EF32CBA00D02A1A /* WebsiteBlockerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC552EF32CBA00D02A1A /* WebsiteBlockerManager.swift */; };
 		2932FC582EF32CCA00D02A1A /* BlockedDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2932FC572EF32CCA00D02A1A /* BlockedDomain.swift */; };
@@ -110,6 +115,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2917C6F02F329EE900AA8343 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2917C6F22F329EEE00AA8343 /* TrackingPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingPermissionManager.swift; sourceTree = "<group>"; };
+		2917C6F42F329F1000AA8343 /* TikTokSDKManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TikTokSDKManager.swift; sourceTree = "<group>"; };
+		2917C6F62F32A27A00AA8343 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		2932FC532EF32CB000D02A1A /* WebsiteBlockerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteBlockerView.swift; sourceTree = "<group>"; };
 		2932FC552EF32CBA00D02A1A /* WebsiteBlockerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteBlockerManager.swift; sourceTree = "<group>"; };
 		2932FC572EF32CCA00D02A1A /* BlockedDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedDomain.swift; sourceTree = "<group>"; };
@@ -214,6 +223,7 @@
 				297AD0FD2EE7683400CCE3BC /* PostgREST in Frameworks */,
 				297AD15B2EE7B2E500CCE3BC /* Lottie in Frameworks */,
 				297AD0FB2EE7683400CCE3BC /* Functions in Frameworks */,
+				2917C6EF2F329AD600AA8343 /* TikTokBusinessSDK in Frameworks */,
 				297AD1F22EF24A6E00CCE3BC /* MarkdownUI in Frameworks */,
 				297AD15E2EE7B31400CCE3BC /* SuperwallKit in Frameworks */,
 				297AD1032EE7683400CCE3BC /* Supabase in Frameworks */,
@@ -266,6 +276,10 @@
 				29F600E32F13494500A63F5D /* ReturningUserLoginView.swift */,
 				29F600E52F13495000A63F5D /* SubscriptionRequiredView.swift */,
 				297AD17E2EE8F6CA00CCE3BC /* SuperwallManager.swift */,
+				2917C6F02F329EE900AA8343 /* AppDelegate.swift */,
+				2917C6F62F32A27A00AA8343 /* AppConfig.swift */,
+				2917C6F22F329EEE00AA8343 /* TrackingPermissionManager.swift */,
+				2917C6F42F329F1000AA8343 /* TikTokSDKManager.swift */,
 				297AD1962EEB96A800CCE3BC /* MainView.swift */,
 				297AD1B72EED245F00CCE3BC /* MilestonesSheetView.swift */,
 				29F600DB2F0F1E3000A63F5D /* MilestoneCelebrationView.swift */,
@@ -417,6 +431,7 @@
 				297AD15A2EE7B2E500CCE3BC /* Lottie */,
 				297AD15D2EE7B31400CCE3BC /* SuperwallKit */,
 				297AD1F12EF24A6E00CCE3BC /* MarkdownUI */,
+				2917C6EE2F329AD600AA8343 /* TikTokBusinessSDK */,
 			);
 			productName = NoMas;
 			productReference = 297AD0D62EE7646800CCE3BC /* NoMas.app */;
@@ -451,6 +466,7 @@
 				297AD1592EE7B2E500CCE3BC /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				297AD15C2EE7B31400CCE3BC /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
 				297AD1F02EF24A6E00CCE3BC /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				2917C6ED2F329AD600AA8343 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 297AD0D72EE7646800CCE3BC /* Products */;
@@ -482,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				297AD1722EE8AD5800CCE3BC /* MotivationView.swift in Sources */,
+				2917C6F32F329EEE00AA8343 /* TrackingPermissionManager.swift in Sources */,
 				297AD1542EE7B14300CCE3BC /* OnboardingWelcomeView.swift in Sources */,
 				2932FC542EF32CB000D02A1A /* WebsiteBlockerView.swift in Sources */,
 				2932FC702EF35D8F00D02A1A /* MightBreakAnimationView.swift in Sources */,
@@ -514,6 +531,7 @@
 				297AD1682EE7B51100CCE3BC /* ScienceView.swift in Sources */,
 				2932FC562EF32CBA00D02A1A /* WebsiteBlockerManager.swift in Sources */,
 				29F600DE2F0F2DE300A63F5D /* CameraSoftPromptView.swift in Sources */,
+				2917C6F12F329EE900AA8343 /* AppDelegate.swift in Sources */,
 				2932FC6C2EF357F700D02A1A /* Remindersmanager.swift in Sources */,
 				297AD1602EE7B34000CCE3BC /* SymptomsView.swift in Sources */,
 				297AD1BB2EED2CBA00CCE3BC /* TimerView.swift in Sources */,
@@ -530,6 +548,7 @@
 				297AD16A2EE7B51700CCE3BC /* BenefitsView.swift in Sources */,
 				297AD11A2EE76EA700CCE3BC /* OnboardingPhase.swift in Sources */,
 				2932FC7C2EF3D1D700D02A1A /* MotivationalQuoteManager.swift in Sources */,
+				2917C6F52F329F1000AA8343 /* TikTokSDKManager.swift in Sources */,
 				29F600E42F13494500A63F5D /* ReturningUserLoginView.swift in Sources */,
 				297AD1FA2EF24AC600CCE3BC /* ImageCacheManager.swift in Sources */,
 				2932FC642EF3420100D02A1A /* Dailyprayerview.swift in Sources */,
@@ -559,6 +578,7 @@
 				297AD1E42EEE507900CCE3BC /* NomiViewModel.swift in Sources */,
 				297AD1642EE7B36100CCE3BC /* TransitionView.swift in Sources */,
 				2932FC762EF360B400D02A1A /* PanicButtonFlowView.swift in Sources */,
+				2917C6F72F32A27A00AA8343 /* AppConfig.swift in Sources */,
 				297AD1CE2EEE0F0900CCE3BC /* UserProfileView.swift in Sources */,
 				297AD2042EF25BB100CCE3BC /* RelaxationAudioManager.swift in Sources */,
 				297AD1122EE76D7500CCE3BC /* SupabaseClient.swift in Sources */,
@@ -709,6 +729,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "NOMÁS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSCameraUsageDescription = "NoMás utiliza el acceso a la cámara para habilitar diferentes herramientas dentro de la app que apoyan tu proceso de recuperación y bienestar.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Usamos estos datos para medir el rendimiento de los anuncios y mejorar tu experiencia en la app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -751,6 +772,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "NOMÁS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSCameraUsageDescription = "NoMás utiliza el acceso a la cámara para habilitar diferentes herramientas dentro de la app que apoyan tu proceso de recuperación y bienestar.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Usamos estos datos para medir el rendimiento de los anuncios y mejorar tu experiencia en la app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -802,6 +824,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2917C6ED2F329AD600AA8343 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tiktok/tiktok-business-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.0;
+			};
+		};
 		297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
@@ -837,6 +867,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2917C6EE2F329AD600AA8343 /* TikTokBusinessSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2917C6ED2F329AD600AA8343 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */;
+			productName = TikTokBusinessSDK;
+		};
 		297AD0F82EE7683400CCE3BC /* Auth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 297AD0E82EE7654F00CCE3BC /* XCRemoteSwiftPackageReference "supabase-swift" */;

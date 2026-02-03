@@ -192,9 +192,23 @@ extension SuperwallManager: SuperwallDelegate {
     }
     
     nonisolated func handleSuperwallEvent(withInfo eventInfo: SuperwallEventInfo) {
-        // Log events for debugging
         print("📊 Superwall event: \(eventInfo.event)")
+
+        switch eventInfo.event {
+
+        case let .transactionComplete(transaction: _, product: product, type: _, paywallInfo: _):
+            Task { @MainActor in
+                let productId = product.productIdentifier
+                print("✅ Superwall transaction complete for productId: \(productId)")
+                TikTokSDKManager.shared.logSubscribe(productId: productId)
+            }
+
+        default:
+            break
+        }
     }
+
+
 }
 
 // MARK: - PaywallView Integration

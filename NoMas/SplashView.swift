@@ -182,6 +182,11 @@ struct SplashView: View {
         .onAppear {
             startAnimations()
             loadData()
+            
+            Task { @MainActor in
+                    await TrackingPermissionManager.shared.requestATTIfNeeded()
+                    TikTokSDKManager.shared.attemptInitializeIfAllowed()
+                }
         }
     }
     
